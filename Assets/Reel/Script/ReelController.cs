@@ -1,0 +1,315 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+public partial class ReelController : MonoBehaviour
+{
+    // =========================================
+    // ÉäÅ[ÉãéÌóﬁ
+    // =========================================
+
+    public enum ReelType
+    {
+        Left,
+        Center,
+        Right
+    }
+
+
+    // =========================================
+    // í‚é~Ç≥ÇπÇÈíi
+    // =========================================
+
+    public enum TargetRow
+    {
+        Any,
+        Upper,
+        Center,
+        Lower
+    }
+
+
+    // =========================================
+    // Inspector
+    // =========================================
+
+    [Header("Ç±ÇÃÉäÅ[ÉãÇÃéÌóﬁ")]
+    [SerializeField]
+    private ReelType reelType =
+        ReelType.Left;
+
+
+    [Header("ÉQÅ[ÉÄä«óù")]
+    [SerializeField]
+    private SlotGameManager gameManager;
+
+
+    [Header("âÒì]ê›íË")]
+    [SerializeField]
+    private float spinSpeed =
+        2000f;
+
+
+    // =========================================
+    // ÉäÅ[ÉãèÛë‘
+    // =========================================
+
+    private bool isSpinning =
+        false;
+
+    private bool isStopping =
+        false;
+
+    private float reelOffset =
+        0f;
+
+    private float stopRemainingDistance =
+        0f;
+
+    private float reelLength;
+
+
+    // =========================================
+    // Start
+    // =========================================
+
+    private void Start()
+    {
+        SetReelData();
+
+
+        if (
+            reelData == null ||
+            reelData.Count == 0
+        )
+        {
+            return;
+        }
+
+
+        reelLength =
+            reelData.Count *
+            symbolHeight;
+
+
+        CreateReel();
+
+        UpdateSymbolPositions();
+    }
+
+
+    // =========================================
+    // Update
+    // =========================================
+
+    private void Update()
+    {
+        if (isSpinning)
+        {
+            UpdateReel();
+        }
+    }
+
+
+    // =========================================
+    // ÉäÅ[ÉãâÒì]èàóù
+    // =========================================
+
+    private void UpdateReel()
+    {
+        float moveDistance =
+            spinSpeed *
+            Time.deltaTime;
+
+
+        // =====================================
+        // í‚é~íÜ
+        // =========================================
+
+        if (isStopping)
+        {
+            moveDistance =
+                Mathf.Min(
+                    moveDistance,
+                    stopRemainingDistance
+                );
+
+
+            stopRemainingDistance -=
+                moveDistance;
+        }
+
+
+        // =====================================
+        // ÉäÅ[Éãà⁄ìÆ
+        // =========================================
+
+        reelOffset +=
+            moveDistance;
+
+
+        reelOffset =
+            Mathf.Repeat(
+                reelOffset,
+                reelLength
+            );
+
+
+        UpdateSymbolPositions();
+
+
+        // =====================================
+        // äÆëSí‚é~
+        // =========================================
+
+        if (
+            isStopping &&
+            stopRemainingDistance <= 0.001f
+        )
+        {
+            // =================================
+            // ê}ïøã´äEÇ÷äÆëSÇ…çáÇÌÇπÇÈ
+            // =================================
+
+            reelOffset =
+                Mathf.Round(
+                    reelOffset /
+                    symbolHeight
+                ) *
+                symbolHeight;
+
+
+            reelOffset =
+                Mathf.Repeat(
+                    reelOffset,
+                    reelLength
+                );
+
+
+            UpdateSymbolPositions();
+
+
+            isSpinning =
+                false;
+
+
+            isStopping =
+                false;
+
+
+            stopRemainingDistance =
+                0f;
+
+
+            // =================================
+            // ÉfÉoÉbÉO
+            // =================================
+
+            Debug.Log(
+                "è„ÅF" +
+                GetUpperSymbol() +
+                " / íÜÅF" +
+                GetCenterSymbol() +
+                " / â∫ÅF" +
+                GetLowerSymbol()
+            );
+
+
+            // =================================
+            // ManagerÇ÷í‚é~í ím
+            // =================================
+
+            if (gameManager != null)
+            {
+                gameManager.NotifyReelStopped(
+                    reelType
+                );
+            }
+        }
+    }
+
+
+    // =========================================
+    // ÉäÅ[ÉãâÒì]äJén
+    // =========================================
+
+    public void StartSpin()
+    {
+        // =====================================
+        // Åö óVãYê‡ñæï\é¶íÜÇÕâÒì]ã÷é~
+        // =========================================
+
+        if (PlayGuidePanelManager.IsGuideOpen)
+        {
+            Debug.Log(
+                GetReelName() +
+                "ÅFóVãYê‡ñæíÜÇ»ÇÃÇ≈âÒì]ã÷é~"
+            );
+
+            return;
+        }
+
+
+        // =====================================
+        // Ç∑Ç≈Ç…âÒì]íÜ
+        // =========================================
+
+        if (isSpinning)
+        {
+            return;
+        }
+
+
+        // =====================================
+        // âÒì]äJén
+        // =========================================
+
+        isSpinning =
+            true;
+
+
+        isStopping =
+            false;
+
+
+        stopRemainingDistance =
+            0f;
+
+
+        Debug.Log(
+            GetReelName() +
+            " âÒì]äJén"
+        );
+    }
+
+
+    // =========================================
+    // ÉäÅ[Éãñº
+    // =========================================
+
+    private string GetReelName()
+    {
+        switch (reelType)
+        {
+            case ReelType.Left:
+
+                return
+                    "ç∂ÉäÅ[Éã";
+
+
+            case ReelType.Center:
+
+                return
+                    "íÜÉäÅ[Éã";
+
+
+            case ReelType.Right:
+
+                return
+                    "âEÉäÅ[Éã";
+        }
+
+
+        return
+            "ÉäÅ[Éã";
+    }
+}
