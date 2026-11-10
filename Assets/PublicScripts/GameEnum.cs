@@ -1,3 +1,21 @@
 using UnityEngine;
 
 
+public class GameEnum : MonoBehaviour 
+{
+    /// <summary>
+    /// ‹K’èƒ|ƒCƒ“ƒg
+    /// </summary>
+    public enum eTargetPoint
+    {
+        Invalid = -1,
+        Point100,
+        Point200,
+        Point300,
+        Point400,
+        Point500,
+        Point600,
+    }
+
+
+}
