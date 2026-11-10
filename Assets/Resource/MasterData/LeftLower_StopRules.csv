@@ -1,0 +1,17 @@
+﻿成立役,左下段コマ番号,下段図柄,中段図柄,備考
+Lose,1,Lose,Replay,通常役の左下段固定
+Lose,6,BlueV,Replay,通常役の左下段固定
+Lose,11,BAR,Replay,通常役の左下段固定
+Lose,16,PinkV,Replay,通常役の左下段固定
+Bell,1,Lose,Replay,通常役の左下段固定
+Bell,6,BlueV,Replay,通常役の左下段固定
+Bell,11,BAR,Replay,通常役の左下段固定
+Bell,16,PinkV,Replay,通常役の左下段固定
+Replay,1,Lose,Replay,通常役の左下段固定
+Replay,6,BlueV,Replay,通常役の左下段固定
+Replay,11,BAR,Replay,通常役の左下段固定
+Replay,16,PinkV,Replay,通常役の左下段固定
+Cherry,5,BlueV,BlueV,青V代用、到達可能な押下位置のみ
+Cherry,10,Cherry,BAR,5番に届かないとき通常チェリー引込み
+Cherry,15,Cherry,PinkV,5番に届かないとき通常チェリー引込み
+Cherry,20,Cherry,Lose,5番に届かないとき通常チェリー引込み

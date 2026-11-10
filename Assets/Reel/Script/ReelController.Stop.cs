@@ -125,6 +125,41 @@ public partial class ReelController
         // ① マスターパターン停止制御
         // =========================================
 
+        // =====================================
+        // CHRONICLE: 通常役の左下段を1・6・11・16番に固定
+        // ※ リールCSVが20→1の順で読み込まれる前提
+        // =====================================
+        if (ShouldLockLeftLowerPosition())
+        {
+            int fixedSlip = FindFixedLeftLowerSlip(baseCenterIndex);
+            if (fixedSlip >= 0)
+            {
+                SetStopDistance(distanceToBoundary, fixedSlip);
+                return;
+            }
+
+            Debug.LogError("左リール下段固定位置が0～4コマ内に見つかりません。配列順を確認してください。");
+        }
+
+        // =====================================
+        // CHRONICLE: 左下段5番(BlueV)をチェリー代用
+        // 5番と6番は同じBlueVでも位置番号で区別する。
+        // 通常役の6番固定とは異なる専用制御。
+        // =====================================
+        if (ShouldUseCherrySubstitute())
+        {
+            int substituteSlip = FindCherrySubstituteSlip(baseCenterIndex);
+            if (substituteSlip >= 0)
+            {
+                SetStopDistance(distanceToBoundary, substituteSlip);
+                Debug.Log("左リール: 5番BlueV下段（チェリー代用） / "
+                    + substituteSlip + "コマ滑り");
+                return;
+            }
+            // 5番を0～4コマで引き込めない場合は
+            // 従来のCherry図柄引き込み処理に進む。
+        }
+
         if (useReachPattern)
         {
             int masterSlip =
@@ -782,6 +817,64 @@ public partial class ReelController
                 "Cherry";
     }
 
+
+
+    // 20→1のCSV順では、下段5番は0-based index=15。
+    // 下段が5番のとき中段が6番になり、2連青V停止となる。
+    // ゲームマネージャ側のCherry成立時だけ有効にする。
+    private bool ShouldUseCherrySubstitute()
+    {
+        return reelType == ReelType.Left
+            && gameManager != null
+            && gameManager.CurrentRole == SlotGameManager.RoleType.Cherry
+            && targetSymbol == "Cherry"
+            && !useReachPattern;
+    }
+
+    private int FindCherrySubstituteSlip(int baseCenterIndex)
+    {
+        const int blueVFiveLowerIndex = 15;
+        int limit = Mathf.Min(CurrentMaxSlipCount, 4);
+        for (int slip = 0; slip <= limit; slip++)
+        {
+            int centerIndex = GetIndexAfterSlip(baseCenterIndex, slip);
+            int lowerIndex = WrapIndex(centerIndex + 1);
+            if (lowerIndex == blueVFiveLowerIndex
+                && reelData[lowerIndex] == "BlueV"
+                && reelData[centerIndex] == "BlueV")
+            {
+                return slip;
+            }
+        }
+        return -1;
+    }
+
+    // 通常役のみ左下段を固定。レア役やAT専用演出は対象外。
+    private bool ShouldLockLeftLowerPosition()
+    {
+        if (reelType != ReelType.Left || gameManager == null)
+            return false;
+
+        SlotGameManager.RoleType role = gameManager.CurrentRole;
+        return role == SlotGameManager.RoleType.Lose
+            || role == SlotGameManager.RoleType.Bell
+            || role == SlotGameManager.RoleType.Replay;
+    }
+
+    // ReelMaster.csvが20→1順のため、0-based配列の下段indexは
+    // 1番=19、6番=14、11番=9、16番=4。
+    private int FindFixedLeftLowerSlip(int baseCenterIndex)
+    {
+        for (int slip = 0; slip <= maxSlipCount; slip++)
+        {
+            int centerIndex = GetIndexAfterSlip(baseCenterIndex, slip);
+            int lowerIndex = WrapIndex(centerIndex + 1);
+            if (lowerIndex == 19 || lowerIndex == 14 ||
+                lowerIndex == 9 || lowerIndex == 4)
+                return slip;
+        }
+        return -1;
+    }
 
     // =========================================
     // スベリ後Index

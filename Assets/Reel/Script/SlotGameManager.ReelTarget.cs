@@ -51,7 +51,7 @@ public partial class SlotGameManager
                 "Replay",
                 "Replay",
                 "Replay",
-                targetPayLine
+                PayLine.Center
             );
 
             return;
@@ -91,7 +91,7 @@ public partial class SlotGameManager
                 "Bell",
                 "Bell",
                 "Bell",
-                targetPayLine
+                PayLine.Upper
             );
 
             return;
