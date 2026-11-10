@@ -28,4 +28,15 @@ public class GameEnum : MonoBehaviour
 
     }
 
+    public enum eRoleTypeTest
+    {
+        Invalid = -1,
+        hazure,
+        Replay,
+        Bell,
+        Watermelon,
+        Cherry,
+        HiCherry,
+    }
+
 }

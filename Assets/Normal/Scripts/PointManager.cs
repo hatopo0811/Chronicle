@@ -5,24 +5,35 @@ public class PointManager : MonoBehaviour
 
     public static PointManager instance = null;
 
-    
-    
+    GameEnum.eRoleTypeTest roleType = GameEnum.eRoleTypeTest.hazure;
+
+    int point = 0;
 
     void Start()
     {
         instance = this;
-
-        
         
 
     }
 
     void Update()
     {
-        bool kaiten = false, teisi = true;
         
 
-            
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            int random = Random.Range(0, 7);
+            roleType = (GameEnum.eRoleTypeTest)random;
+            Debug.Log(roleType.ToString());
+            point = AddPoint(point, roleType);
+
+            Debug.Log("現在のポイント：" + point);
+        }
+        
+        
+
+
+
     }
 
     /// <summary>
@@ -30,35 +41,35 @@ public class PointManager : MonoBehaviour
     /// </summary>
     /// <param name="point">現在の獲得済みポイント</param>
     /// <returns>point + 加算ポイントを返す</returns>
-    public int AddPoint(int point, SlotGameManager.RoleType type)
+    public int AddPoint(int point, GameEnum.eRoleTypeTest type)
     {
         // 子役ごとに加算するポイントを切り替える
         // ★この列挙体はOHANAの物なのでリールが完成したら変える
         switch (type)
         {
-            case SlotGameManager.RoleType.Lose:
+            case GameEnum.eRoleTypeTest.hazure:
                 // 加算されたポイントを返す
                 return point += 1;
                 
-            case SlotGameManager.RoleType.Replay:
+            case GameEnum.eRoleTypeTest.Replay:
                 // 加算されたポイントを返す
                 return point += 5;
                 
-            case SlotGameManager.RoleType.Grape:
+            case GameEnum.eRoleTypeTest.Bell:
                 // 加算されたポイントを返す
                 return point;
-                
-            case SlotGameManager.RoleType.Bell:
-                // 加算されたポイントを返す
-                return point;
-                
-            case SlotGameManager.RoleType.Cherry:
+            
+            case GameEnum.eRoleTypeTest.Watermelon:
                 // 加算されたポイントを返す
                 return point += 10;
-                
-            case SlotGameManager.RoleType.Hibiscus:
+            
+            case GameEnum.eRoleTypeTest.Cherry:
                 // 加算されたポイントを返す
                 return point += 10;
+            
+            case GameEnum.eRoleTypeTest.HiCherry:
+                // 加算されたポイントを返す
+                return point += 20;
                 
         }
         return 0;
