@@ -18,4 +18,14 @@ public class GameEnum : MonoBehaviour
     }
 
 
+    public enum eRivalMode
+    {
+        Invalid = -1,
+        Default,
+        Hamaoka,
+        Enoki,
+        Aosima,
+
+    }
+
 }
