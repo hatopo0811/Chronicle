@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 3967ab59452db784fa2aa864ebba65e8
+guid: ade863330d6e8a3408b6d639e866d42f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -158843406026887754
-    second: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_0"
-  - first:
-      213: 3023559722720714868
-    second: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_1"
-  - first:
-      213: 2799977738175527438
-    second: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_2"
-  - first:
-      213: -132619250516684856
-    second: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_3"
+      213: 1237736887526296036
+    second: Replay_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -148,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_0"
+      name: Replay_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1774
-        height: 887
+        x: 143
+        y: 17
+        width: 225
+        height: 222
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,74 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6bdaad883ccabcdf0800000000000000
-      internalID: -158843406026887754
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_1"
-      rect:
-        serializedVersion: 2
-        x: 325
-        y: 0
-        width: 88
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 47062fd5c87d5f920800000000000000
-      internalID: 3023559722720714868
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_2"
-      rect:
-        serializedVersion: 2
-        x: 905
-        y: 0
-        width: 58
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e0a34fefae48bd620800000000000000
-      internalID: 2799977738175527438
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_3"
-      rect:
-        serializedVersion: 2
-        x: 1300
-        y: 0
-        width: 130
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8cf039a8e77d82ef0800000000000000
-      internalID: -132619250516684856
+      spriteID: 4e9076234235d2110800000000000000
+      internalID: 1237736887526296036
       vertices: []
       indices: 
       edges: []
@@ -249,10 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_0": -158843406026887754
-      "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_1": 3023559722720714868
-      "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_2": 2799977738175527438
-      "ChatGPT \u753B\u50CF 2026\u5E7411\u67089\u65E5 12_59_44-5_3": -132619250516684856
+      Replay_0: 1237736887526296036
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

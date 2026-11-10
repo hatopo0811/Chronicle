@@ -28,6 +28,32 @@ public partial class ReelController
     [SerializeField] private float symbolHeight = 100f;
     [SerializeField] private float symbolWidth = 200f;
 
+    // =========================================
+    // 図柄の見た目調整
+    // =========================================
+    [Header("共通表示倍率")]
+    [SerializeField] private float commonScale = 0.90f;
+
+    [Header("図柄ごとの表示倍率")]
+    [SerializeField] private float bellScale = 0.90f;
+    [SerializeField] private float replayScale = 0.90f;
+    [SerializeField] private float blueVScale = 1.00f;
+    [SerializeField] private float barScale = 1.00f;
+    [SerializeField] private float suikaScale = 0.95f;
+    [SerializeField] private float cherryScale = 0.92f;
+    [SerializeField] private float loseScale = 0.92f;
+    [SerializeField] private float pinkVScale = 1.00f;
+
+    [Header("図柄ごとのY位置補正")]
+    [SerializeField] private float bellYOffset = 0f;
+    [SerializeField] private float replayYOffset = 0f;
+    [SerializeField] private float blueVYOffset = 0f;
+    [SerializeField] private float barYOffset = 0f;
+    [SerializeField] private float suikaYOffset = 0f;
+    [SerializeField] private float cherryYOffset = 0f;
+    [SerializeField] private float loseYOffset = 0f;
+    [SerializeField] private float pinkVYOffset = 0f;
+
     // 他の partial ファイルから使うため名称は維持する。
     private List<string> reelData;
     private List<RectTransform> reelSymbols = new List<RectTransform>();
@@ -63,9 +89,10 @@ public partial class ReelController
     {
         if (symbolsParent == null)
         {
-            Debug.LogError(GetReelName() + ": Symbols Parent を設定してください。");
+            Debug.LogError(GetReelName() + ": Symbols Parent を設定してください。", gameObject);
             return;
         }
+
         if (reelData == null || reelData.Count == 0)
             return;
 
@@ -78,26 +105,53 @@ public partial class ReelController
         for (int i = 0; i < reelData.Count; i++)
         {
             string symbolName = reelData[i];
-            GameObject symbolObject = new GameObject(
+
+            // -----------------------------
+            // ルート（位置管理用）
+            // -----------------------------
+            GameObject rootObject = new GameObject(
                 "Reel_" + i + "_" + symbolName,
+                typeof(RectTransform));
+
+            rootObject.transform.SetParent(symbolsParent, false);
+
+            RectTransform rootRect = rootObject.GetComponent<RectTransform>();
+            rootRect.sizeDelta = new Vector2(symbolWidth, symbolHeight);
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+
+            // -----------------------------
+            // 画像本体（見た目調整用）
+            // -----------------------------
+            GameObject imageObject = new GameObject(
+                "Image",
                 typeof(RectTransform),
                 typeof(CanvasRenderer),
                 typeof(Image));
 
-            symbolObject.transform.SetParent(symbolsParent, false);
+            imageObject.transform.SetParent(rootObject.transform, false);
 
-            RectTransform rect = symbolObject.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(symbolWidth, symbolHeight);
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
+            RectTransform imageRect = imageObject.GetComponent<RectTransform>();
+            imageRect.anchorMin = new Vector2(0.5f, 0.5f);
+            imageRect.anchorMax = new Vector2(0.5f, 0.5f);
+            imageRect.pivot = new Vector2(0.5f, 0.5f);
 
-            Image image = symbolObject.GetComponent<Image>();
+            float finalScale = commonScale * GetSymbolScale(symbolName);
+            float finalYOffset = GetSymbolYOffset(symbolName);
+
+            imageRect.sizeDelta = new Vector2(
+                symbolWidth * finalScale,
+                symbolHeight * finalScale
+            );
+            imageRect.anchoredPosition = new Vector2(0f, finalYOffset);
+
+            Image image = imageObject.GetComponent<Image>();
             image.sprite = GetSprite(symbolName);
             image.preserveAspect = true;
             image.raycastTarget = false;
 
-            reelSymbols.Add(rect);
+            reelSymbols.Add(rootRect);
         }
     }
 
@@ -154,6 +208,7 @@ public partial class ReelController
                 closestIndex = i;
             }
         }
+
         return closestIndex;
     }
 
@@ -170,11 +225,12 @@ public partial class ReelController
     }
 
     // =========================================
-    // CSVの図柄名 → Sprite
+    // 図柄名 → Sprite
     // =========================================
     private Sprite GetSprite(string symbolName)
     {
         Sprite sprite;
+
         switch (symbolName)
         {
             case "Bell": sprite = bellSprite; break;
@@ -192,6 +248,45 @@ public partial class ReelController
 
         if (sprite == null)
             Debug.LogWarning(symbolName + " のSpriteがInspectorで未設定です。");
+
         return sprite;
+    }
+
+    // =========================================
+    // 図柄ごとの表示倍率
+    // =========================================
+    private float GetSymbolScale(string symbolName)
+    {
+        switch (symbolName)
+        {
+            case "Bell": return bellScale;
+            case "Replay": return replayScale;
+            case "BlueV": return blueVScale;
+            case "BAR": return barScale;
+            case "Suika": return suikaScale;
+            case "Cherry": return cherryScale;
+            case "Lose": return loseScale;
+            case "PinkV": return pinkVScale;
+            default: return 1f;
+        }
+    }
+
+    // =========================================
+    // 図柄ごとのY補正
+    // =========================================
+    private float GetSymbolYOffset(string symbolName)
+    {
+        switch (symbolName)
+        {
+            case "Bell": return bellYOffset;
+            case "Replay": return replayYOffset;
+            case "BlueV": return blueVYOffset;
+            case "BAR": return barYOffset;
+            case "Suika": return suikaYOffset;
+            case "Cherry": return cherryYOffset;
+            case "Lose": return loseYOffset;
+            case "PinkV": return pinkVYOffset;
+            default: return 0f;
+        }
     }
 }
