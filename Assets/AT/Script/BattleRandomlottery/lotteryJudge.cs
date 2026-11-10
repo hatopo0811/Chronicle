@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class lotteryJudge : MonoBehaviour
@@ -9,47 +10,44 @@ public class lotteryJudge : MonoBehaviour
     //シナリオの確率を入れる辞書
     Dictionary<int, float> jugdeDict;
 
+    Dictionary<int, string> lotteryjudge;
 
-    //private void Start()
-    //{
-       
-    //        GetJudge();
-
-    //}
-
-    //void GetJudge()
-    //{
-    //    InitalizeDicts();
-
-        
+    int LotteryCount = 7;
 
 
-    //}
+    bool getScenario = false;
 
 
     void Update()
     {
+
+        //一回だけ呼び出す
+        if (!getScenario)
+        {
+
+            getScenario = true;
+            Debug.Log("シナリオを取得します");
+            GetJudge();
+        }
+
+    }
+
+    void GetJudge() {
+
+
         //ボタンを押すと出る確率を変える
-        if (Input.GetKeyDown(KeyCode.B))
+        for (int i = 0; i < LotteryCount; i++)
         {
             InitalizeDictsBlue();
-        }
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
             InitalizeDictsYellow();
-        }
-        else if (Input.GetKeyDown(KeyCode.G))
-        {
             InitalizeDictsGreen();
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
             InitalizeDictsRed();
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
             InitalizeDictsRainbow();
         }
+
+
+
+        if (judgeInfo == null || jugdeDict == null) return;
 
         int judge = Chooze();
 
@@ -70,20 +68,21 @@ public class lotteryJudge : MonoBehaviour
 
     void InitalizeDictsBlue()
     {
-        judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "成功");
-        judgeInfo.Add(2, "残念");
-        jugdeDict = new Dictionary<int, float>();
-        jugdeDict.Add(1, 0.25f);
-        jugdeDict.Add(2, 0.75f);
-       
+        
+            judgeInfo = new Dictionary<int, string>();
+            judgeInfo.Add(1, "青成功");
+            judgeInfo.Add(2, "青残念");
+            jugdeDict = new Dictionary<int, float>();
+            jugdeDict.Add(1, 0.25f);
+            jugdeDict.Add(2, 0.75f);
+        
     }
 
     void InitalizeDictsYellow()
     {
         judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "成功");
-        judgeInfo.Add(2, "残念");
+        judgeInfo.Add(1, "黄成功");
+        judgeInfo.Add(2, "黄残念");
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.5f);
         jugdeDict.Add(2, 0.5f);
@@ -93,8 +92,8 @@ public class lotteryJudge : MonoBehaviour
     void InitalizeDictsGreen()
     {
         judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "成功");
-        judgeInfo.Add(2, "残念");
+        judgeInfo.Add(1, "緑成功");
+        judgeInfo.Add(2, "緑残念");
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.66f);
         jugdeDict.Add(2, 0.34f);
@@ -105,8 +104,8 @@ public class lotteryJudge : MonoBehaviour
     void InitalizeDictsRed()
     {
         judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "成功");
-        judgeInfo.Add(2, "残念");
+        judgeInfo.Add(1, "赤成功");
+        judgeInfo.Add(2, "赤残念");
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.8f);
         jugdeDict.Add(2, 0.2f);
@@ -116,7 +115,7 @@ public class lotteryJudge : MonoBehaviour
     void InitalizeDictsRainbow()
     {
         judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "成功");
+        judgeInfo.Add(1, "虹成功");
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 1.0f);
 
