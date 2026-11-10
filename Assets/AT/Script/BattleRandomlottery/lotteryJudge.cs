@@ -3,43 +3,31 @@ using UnityEngine;
 
 public class lotteryJudge : MonoBehaviour
 {
+    //シナリオの番号とシナリオ名を入れる辞書
     Dictionary<int, string> judgeInfo;
 
-
+    //シナリオの確率を入れる辞書
     Dictionary<int, float> jugdeDict;
 
 
-    private void Update()
-    {
+    //private void Start()
+    //{
        
-            GetJudge();
+    //        GetJudge();
 
-    }
+    //}
 
-    void GetJudge()
-    {
-        InitalizeDicts();
+    //void GetJudge()
+    //{
+    //    InitalizeDicts();
 
-        int judge = Chooze();
-
-        if (judge != 0)
-        {
-            string Judge = judgeInfo[judge];
-
-            Debug.Log("よいしょ" + Judge);
+        
 
 
-        }
-        else
-        {
-            Debug.Log("あんにょーん");
-        }
+    //}
 
 
-    }
-
-
-    void InitalizeDicts()
+    void Update()
     {
         //ボタンを押すと出る確率を変える
         if (Input.GetKeyDown(KeyCode.B))
@@ -61,6 +49,21 @@ public class lotteryJudge : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.L))
         {
             InitalizeDictsRainbow();
+        }
+
+        int judge = Chooze();
+
+        if (judge != 0)
+        {
+            string Judge = judgeInfo[judge];
+
+            Debug.Log("シナリオ" + Judge);
+
+
+        }
+        else
+        {
+            Debug.Log("シナリオなし");
         }
     }
 
@@ -121,12 +124,16 @@ public class lotteryJudge : MonoBehaviour
 
     int Chooze()
     {
+        //確率の合計を計算
         float total = 0;
+        //確率の合計を計算
         foreach (KeyValuePair<int, float> elem in jugdeDict)
         {
             total += elem.Value;
         }
+        //ランダムな値を生成
         float randomPoint = Random.value * total;
+        //確率の合計をもとにシナリオを選択
         foreach (KeyValuePair<int, float> elem in jugdeDict)
         {
             if (randomPoint < elem.Value)

@@ -19,6 +19,9 @@ public class PointManager : MonoBehaviour
 
     void Update()
     {
+        bool kaiten = false, teisi = true;
+        
+
             
     }
 
@@ -73,37 +76,15 @@ public class PointManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 規定ポイントに達して前兆に入ったときに超過しているポイントを次の周期に繰越す
+    /// 規定ポイントに達して前兆に入ったときに超過しているポイントを次の周期に繰越す用
     /// </summary>
     /// <param name="targetPoint">規定ポイント</param>
     /// <param name="nowPoint">現在の獲得ポイント</param>
-    /// <returns></returns>
+    /// <returns>規定ポイントからの超過ポイント分</returns>
     public int CarryoverOverflowPoint(GameEnum.eTargetPoint targetPoint, int nowPoint)
     {
-        int dif = -1;
-        switch (targetPoint)
-        {
-            case GameEnum.eTargetPoint.Point100:
-                dif = nowPoint - (int)targetPoint;
-                break;
-            case GameEnum.eTargetPoint.Point200:
-                dif = nowPoint - (int)targetPoint;
-                break;
-            case GameEnum.eTargetPoint.Point300:
-                dif = nowPoint - (int)targetPoint;
-                break;
-            case GameEnum.eTargetPoint.Point400:
-                dif = nowPoint - (int)targetPoint;
-                break;
-            case GameEnum.eTargetPoint.Point500:
-                dif = nowPoint - (int)targetPoint;
-                break;
-            case GameEnum.eTargetPoint.Point600:
-                dif = nowPoint - (int)targetPoint;
-                break;
-        }
-
-        return dif;
+        int overflowPoint;
+        return overflowPoint = nowPoint - (int)targetPoint;
     }
 
 
