@@ -4,99 +4,33 @@ public partial class SlotGameManager
 {
     private RoleType DrawNormalRole()
     {
-        float total =
-          loseProbability +
-          replayProbability +
-          grapeProbability +
-          bellProbability +
-          cherryProbability +
-          hibiscusProbability +
-          bigProbability +
-          regProbability;
-
-
-        float value =
-            UnityEngine.Random.Range(
-                0f,
-                total
-            );
-
-
-        float border =
-            loseProbability;
-
-
-        if (value < border)
+        if (chronicleUseTestRole)
         {
-            return
-                RoleType.Lose;
+            return (RoleType)System.Enum.Parse(typeof(RoleType), chronicleTestRole.ToString());
         }
 
-
-        border +=
-            replayProbability;
-
-
-        if (value < border)
+        float[] w = {
+            Mathf.Max(0f, chronicleLoseWeight),
+            Mathf.Max(0f, chronicleBellWeight),
+            Mathf.Max(0f, chronicleReplayWeight),
+            Mathf.Max(0f, chronicleSuikaWeight),
+            Mathf.Max(0f, chronicleCherryWeight),
+            Mathf.Max(0f, chronicleStrongCherryWeight)
+        };
+        RoleType[] roles = {
+            RoleType.Lose, RoleType.Bell, RoleType.Replay,
+            RoleType.Suika, RoleType.Cherry, RoleType.StrongCherry
+        };
+        float total = 0f;
+        foreach (float value in w) total += value;
+        if (total <= 0f) { Debug.LogError("通常役の抽選重みが全部0です"); return RoleType.Lose; }
+        float draw = Random.value * total;
+        for (int i = 0; i < w.Length; i++)
         {
-            return
-                RoleType.Replay;
+            draw -= w[i];
+            if (draw < 0f) return roles[i];
         }
-
-
-        border +=
-            grapeProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.Grape;
-        }
-
-
-        border +=
-            bellProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.Bell;
-        }
-
-
-        border +=
-            cherryProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.Cherry;
-        }
-
-        border +=
-            hibiscusProbability;
-
-        if (value < border)
-        {
-            return RoleType.Hibiscus;
-        }
-
-        border +=
-            bigProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.BigBonus;
-        }
-
-
-        return
-            RoleType.RegBonus;
+        return RoleType.StrongCherry;
     }
 
     private RoleType DrawRoleDuringBonusPending()
@@ -166,6 +100,10 @@ public partial class SlotGameManager
 
             case RoleType.Grape:
                 return "ぶどう";
+            case RoleType.Suika:
+                return "スイカ";
+            case RoleType.StrongCherry:
+                return "強チェリー";
 
             case RoleType.Bell:
                 return "ベル";
@@ -200,6 +138,10 @@ public partial class SlotGameManager
 
             case HitRoleType.Grape:
                 return "ぶどう";
+            case HitRoleType.Suika:
+                return "スイカ";
+            case HitRoleType.StrongCherry:
+                return "強チェリー";
 
             case HitRoleType.Bell:
                 return "ベル";

@@ -13,7 +13,9 @@ public partial class SlotGameManager : MonoBehaviour
         Cherry,
         Hibiscus,
         BigBonus,
-        RegBonus
+        RegBonus,
+        Suika,
+        StrongCherry
     }
 
 
@@ -26,7 +28,9 @@ public partial class SlotGameManager : MonoBehaviour
         Cherry,
         Hibiscus,
         BigBonus,
-        RegBonus
+        RegBonus,
+        Suika,
+        StrongCherry
     }
 
 
@@ -129,6 +133,25 @@ public partial class SlotGameManager : MonoBehaviour
     [SerializeField]
     private float regProbability = 10f;
 
+
+    [Header("クロニクル 通常6役抽選の重み（0以上、合計は自動計算）")]
+    [SerializeField] private float chronicleLoseWeight = 54f;
+    [SerializeField] private float chronicleBellWeight = 20f;
+    [SerializeField] private float chronicleReplayWeight = 20f;
+    [SerializeField] private float chronicleSuikaWeight = 3f;
+    [SerializeField] private float chronicleCherryWeight = 2f;
+    [SerializeField] private float chronicleStrongCherryWeight = 1f;
+
+    [Header("クロニクル 払い出し（試験値）")]
+    [SerializeField] private int chronicleBellPayout = 8;
+    [SerializeField] private int chronicleSuikaPayout = 3;
+    [SerializeField] private int chronicleCherryPayout = 1;
+    [SerializeField] private int chronicleStrongCherryPayout = 1;
+
+    [Header("クロニクル デバッグ")]
+    [SerializeField] private bool chronicleUseTestRole = false;
+    [SerializeField] private ChronicleTestRole chronicleTestRole = ChronicleTestRole.Lose;
+    public enum ChronicleTestRole { Lose, Bell, Replay, Suika, Cherry, StrongCherry }
 
     // =========================================
     // CREDIT

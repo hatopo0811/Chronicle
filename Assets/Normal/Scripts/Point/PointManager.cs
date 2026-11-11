@@ -5,9 +5,11 @@ public class PointManager : MonoBehaviour
 
     public static PointManager instance = null;
 
-    GameEnum.eRoleTypeTest roleType = GameEnum.eRoleTypeTest.hazure;
+    public GameEnum.eRoleTypeTest RoleType { get; private set; } = GameEnum.eRoleTypeTest.Invalid;
 
-    int point = 0;
+    public GameEnum.eTargetPoint TargetPoint { get; private set; } = GameEnum.eTargetPoint.Invalid;
+
+    public int NowPoint{ get; private set; }
 
     void Start()
     {
@@ -19,20 +21,17 @@ public class PointManager : MonoBehaviour
     void Update()
     {
         
-
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            int random = Random.Range(0, 7);
-            roleType = (GameEnum.eRoleTypeTest)random;
-            Debug.Log(roleType.ToString());
-            point = AddPoint(point, roleType);
+            int random = Random.Range(0, 6);
+            RoleType = (GameEnum.eRoleTypeTest)random;
+            // 子役抽選結果表示
+            Debug.Log(RoleType.ToString());
+            NowPoint = AddPoint(NowPoint, RoleType);
 
-            Debug.Log("現在のポイント：" + point);
+            Debug.Log("現在のポイント：" + NowPoint);
+            
         }
-        
-        
-
-
 
     }
 
@@ -40,7 +39,7 @@ public class PointManager : MonoBehaviour
     /// ポイントを加算する
     /// </summary>
     /// <param name="point">現在の獲得済みポイント</param>
-    /// <returns>point + 加算ポイントを返す</returns>
+    /// <returns>NowPoint + 加算ポイントを返す</returns>
     public int AddPoint(int point, GameEnum.eRoleTypeTest type)
     {
         // 子役ごとに加算するポイントを切り替える
@@ -75,7 +74,7 @@ public class PointManager : MonoBehaviour
         return 0;
     }
 
-    // ★
+    
     /// <summary>
     /// ATから通常時に戻ったときや、規定ポイントに達して前兆を踏んだ時にポイントをリセットする
     /// </summary>
