@@ -11,9 +11,13 @@ public class GameEnum : MonoBehaviour
     public enum eNormalMode
     {
         Invalid = -1,
-        A,
-        B,
-        Heaven
+        A,          // 55%
+        B,          // 30%
+        Heaven,     // 10%
+        SokuYusyutu,// 5%
+        // ↓は朝一や上位AT後のみ出現するモードなので通常AT後などの抽選には含まれない
+        Morning,
+        AfterHiAT,
     }
 
     /// <summary>
