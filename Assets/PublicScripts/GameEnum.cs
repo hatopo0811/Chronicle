@@ -3,21 +3,53 @@ using UnityEngine;
 
 public class GameEnum : MonoBehaviour 
 {
+
+    /// <summary>
+    /// モード
+    /// A、B、天国
+    /// </summary>
+    public enum eNormalMode
+    {
+        Invalid = -1,
+        A,
+        B,
+        Heaven
+    }
+
+    /// <summary>
+    /// 周期数
+    /// </summary>
+    public enum eCycleCount
+    {
+        Invalid = -1,
+        First,
+        Second,
+        Third,
+        Fourth,
+        Fifth,
+        Six,
+        Max,
+    }
+
     /// <summary>
     /// 規定ポイント
     /// </summary>
     public enum eTargetPoint
     {
         Invalid = -1,
-        Point100,
-        Point200,
-        Point300,
-        Point400,
-        Point500,
-        Point600,
+        Point100 = 100,
+        Point200 = 200,
+        Point300 = 300,
+        Point400 = 400,
+        Point500 = 500,
+        Point600 = 600,
     }
 
 
+
+    /// <summary>
+    /// ライバルモード
+    /// </summary>
     public enum eRivalMode
     {
         Invalid = -1,
@@ -28,6 +60,9 @@ public class GameEnum : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 子役の種類
+    /// </summary>
     public enum eRoleTypeTest
     {
         Invalid = -1,
@@ -38,5 +73,8 @@ public class GameEnum : MonoBehaviour
         Cherry,
         HiCherry,
     }
+
+    
+
 
 }
