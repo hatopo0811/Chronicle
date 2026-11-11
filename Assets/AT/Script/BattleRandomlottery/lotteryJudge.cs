@@ -12,38 +12,69 @@ public class lotteryJudge : MonoBehaviour
 
     Dictionary<int, string> lotteryjudge;
 
-    int LotteryCount = 7;
+    int LotteryCount = 5;
 
+   
 
-    bool getScenario = false;
+   
+    int hoge;
+
 
 
     void Update()
     {
 
-        //一回だけ呼び出す
-        if (!getScenario)
+        if (hoge < 5)
+        {
+            aaa();
+
+        }
+        
+
+
+       
+
+    }
+
+    void aaa()
+    {
+
+        hoge++;
+
+        GetCollor();
+
+
+    }
+
+    void GetCollor()
+    {
+
+        switch (hoge)
         {
 
-            getScenario = true;
-            Debug.Log("シナリオを取得します");
-            GetJudge();
+            case 1:
+                 InitalizeDictsBlue();
+                break;
+            case 2:
+                InitalizeDictsYellow();
+                break;
+            case 3:
+                InitalizeDictsGreen();
+                break;
+            case 4:
+                InitalizeDictsRed();
+                break;
+            case 5:
+                InitalizeDictsRainbow();
+                break;
         }
-
+        GetJudge();
     }
 
     void GetJudge() {
 
 
-        //ボタンを押すと出る確率を変える
-        for (int i = 0; i < LotteryCount; i++)
-        {
-            InitalizeDictsBlue();
-            InitalizeDictsYellow();
-            InitalizeDictsGreen();
-            InitalizeDictsRed();
-            InitalizeDictsRainbow();
-        }
+       
 
 
 

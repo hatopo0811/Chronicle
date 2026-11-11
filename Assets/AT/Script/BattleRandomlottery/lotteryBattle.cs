@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Android.Gradle;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class lotteryBattle : MonoBehaviour
@@ -12,80 +13,41 @@ public class lotteryBattle : MonoBehaviour
 
     Dictionary<int, float> jugdeDict;
 
+    private int judge;
 
     private void Start()
     {
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
         {
-        GetJudge();
-
+      SetJudge();
         }
+
 
     }
 
-    void GetJudge()
+    private void SetJudge()
     {
-        InitalizeDicts();
 
-        int judge = Chooze();
+        int judge = Random.Range(1, 10);
 
-        if(judge != 0)
+
+        Debug.Log("SetJudge: —”‚Í" + judge);
+
+        if (judge > 1&&judge < 7)
         {
-            string Judge = judgeInfo[judge];
-
-            Debug.Log("‚æ‚¢‚µ‚å" + Judge);
-
-
+            Debug.Log("“–‚½‚è");
         }
-        else
+        else if(judge > 7 && judge < 10)
         {
-            Debug.Log("‚ ‚ñ‚É‚å[‚ñ");
+            Debug.Log("‚Í‚¸‚ê");
         }
-
 
     }
+  
 
 
 
 
 
-    void InitalizeDicts()
-    {
-        judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "Žc”O");
-        judgeInfo.Add(2, "‚Ô‚Á‚¿‚¬‚è");
-        //itemInfo.Add(3, "item3");
-        //itemInfo.Add(4, "item4");
-        //itemInfo.Add(5, "item5");
-        jugdeDict = new Dictionary<int, float>();
-        jugdeDict.Add(1, 0.9f);
-        jugdeDict.Add(2, 0.1f);
-        //ItemDropDict.Add(3, 0.1f);
-        //ItemDropDict.Add(4, 0.05f);
-        //ItemDropDict.Add(5, 0.05f);
-    }
-
-    int Chooze()
-    {
-        float total = 0;
-        foreach (KeyValuePair<int,float>elem in jugdeDict)
-        {
-            total += elem.Value;
-        }
-        float randomPoint = Random.value * total;
-        foreach (KeyValuePair<int, float> elem in jugdeDict)
-        {
-            if (randomPoint < elem.Value)
-            {
-                return elem.Key;
-            }
-            else
-            {
-                randomPoint -= elem.Value;
-            }
-        }
-        return 0;
-    }
-
-
+    
 }

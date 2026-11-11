@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 1364866350}
   - component: {fileID: 1364866349}
   - component: {fileID: 1364866351}
+  - component: {fileID: 1364866352}
   m_Layer: 0
   m_Name: bokuhageidesu
   m_TagString: Untagged
@@ -176,6 +177,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbb388b282d78440a6e9faa5046a25a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::lotteryJudge
+--- !u!114 &1364866352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364866348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aebd81bca622174b9af5db4470e0459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Numberofgames
 --- !u!1 &1772800268
 GameObject:
   m_ObjectHideFlags: 0
