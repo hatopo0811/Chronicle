@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/ReelScene.unity
     guid: 7236226dc1538df40b1402c262611e5c
+  - enabled: 1
+    path: Assets/Normal/Scene/NomalScene.unity
+    guid: 485f71bb6c66c3e47b325250ab1a9fec
+  - enabled: 1
+    path: Assets/Normal/Scene/ZentyouScene.unity
+    guid: 64386ccd1a6c28647a14669693f544cd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -11,7 +11,18 @@ public class PointManager : MonoBehaviour
 
     public int NowPoint{ get; private set; }
 
+    // ‰¼===============================================================
+
     public int _GameCountTEST_TEST_TEST_TEST_ {  get; private set; }
+
+    public bool _TEST_ReelStart_TEST_ { get; private set; }
+    public bool _TEST_ReelStop_TEST_ { get; private set; }
+
+
+    // ‰¼===============================================================
+
+
+
 
 
     void Start()
@@ -24,8 +35,18 @@ public class PointManager : MonoBehaviour
     void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            _TEST_ReelStart_TEST_ = true;
+            _TEST_ReelStop_TEST_ = false;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.D) && _TEST_ReelStart_TEST_)
+        {
+            _TEST_ReelStart_TEST_ = false;
+            _TEST_ReelStop_TEST_ = true;
+
             int random = Random.Range(0, 6);
             RoleType = (eRoleTypeTest)random;
             // Žq–ð’Š‘IŒ‹‰Ê•\Ž¦
