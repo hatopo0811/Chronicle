@@ -8,7 +8,7 @@ using UnityEngine;
 public class lotteryBattle : MonoBehaviour
 {
 
-  
+  Numberofgames _numberOfGames;
 
     //Random(1－20)の乱数を入れる変数
     //５パーセント刻み
@@ -91,7 +91,8 @@ public class lotteryBattle : MonoBehaviour
         int _cherryWeak = Random.Range(RandomNumMin, RandomNumMax);
         if(_cherryWeak <=14)
         {
-            Debug.Log("SetJudgeExtraboostWeak: 10G上乗せ");
+            Debug.Log("10G");
+            //_numberOfGames.GetGameCount();
         }
         else if(_cherryWeak >= 15 && _cherryWeak <= 18)
         {
@@ -196,4 +197,7 @@ public class lotteryBattle : MonoBehaviour
         }
         _judgeHighstage = _resetNum;
     }
+
+    
+
 }

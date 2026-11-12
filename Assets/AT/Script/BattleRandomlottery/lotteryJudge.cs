@@ -13,22 +13,25 @@ public class lotteryJudge : MonoBehaviour
 
     Dictionary<int, string> lotteryjudge;
 
-    int LotteryCount = 5;
+    int _judgeCherryNum = 5;
 
-   
 
-   
+
+
+
     int hoge;
 
 
 
-    //void Update()
-    //{
-    //    if (hoge < 5)
-    //    {
-    //        aaa();
-    //    }
-    //}
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            
+                aaa();
+            SetJudge();
+        }
+    }
 
     void aaa()
     {
@@ -62,10 +65,10 @@ public class lotteryJudge : MonoBehaviour
                 InitalizeDictsRainbow();
                 break;
         }
-        GetJudge();
+        GetJudgeEX();
     }
 
-    void GetJudge() {
+    void GetjudgeEX() {
 
 
        
@@ -170,6 +173,49 @@ public class lotteryJudge : MonoBehaviour
             }
         }
         return 0;
+    }
+
+   
+         private void SetJudge()
+    {
+
+        //_judgeExtraboostにRandomNumを代入して、上乗せ抽選を行う
+        int _judgeExtraboost = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
+
+
+        Debug.Log("SetJudgeExtraboostWeak: 乱数は" + _judgeExtraboost);
+
+        if (_judgeExtraboost < _judgeCherryNum)
+        {
+            GetJudgeEX();
+        }
+        else if (_judgeExtraboost >= _judgeCherryNum)
+        {
+            Debug.Log("SetJudgeExtraboostWeak: はずれ");
+        }
+
+
+    }
+
+
+    //チェリーの上乗せ何Gかの抽選
+    private void GetJudgeEX()
+    {
+
+        int _cherryWeak = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
+        if (_cherryWeak <= 14)
+        {
+            Debug.Log("10G");
+            //_numberOfGames.GetGameCount();
+        }
+        else if (_cherryWeak >= 15 && _cherryWeak <= 18)
+        {
+            Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
+        }
+        else
+        {
+            Debug.Log("SetJudgeExtraboostWeak: 30G上乗せ");
+        }
     }
 
 
