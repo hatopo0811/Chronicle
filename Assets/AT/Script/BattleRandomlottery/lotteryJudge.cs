@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//シナリオ抽選を行うクラス
 public class lotteryJudge : MonoBehaviour
 {
     //シナリオの番号とシナリオ名を入れる辞書
@@ -21,20 +22,13 @@ public class lotteryJudge : MonoBehaviour
 
 
 
-    void Update()
-    {
-
-        if (hoge < 5)
-        {
-            aaa();
-
-        }
-        
-
-
-       
-
-    }
+    //void Update()
+    //{
+    //    if (hoge < 5)
+    //    {
+    //        aaa();
+    //    }
+    //}
 
     void aaa()
     {
