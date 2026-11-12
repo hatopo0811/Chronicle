@@ -60,406 +60,261 @@ public partial class ReelController
     // 停止要求
     // =========================================
 
+    // =========================================
+    // CHRONICLE: 成立役と停止位置の連動
+    // =========================================
     public void StopSpin()
     {
-        if (!isSpinning)
-        {
+        if (!isSpinning || isStopping) return;
+
+        // 通常/優出は左から。ATベルはナビされた第1停止から。
+        if (gameManager != null && !gameManager.CanChronicleStopReel(reelType))
             return;
-        }
 
-
-        if (isStopping)
+        if (gameManager != null)
         {
-            return;
-        }
-
-
-        // =====================================
-        // 次の図柄境界までの距離
-        // =========================================
-
-        float remainder =
-            Mathf.Repeat(
-                reelOffset,
-                symbolHeight
-            );
-
-
-        float distanceToBoundary;
-
-
-        if (
-            remainder <
-            0.001f
-        )
-        {
-            distanceToBoundary = 0f;
+            gameManager.NotifyChronicleStopPressed(reelType);
         }
         else
         {
-            distanceToBoundary =
-                symbolHeight -
-                remainder;
+            Debug.LogWarning(GetReelName() + " のGame Manager参照がNoneです。押し順を記録できません。");
         }
 
+        float remainder = Mathf.Repeat(reelOffset, symbolHeight);
+        float distanceToBoundary = remainder < 0.001f
+            ? 0f : symbolHeight - remainder;
 
-        float boundaryOffset =
-            reelOffset +
-            distanceToBoundary;
+        float boundaryOffset = Mathf.Repeat(
+            reelOffset + distanceToBoundary, reelLength);
+        int baseCenterIndex = GetCenterIndexFromOffset(boundaryOffset);
 
-
-        boundaryOffset =
-            Mathf.Repeat(
-                boundaryOffset,
-                reelLength
-            );
-
-
-        int baseCenterIndex =
-            GetCenterIndexFromOffset(
-                boundaryOffset
-            );
-
-
-        // =====================================
-        // ① マスターパターン停止制御
-        // =========================================
-
-        // =====================================
-        // CHRONICLE: 通常役の左下段を1・6・11・16番に固定
-        // ※ リールCSVが20→1の順で読み込まれる前提
-        // =====================================
-        if (ShouldLockLeftLowerPosition())
+        // 新作の通常6役では、旧OHANA GOGOのターゲット設定より
+        // 成立役・4コマ・リール位置に基づく停止選択を優先する。
+        if (gameManager != null)
         {
-            int fixedSlip = FindFixedLeftLowerSlip(baseCenterIndex);
-            if (fixedSlip >= 0)
-            {
-                SetStopDistance(distanceToBoundary, fixedSlip);
-                return;
-            }
+            int chronicleSlip = FindChronicleSlip(baseCenterIndex);
+            SetStopDistance(distanceToBoundary, chronicleSlip);
 
-            Debug.LogError("左リール下段固定位置が0～4コマ内に見つかりません。配列順を確認してください。");
+            Debug.Log(GetReelName() +
+                " CHRONICLE: " + gameManager.CurrentRole +
+                " / " + chronicleSlip + "コマ滑り");
+            return;
         }
 
-        // =====================================
-        // CHRONICLE: 左下段5番(BlueV)をチェリー代用
-        // 5番と6番は同じBlueVでも位置番号で区別する。
-        // 通常役の6番固定とは異なる専用制御。
-        // =====================================
-        if (ShouldUseCherrySubstitute())
-        {
-            int substituteSlip = FindCherrySubstituteSlip(baseCenterIndex);
-            if (substituteSlip >= 0)
-            {
-                SetStopDistance(distanceToBoundary, substituteSlip);
-                Debug.Log("左リール: 5番BlueV下段（チェリー代用） / "
-                    + substituteSlip + "コマ滑り");
-                return;
-            }
-            // 5番を0～4コマで引き込めない場合は
-            // 従来のCherry図柄引き込み処理に進む。
-        }
-
+        // 従来のターゲット方式（ゲームマネージャ参照がない場合のみ）
         if (useReachPattern)
         {
-            int masterSlip =
-                FindReachPatternSlip(
-                    baseCenterIndex
-                );
-
-
-            if (masterSlip >= 0)
+            int slip = FindReachPatternSlip(baseCenterIndex);
+            if (slip >= 0)
             {
-                SetStopDistance(
-                    distanceToBoundary,
-                    masterSlip
-                );
-
-
-                Debug.Log(
-                    GetReelName() +
-                    " マスター出目位置へ停止 → " +
-                    masterSlip +
-                    "コマ滑り"
-                );
-
-
+                SetStopDistance(distanceToBoundary, slip);
                 return;
             }
-
-
-            // =================================
-            // Loseマスター失敗時
-            // 自動安全停止へフォールバック
-            // =========================================
-
-            if (useLoseSafetyFallback)
-            {
-                int safeSlip =
-                    FindSafeLoseSlip(
-                        baseCenterIndex
-                    );
-
-
-                if (safeSlip >= 0)
-                {
-                    SetStopDistance(
-                        distanceToBoundary,
-                        safeSlip
-                    );
-
-
-                    Debug.Log(
-                        GetReelName() +
-                        "：Loseマスターを作れないため" +
-                        "安全ハズレ位置へ停止 → " +
-                        safeSlip +
-                        "コマ滑り"
-                    );
-
-
-                    return;
-                }
-            }
-
-
-            SetStopDistance(
-                distanceToBoundary,
-                0
-            );
-
-
-            Debug.LogWarning(
-                GetReelName() +
-                "：マスター出目条件を" +
-                CurrentMaxSlipCount +
-                "コマ以内で作れず、" +
-                "安全候補も見つかりませんでした。"
-            );
-
-
-            return;
         }
-
-
-        // =====================================
-        // ② Lose自動安全停止のみ
-        // =========================================
-
         if (useLoseSafetyFallback)
         {
-            int safeSlip =
-                FindSafeLoseSlip(
-                    baseCenterIndex
-                );
-
-
-            if (safeSlip >= 0)
+            int slip = FindSafeLoseSlip(baseCenterIndex);
+            if (slip >= 0)
             {
-                SetStopDistance(
-                    distanceToBoundary,
-                    safeSlip
-                );
-
-
-                Debug.Log(
-                    GetReelName() +
-                    "：安全ハズレ位置へ停止 → " +
-                    safeSlip +
-                    "コマ滑り"
-                );
-
-
+                SetStopDistance(distanceToBoundary, slip);
                 return;
             }
-
-
-            SetStopDistance(
-                distanceToBoundary,
-                0
-            );
-
-
-            Debug.LogWarning(
-                GetReelName() +
-                "：0～" +
-                CurrentMaxSlipCount +
-                "コマに安全なハズレ候補がありません。"
-            );
-
-
-            return;
         }
-
-
-        // =====================================
-        // ③ Cherry成立
-        // =========================================
-
-        if (
-            reelType ==
-                ReelType.Left
-            &&
-            targetSymbol ==
-                "Cherry"
-        )
+        if (reelType == ReelType.Left && targetSymbol == "Cherry")
         {
-            int cherrySlip =
-                FindCherrySlip(
-                    baseCenterIndex
-                );
-
-
-            if (cherrySlip >= 0)
+            int slip = FindCherrySlip(baseCenterIndex);
+            if (slip >= 0)
             {
-                SetStopDistance(
-                    distanceToBoundary,
-                    cherrySlip
-                );
-
-
-                Debug.Log(
-                    "左リール Cherry引き込み → " +
-                    cherrySlip +
-                    "コマ滑り"
-                );
-
-
+                SetStopDistance(distanceToBoundary, slip);
                 return;
             }
-
-
-            SetStopDistance(
-                distanceToBoundary,
-                0
-            );
-
-
-            Debug.Log(
-                "左リール Cherryを" +
-                CurrentMaxSlipCount +
-                "コマ以内で引き込めません"
-            );
-
-
-            return;
         }
-
-
-        // =====================================
-        // ④ ターゲットなし
-        // =========================================
-
-        if (
-            string.IsNullOrEmpty(
-                targetSymbol
-            )
-        )
+        if (!string.IsNullOrEmpty(targetSymbol))
         {
-            if (
-                reelType ==
-                ReelType.Left
-            )
+            int slip = FindTargetSlip(baseCenterIndex);
+            if (slip >= 0)
             {
-                int safeSlip =
-                    FindNonCherrySlip(
-                        baseCenterIndex
-                    );
+                SetStopDistance(distanceToBoundary, slip);
+                return;
+            }
+        }
+        SetStopDistance(distanceToBoundary, 0);
+    }
 
+    private int FindChronicleSlip(int baseCenterIndex)
+    {
+        SlotGameManager.RoleType role = gameManager.CurrentRole;
+        int max = Mathf.Clamp(maxSlipCount, 0, 4);
 
-                if (safeSlip >= 0)
+        // BellとATBellは、成立役・押し順によって独立した停止テーブルを使用。
+        if (role == SlotGameManager.RoleType.Bell ||
+            role == SlotGameManager.RoleType.ATBell)
+            return FindChronicleBellSlip(baseCenterIndex, role, max);
+
+        int bestSlip = -1;
+        int bestScore = int.MinValue;
+
+        for (int slip = 0; slip <= max; slip++)
+        {
+            int centerIndex = GetIndexAfterSlip(baseCenterIndex, slip);
+            int upperIndex = WrapIndex(centerIndex - 1);
+            int lowerIndex = WrapIndex(centerIndex + 1);
+
+            string upper = reelData[upperIndex];
+            string center = reelData[centerIndex];
+            string lower = reelData[lowerIndex];
+
+            // 左リール：通常役は下段1・6・11・16番。
+            // チェリー系は下段Cherry（20/15/10）か
+            // 下段5番BlueV（中段6番BlueV）のみ。
+            if (reelType == ReelType.Left)
+            {
+                if (role == SlotGameManager.RoleType.Lose ||
+                    (role == SlotGameManager.RoleType.Bell ||
+                     role == SlotGameManager.RoleType.ATBell) ||
+                    role == SlotGameManager.RoleType.Replay)
                 {
-                    SetStopDistance(
-                        distanceToBoundary,
-                        safeSlip
-                    );
-
-
-                    return;
+                    if (!IsChronicleNormalLower(lowerIndex)) continue;
+                }
+                else if (role == SlotGameManager.RoleType.Cherry ||
+                         role == SlotGameManager.RoleType.StrongCherry)
+                {
+                    if (!IsChronicleCherryLower(centerIndex, lowerIndex))
+                        continue;
                 }
             }
 
-
-            SetStopDistance(
-                distanceToBoundary,
-                0
-            );
-
-
-            return;
-        }
-
-
-        // =====================================
-        // ⑤ 通常ターゲット
-        // =========================================
-
-        int selectedSlip =
-            FindTargetSlip(
-                baseCenterIndex
-            );
-
-
-        if (selectedSlip >= 0)
-        {
-            SetStopDistance(
-                distanceToBoundary,
-                selectedSlip
-            );
-
-
-            Debug.Log(
-                GetReelName() +
-                " " +
-                targetSymbol +
-                "を" +
-                GetRowName(
-                    targetRow
-                ) +
-                "へ引き込み → " +
-                selectedSlip +
-                "コマ滑り"
-            );
-
-
-            return;
-        }
-
-
-        // =====================================
-        // ⑥ ターゲット引き込み失敗
-        // =========================================
-
-        if (
-            reelType ==
-            ReelType.Left
-        )
-        {
-            int safeSlip =
-                FindNonCherrySlip(
-                    baseCenterIndex
-                );
-
-
-            if (safeSlip >= 0)
+            // 弱チェリー: 右中段Replay。
+            // 強チェリー: 右中段は BAR / BlueV / PinkV のみ。
+            if (reelType == ReelType.Right)
             {
-                SetStopDistance(
-                    distanceToBoundary,
-                    safeSlip
-                );
+                if (role == SlotGameManager.RoleType.Cherry &&
+                    center != "Replay") continue;
+                if (role == SlotGameManager.RoleType.StrongCherry &&
+                    !IsChronicleStrongCherryRight(center)) continue;
+            }
 
+            // 強チェリーの中段チェリー風の重複停止形を回避する。
+            // 中リール中段は BAR / BlueV / PinkV を禁止。
+            if (reelType == ReelType.Center &&
+                role == SlotGameManager.RoleType.StrongCherry &&
+                IsChronicleStrongCherryRight(center))
+            {
+                continue;
+            }
 
-                return;
+            int score = gameManager.EvaluateChronicleStop(
+                reelType, upper, center, lower);
+
+            // 実機の非公開停止テーブルではなく、今回の配列から
+            // 成立役を作りやすい段を優先する設計。
+            if ((role == SlotGameManager.RoleType.Bell ||
+                 (role == SlotGameManager.RoleType.ATBell && !gameManager.IsATBellOrderFailed)) &&
+                reelType != ReelType.Left && upper == "Bell") score += 30;
+
+            if (role == SlotGameManager.RoleType.Replay &&
+                reelType != ReelType.Left && center == "Replay") score += 30;
+
+            if (role == SlotGameManager.RoleType.Suika)
+            {
+                if (reelType == ReelType.Left && upper == "Suika") score += 35;
+                if (reelType == ReelType.Center && center == "Suika") score += 35;
+                if (reelType == ReelType.Right && lower == "Suika") score += 35;
+            }
+
+            // 同点なら押下位置に近い停止を選ぶ。
+            score -= slip;
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestSlip = slip;
             }
         }
 
+        if (bestSlip >= 0) return bestSlip;
 
-        SetStopDistance(
-            distanceToBoundary,
-            0
-        );
+        // 現在の配列・制約で候補なし（スイカ取りこぼし等）。
+        // 不正な5コマ以上の引き込みは行わない。
+        Debug.LogWarning(GetReelName() +
+            "：成立役" + role + "の停止候補が4コマ以内にありません。" +
+            "取りこぼし候補として0コマ停止します。");
+        return 0;
     }
 
+    // =========================================
+    // ベル専用停止制御
+    // 通常: 左上・中中・右下で1枚（右下がり）
+    // AT: ファーストナビ別に停止形を選択。
+    // L/C first 11枚=左上・中中・右上 / R first 11枚=左下・中中・右下。
+    // 不正解1枚=左上・中中・右下（共通）。
+    // 第1停止は共通目。第2停止以降は入力順に合わせて分岐。
+    // =========================================
+    private int FindChronicleBellSlip(
+        int baseCenterIndex, SlotGameManager.RoleType role, int max)
+    {
+        bool atBell = role == SlotGameManager.RoleType.ATBell;
+        ReelController.TargetRow row = ReelController.TargetRow.Upper;
+
+        if (atBell)
+        {
+            // ゲームマネージャは停止入力を事前に記録している。
+            if (!gameManager.TryGetChronicleATBellTargetRow(reelType, out row))
+            {
+                Debug.LogWarning("[クロニクル] ATベル停止目標未設定: " + GetReelName());
+            }
+        }
+        else
+        {
+            if (reelType == ReelType.Center)
+                row = ReelController.TargetRow.Center;
+            else if (reelType == ReelType.Right)
+                row = ReelController.TargetRow.Lower;
+        }
+
+        for (int slip = 0; slip <= max; slip++)
+        {
+            int middleIndex = GetIndexAfterSlip(baseCenterIndex, slip);
+            int upperIndex = WrapIndex(middleIndex - 1);
+            int lowerIndex = WrapIndex(middleIndex + 1);
+            int targetIndex = row == ReelController.TargetRow.Upper ? upperIndex
+                : row == ReelController.TargetRow.Lower ? lowerIndex : middleIndex;
+            if (reelData[targetIndex] != "Bell") continue;
+
+            // 通常ベルのみ左下段4位置固定。AT時は上下の分岐を優先。
+            if (!atBell && reelType == ReelType.Left &&
+                !IsChronicleNormalLower(lowerIndex)) continue;
+
+            Debug.Log("[クロニクル][ベル停止] " + GetReelName()
+                + " / 停止段=" + row
+                + " / 入力=" + gameManager.PressedATBellOrder
+                + " / スベリ=" + slip);
+            return slip;
+        }
+
+        Debug.LogWarning("[クロニクル] 4コマ以内にベル停止候補なし: "
+            + GetReelName() + " / 停止段=" + row);
+        return 0;
+    }
+
+    private static bool IsChronicleStrongCherryRight(string symbol)
+    {
+        return symbol == "BAR" || symbol == "BlueV" || symbol == "PinkV";
+    }
+
+    private bool IsChronicleNormalLower(int lowerIndex)
+    {
+        return lowerIndex == 19 || lowerIndex == 14 ||
+               lowerIndex == 9 || lowerIndex == 4;
+    }
+
+    private bool IsChronicleCherryLower(int centerIndex, int lowerIndex)
+    {
+        if (reelData[lowerIndex] == "Cherry") return true;
+        // 下段5番(index=15)、中段6番(index=14)の2連青V。
+        return lowerIndex == 15 && centerIndex == 14 &&
+               reelData[lowerIndex] == "BlueV" &&
+               reelData[centerIndex] == "BlueV";
+    }
 
     // =========================================
     // 通常ハズレ安全位置検索
@@ -858,6 +713,7 @@ public partial class ReelController
         SlotGameManager.RoleType role = gameManager.CurrentRole;
         return role == SlotGameManager.RoleType.Lose
             || role == SlotGameManager.RoleType.Bell
+            || role == SlotGameManager.RoleType.ATBell
             || role == SlotGameManager.RoleType.Replay;
     }
 

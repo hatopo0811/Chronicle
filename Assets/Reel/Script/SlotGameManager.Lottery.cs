@@ -4,179 +4,87 @@ public partial class SlotGameManager
 {
     private RoleType DrawNormalRole()
     {
+        // テスト役enumと内部RoleTypeの並び順は異なるため、数値キャストしない。
         if (chronicleUseTestRole)
         {
-            return (RoleType)System.Enum.Parse(typeof(RoleType), chronicleTestRole.ToString());
+            switch (chronicleTestRole)
+            {
+                case ChronicleTestRole.Lose: return RoleType.Lose;
+                case ChronicleTestRole.Bell: return chronicleIsAT ? RoleType.ATBell : RoleType.Bell;
+                case ChronicleTestRole.ATBell:
+                    return chronicleIsAT ? RoleType.ATBell : RoleType.Bell;
+                case ChronicleTestRole.Replay: return RoleType.Replay;
+                case ChronicleTestRole.Suika: return RoleType.Suika;
+                case ChronicleTestRole.Cherry: return RoleType.Cherry;
+                case ChronicleTestRole.StrongCherry: return RoleType.StrongCherry;
+                default: return RoleType.Lose;
+            }
         }
-
-        float[] w = {
+        float[] weights = {
             Mathf.Max(0f, chronicleLoseWeight),
-            Mathf.Max(0f, chronicleBellWeight),
+            Mathf.Max(0f, chronicleIsAT ? chronicleATBellWeight : chronicleBellWeight),
             Mathf.Max(0f, chronicleReplayWeight),
             Mathf.Max(0f, chronicleSuikaWeight),
             Mathf.Max(0f, chronicleCherryWeight),
             Mathf.Max(0f, chronicleStrongCherryWeight)
         };
         RoleType[] roles = {
-            RoleType.Lose, RoleType.Bell, RoleType.Replay,
+            RoleType.Lose, chronicleIsAT ? RoleType.ATBell : RoleType.Bell, RoleType.Replay,
             RoleType.Suika, RoleType.Cherry, RoleType.StrongCherry
         };
         float total = 0f;
-        foreach (float value in w) total += value;
-        if (total <= 0f) { Debug.LogError("通常役の抽選重みが全部0です"); return RoleType.Lose; }
-        float draw = Random.value * total;
-        for (int i = 0; i < w.Length; i++)
+        foreach (float weight in weights) total += weight;
+        if (total <= 0f)
         {
-            draw -= w[i];
+            Debug.LogError("[クロニクル] 抽選重みがすべて0。ハズレにします。");
+            return RoleType.Lose;
+        }
+        float draw = Random.value * total;
+        for (int i = 0; i < weights.Length; i++)
+        {
+            draw -= weights[i];
             if (draw < 0f) return roles[i];
         }
         return RoleType.StrongCherry;
     }
 
-    private RoleType DrawRoleDuringBonusPending()
+    // AT/通常の境界でBellを明示的に正規化する。
+    // DrawNormalRoleの今後の変更やテストモードにも対応。
+    private RoleType NormalizeChronicleBellRole(RoleType role)
     {
-        float total =
-            loseProbability +
-            replayProbability +
-            grapeProbability;
-
-
-        float value =
-            UnityEngine.Random.Range(
-                0f,
-                total
-            );
-
-
-        float border =
-            loseProbability;
-
-
-        if (value < border)
+        if (role == RoleType.Bell || role == RoleType.ATBell)
         {
-            return
-                RoleType.Lose;
+            return IsChronicleAT ? RoleType.ATBell : RoleType.Bell;
         }
-
-
-        border +=
-            replayProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.Replay;
-        }
-
-
-        border +=
-            grapeProbability;
-
-
-        if (value < border)
-        {
-            return
-                RoleType.Grape;
-        }
-
-
-
-        return
-            RoleType.Lose;
+        return role;
     }
 
-    private string GetRoleName(
-     RoleType role
- )
+    private string GetRoleName(RoleType role)
     {
         switch (role)
         {
-            case RoleType.Lose:
-                return "ハズレ";
-
-            case RoleType.Replay:
-                return "リプレイ";
-
-            case RoleType.Grape:
-                return "ぶどう";
-            case RoleType.Suika:
-                return "スイカ";
-            case RoleType.StrongCherry:
-                return "強チェリー";
-
-            case RoleType.Bell:
-                return "ベル";
-
-            case RoleType.Cherry:
-                return "チェリー";
-
-            case RoleType.Hibiscus:
-                return "ハイビスカス";
-
-            case RoleType.BigBonus:
-                return "BIG BONUS";
-
-            case RoleType.RegBonus:
-                return "REG BONUS";
+            case RoleType.Lose: return "ハズレ";
+            case RoleType.Bell: return "通常ベル";
+            case RoleType.ATBell: return "ATベル";
+            case RoleType.Replay: return "リプレイ";
+            case RoleType.Suika: return "スイカ";
+            case RoleType.Cherry: return "弱チェリー";
+            case RoleType.StrongCherry: return "強チェリー";
+            default: return "不明";
         }
-
-        return "不明";
     }
 
-    private string GetHitRoleName(
-        HitRoleType role
-    )
+    private string GetHitRoleName(HitRoleType role)
     {
         switch (role)
         {
-            case HitRoleType.None:
-                return "入賞なし";
-
-            case HitRoleType.Replay:
-                return "リプレイ";
-
-            case HitRoleType.Grape:
-                return "ぶどう";
-            case HitRoleType.Suika:
-                return "スイカ";
-            case HitRoleType.StrongCherry:
-                return "強チェリー";
-
-            case HitRoleType.Bell:
-                return "ベル";
-
-            case HitRoleType.Cherry:
-                return "チェリー";
-
-            case HitRoleType.BigBonus:
-                return "BIG BONUS";
-
-            case HitRoleType.RegBonus:
-                return "REG BONUS";
+            case HitRoleType.None: return "入賞なし";
+            case HitRoleType.Bell: return "ベル";
+            case HitRoleType.Replay: return "リプレイ";
+            case HitRoleType.Suika: return "スイカ";
+            case HitRoleType.Cherry: return "弱チェリー";
+            case HitRoleType.StrongCherry: return "強チェリー";
+            default: return "不明";
         }
-
-
-        return "不明";
-    }
-
-    private string GetBonusName(
-        BonusType bonus
-    )
-    {
-        switch (bonus)
-        {
-            case BonusType.None:
-                return "なし";
-
-            case BonusType.Big:
-                return "BIG BONUS";
-
-            case BonusType.Reg:
-                return "REG BONUS";
-        }
-
-
-        return "不明";
     }
 }

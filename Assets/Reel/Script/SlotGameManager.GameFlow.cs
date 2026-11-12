@@ -42,18 +42,26 @@ public partial class SlotGameManager
         leftStopped = centerStopped = rightStopped = false;
         CurrentHitRole = HitRoleType.None;
         CurrentHitLine = PayLine.None;
-        selectedLosePattern = selectedReachPattern = null;
-        currentLosePattern = currentHitPattern = currentReachPattern = null;
-        PendingBonus = BonusType.None;
-        ActiveBonus = BonusType.None;
         SetPseudoPlayModeForAllReels(false);
         if (dataCounter != null) dataCounter.AddGame();
 
-        CurrentRole = DrawNormalRole();
-        Debug.Log("[クロニクル] 今回の成立役：" + GetRoleName(CurrentRole));
+        // Tキー/チームAPIでATに切り替えた場合も、
+        // 新しいゲームの開始時点でBellとATBellを確実に同期させる。
+        RoleType drawnRole = DrawNormalRole();
+        CurrentRole = NormalizeChronicleBellRole(drawnRole);
+        if (drawnRole != CurrentRole)
+        {
+            Debug.Log("[クロニクル] ベル役補正: " + drawnRole + " -> " + CurrentRole);
+        }
+        PrepareChronicleATBellGame();
+        Debug.Log("[クロニクル] モード=" + CurrentChronicleMode
+            + " / 今回の成立役=" + GetRoleName(CurrentRole)
+            + " / 内部ID=" + CurrentRole);
         if (DebugText != null) DebugText.text = GetRoleName(CurrentRole);
         SetReelTargets();
         StartAllReels();
+        // 回転開始後、ATベルなら毎ゲーム新しい第1停止ナビを通知。
+        NotifyChronicleNavigationAfterSpinStarted();
     }
 
     // =========================================
@@ -104,23 +112,6 @@ public partial class SlotGameManager
 
 
         PanelON();
-    }
-
-
-    // =========================================
-    // ボーナス確定後の疑似遊戯判定
-    // =========================================
-
-    private bool ShouldStartBonusPseudoPlay()
-    {
-        return
-            ActiveBonus ==
-                BonusType.None
-            &&
-            PendingBonus !=
-                BonusType.None
-            &&
-            bonusLampNotified;
     }
 
 
@@ -354,14 +345,6 @@ public partial class SlotGameManager
 
         gameStarted =
             false;
-
-
-        selectedReachPattern =
-            null;
-
-
-        selectedLosePattern =
-            null;
 
 
         Debug.Log(
