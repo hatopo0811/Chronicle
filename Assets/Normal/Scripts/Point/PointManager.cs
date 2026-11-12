@@ -5,11 +5,14 @@ public class PointManager : MonoBehaviour
 
     public static PointManager instance = null;
 
-    public GameEnum.eRoleTypeTest RoleType { get; private set; } = GameEnum.eRoleTypeTest.Invalid;
+    public eRoleTypeTest RoleType { get; private set; } = eRoleTypeTest.Invalid;
 
-    public GameEnum.eTargetPoint TargetPoint { get; private set; } = GameEnum.eTargetPoint.Invalid;
+    public eTargetPoint TargetPoint { get; private set; } = eTargetPoint.Invalid;
 
     public int NowPoint{ get; private set; }
+
+    public int _GameCountTEST_TEST_TEST_TEST_ {  get; private set; }
+
 
     void Start()
     {
@@ -24,12 +27,13 @@ public class PointManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             int random = Random.Range(0, 6);
-            RoleType = (GameEnum.eRoleTypeTest)random;
+            RoleType = (eRoleTypeTest)random;
             // 子役抽選結果表示
             Debug.Log(RoleType.ToString());
             NowPoint = AddPoint(NowPoint, RoleType);
-
-            Debug.Log("現在のポイント：" + NowPoint);
+            // ★========================================リールができてG数が管理できるようになるまで使う。出来たら絶対に消す
+            _GameCountTEST_TEST_TEST_TEST_++;
+            // ★========================================
             
         }
 
@@ -40,33 +44,33 @@ public class PointManager : MonoBehaviour
     /// </summary>
     /// <param name="point">現在の獲得済みポイント</param>
     /// <returns>NowPoint + 加算ポイントを返す</returns>
-    public int AddPoint(int point, GameEnum.eRoleTypeTest type)
+    public int AddPoint(int point, eRoleTypeTest type)
     {
         // 子役ごとに加算するポイントを切り替える
         // ★この列挙体はOHANAの物なのでリールが完成したら変える
         switch (type)
         {
-            case GameEnum.eRoleTypeTest.hazure:
+            case eRoleTypeTest.hazure:
                 // 加算されたポイントを返す
                 return point += 1;
                 
-            case GameEnum.eRoleTypeTest.Replay:
+            case eRoleTypeTest.Replay:
                 // 加算されたポイントを返す
                 return point += 5;
                 
-            case GameEnum.eRoleTypeTest.Bell:
+            case eRoleTypeTest.Bell:
                 // 加算されたポイントを返す
                 return point;
             
-            case GameEnum.eRoleTypeTest.Watermelon:
+            case eRoleTypeTest.Watermelon:
                 // 加算されたポイントを返す
                 return point += 10;
             
-            case GameEnum.eRoleTypeTest.Cherry:
+            case eRoleTypeTest.Cherry:
                 // 加算されたポイントを返す
                 return point += 10;
             
-            case GameEnum.eRoleTypeTest.HiCherry:
+            case eRoleTypeTest.HiCherry:
                 // 加算されたポイントを返す
                 return point += 20;
                 
@@ -91,7 +95,7 @@ public class PointManager : MonoBehaviour
     /// <param name="targetPoint">規定ポイント</param>
     /// <param name="nowPoint">現在の獲得ポイント</param>
     /// <returns>規定ポイントからの超過ポイント分</returns>
-    public int CarryoverOverflowPoint(GameEnum.eTargetPoint targetPoint, int nowPoint)
+    public int CarryoverOverflowPoint(eTargetPoint targetPoint, int nowPoint)
     {
         int overflowPoint;
         return overflowPoint = nowPoint - (int)targetPoint;

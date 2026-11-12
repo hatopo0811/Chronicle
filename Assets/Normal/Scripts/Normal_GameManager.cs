@@ -1,21 +1,35 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Normal_GameManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI gameCountText;
+    [SerializeField] private TextMeshProUGUI pointText;
+    [SerializeField] private TextMeshProUGUI modeText;
+    [SerializeField] private TextMeshProUGUI cycleText;
+
+
+
     // 現在のモード
-    public GameEnum.eNormalMode mode {  get; private set; } = GameEnum.eNormalMode.Invalid;
+    public eNormalMode mode {  get; private set; } = eNormalMode.Invalid;
     // 現在のポイント
     int nowPoint;
+    // 現在のゲーム数
+    int nowGameCount;
     // 現在の周期
-    public GameEnum.eCycleCount cycleCount { get; private set; } = GameEnum.eCycleCount.Invalid;
+    public eCycleCount cycleCount { get; private set; } = eCycleCount.Invalid;
+
+
+
 
 
     private void Awake()
     {
 
-        mode = GameEnum.eNormalMode.Morning;
-        cycleCount = GameEnum.eCycleCount.First;
+        mode = eNormalMode.Morning;
+        cycleCount = eCycleCount.First;
 
 
 
@@ -24,14 +38,30 @@ public class Normal_GameManager : MonoBehaviour
     void Start()
     {
         nowPoint = 0;
-        
+        nowGameCount = 0;
+        // 初期値
+        modeText.text = "NowMode : " + mode.ToString();
+        cycleText.text = "NowCycle : " + cycleCount.ToString();
 
     }
 
     void Update()
     {
-
+        // 常に現在の獲得ポイントを取得する
         nowPoint = PointManager.instance.NowPoint;
+        nowGameCount = PointManager.instance._GameCountTEST_TEST_TEST_TEST_;
+        pointText.text = "NowMode : " + nowPoint;
+        gameCountText.text = "NowGame : " + nowGameCount;
+        
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            SelectMode();
+            modeText.text = "NowMode : " + mode.ToString();
+            cycleText.text = "NowCycle : " + cycleCount.ToString();
+
+        }
+
 
 
         
@@ -42,32 +72,32 @@ public class Normal_GameManager : MonoBehaviour
     /// AT終了時にモードを抽選
     /// </summary>
     /// <returns></returns>
-    private GameEnum.eNormalMode SelectMode()
+    private eNormalMode SelectMode()
     {
-        int random = Random.Range(0, 101);
+        int random = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
 
         if (random >= 0 && random <= 55 )
         {
-            mode = GameEnum.eNormalMode.A;
+            mode = eNormalMode.A;
             return mode;
         }
         if (random >= 56 && random <= 85)
         {
-            mode = GameEnum.eNormalMode.B;
+            mode = eNormalMode.B;
             return mode;
         }
         if (random >= 86 && random <= 95)
         {
-            mode = GameEnum.eNormalMode.Heaven;
+            mode = eNormalMode.Heaven;
             return mode;
         }
         if (random >= 96 && random <= 100)
         {
-            mode = GameEnum.eNormalMode.SokuYusyutu;
+            mode = eNormalMode.SokuYusyutu;
             return mode;
         }
 
-        return GameEnum.eNormalMode.Invalid;
+        return eNormalMode.Invalid;
     }
 
 
