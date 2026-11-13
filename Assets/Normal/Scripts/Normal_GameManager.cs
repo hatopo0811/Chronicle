@@ -77,6 +77,12 @@ public class Normal_GameManager : MonoBehaviour
             // 仮の連即演出成功画像を表示
             Test_UICanvas.SetActive(true);
             StartCoroutine(LoadSceneAsync());   
+
+            // ポイントをリセットする
+            // 前兆中に獲得したポイントは
+
+
+
         }
 
         

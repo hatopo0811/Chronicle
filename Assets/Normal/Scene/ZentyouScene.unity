@@ -921,7 +921,7 @@ GameObject:
   - component: {fileID: 1267133761}
   - component: {fileID: 1267133760}
   m_Layer: 5
-  m_Name: Yusyutu
+  m_Name: aka
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 712c376e861b04543be9dcfbe1d082b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::YuusyutuMode
-  imageCanvas: {fileID: 0}
+  imageCanvas: {fileID: 943538839}
 --- !u!4 &1394106736
 Transform:
   m_ObjectHideFlags: 0

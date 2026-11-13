@@ -9,7 +9,8 @@ public class YuusyutuMode : MonoBehaviour
 
     private void Awake()
     {
-        
+        imageCanvas.SetActive(true);
+        StartCoroutine(HideImage());
     }
 
 

@@ -45,7 +45,8 @@ public class PointManager : MonoBehaviour
                 return point + 10;
 
             case RoleType.StrongCherry:
-                return point + 20;
+                // ★優出モードに行くのがめんどくさいため20→200に変更デバックのみ
+                return point + 200;
 
             case RoleType.ATBell:
                 break;
