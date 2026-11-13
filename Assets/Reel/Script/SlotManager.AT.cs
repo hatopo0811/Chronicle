@@ -35,7 +35,7 @@ public partial class SlotGameManager
     public bool IsChronicleAT { get { return chronicleIsAT; } }
     public bool IsChronicleYushutsu { get { return chronicleIsYushutsu; } }
     public ChronicleMode CurrentChronicleMode { get { return chronicleIsAT ? ChronicleMode.AT : chronicleIsYushutsu ? ChronicleMode.Yushutsu : ChronicleMode.Normal; } }
-    public bool IsATBellGame { get { return CurrentRole == RoleType.ATBell && gameStarted; } }
+    public bool IsATBellGame { get { return CurrentRole == RoleType.ATBell && GameStarted; } }
     public string CurrentATBellNavigation { get { return requiredATBellOrder; } }
     public string CurrentATBellFirstStopNavigation
     {
@@ -77,7 +77,7 @@ public partial class SlotGameManager
 
     public void SetChronicleMode(ChronicleMode mode)
     {
-        if (gameStarted)
+        if (GameStarted)
         {
             Debug.LogWarning("[クロニクル] 回転中はモード変更できません。3リール停止後に切替してください。");
             return;
@@ -110,7 +110,7 @@ public partial class SlotGameManager
         requiredATBellOrder = atBellOrderSetting == ATBellOrder.Random
             ? all[UnityEngine.Random.Range(0, all.Length)]
             : atBellOrderSetting.ToString();
-        // ナビ通知はゲーム開始（gameStarted=true）後に一度だけ行う。
+        // ナビ通知はゲーム開始（GameStarted=true）後に一度だけ行う。
         // ここでは抽選と内部状態の初期化だけを行う。
     }
 
@@ -118,7 +118,7 @@ public partial class SlotGameManager
     // 非ベルのATゲームでも成立役をログに残し、ナビ非表示が正常だと判別できる。
     private void NotifyChronicleNavigationAfterSpinStarted()
     {
-        if (!gameStarted)
+        if (!GameStarted)
         {
             Debug.LogWarning("[クロニクル] ナビ通知時にゲームが開始されていません。");
             return;
@@ -165,7 +165,7 @@ public partial class SlotGameManager
     // =========================================
     public bool CanChronicleStopReel(ReelController.ReelType reel)
     {
-        if (!gameStarted) return false;
+        if (!GameStarted) return false;
 
         // 第二・第三停止に第一停止制限は適用しない。
         if (chronicleGeneralStopOrder.Length > 0) return true;
@@ -212,7 +212,7 @@ public partial class SlotGameManager
         ReelController.ReelType reel, out ReelController.TargetRow row)
     {
         row = ReelController.TargetRow.Center;
-        if (CurrentRole != RoleType.ATBell || !gameStarted ||
+        if (CurrentRole != RoleType.ATBell || !GameStarted ||
             requiredATBellOrder.Length != 3 || atBellStopInputCount < 1)
             return false;
 
@@ -243,7 +243,7 @@ public partial class SlotGameManager
     // StopSpinが押された瞬間に呼ぶ。停止完了通知では順序がずれる場合がある。
     public void NotifyChronicleStopPressed(ReelController.ReelType reel)
     {
-        if (!gameStarted) return;
+        if (!GameStarted) return;
         char key = reel == ReelController.ReelType.Left ? 'L'
             : reel == ReelController.ReelType.Center ? 'C' : 'R';
         if (chronicleGeneralStopOrder.IndexOf(key) < 0)

@@ -62,18 +62,6 @@ public enum eRivalMode
 
 }
 
-/// <summary>
-/// Žq–ð‚ÌŽí—Þ
-/// </summary>
-public enum eRoleTypeTest
-{
-    Invalid = -1,
-    hazure,
-    Replay,
-    Bell,
-    Watermelon,
-    Cherry,
-    HiCherry,
-}
+
 
     

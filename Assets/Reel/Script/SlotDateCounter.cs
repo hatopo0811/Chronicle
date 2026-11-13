@@ -110,7 +110,6 @@ public class SlotDataCounter : MonoBehaviour
         // Œ»İ‚Ì‰ñ“]”
         currentGameCount++;
 
-
         // ‘‰ñ“]”
         totalGameCount++;
 
@@ -271,7 +270,7 @@ public class SlotDataCounter : MonoBehaviour
         if (currentGameCountText != null)
         {
             currentGameCountText.text =
-                currentGameCount.ToString();
+                "NowGame : " + currentGameCount;
         }
 
 

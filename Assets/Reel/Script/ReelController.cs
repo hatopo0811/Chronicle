@@ -53,11 +53,9 @@ public partial class ReelController : MonoBehaviour
     // ÉäÅ[ÉãèÛë‘
     // =========================================
 
-    private bool isSpinning =
-        false;
+    public bool isSpinning = false;
 
-    private bool isStopping =
-        false;
+    public bool isStopping = false;
 
     private float reelOffset =
         0f;
@@ -68,6 +66,7 @@ public partial class ReelController : MonoBehaviour
     private float reelLength;
 
 
+
     // =========================================
     // Start
     // =========================================
@@ -75,7 +74,6 @@ public partial class ReelController : MonoBehaviour
     private void Start()
     {
         SetReelData();
-
 
         if (
             reelData == null ||
