@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 
 public class Normal_GameManager : MonoBehaviour
 {
+    public static Normal_GameManager instance = null;
+
     [SerializeField] private TextMeshProUGUI gameCountText;
     [SerializeField] private TextMeshProUGUI pointText;
     [SerializeField] private TextMeshProUGUI modeText;
@@ -13,16 +15,18 @@ public class Normal_GameManager : MonoBehaviour
 
     [SerializeField] private GameObject Test_UICanvas;
 
-
+    [SerializeField] private SlotGameManager gameManager;
 
     // 現在のポイント
-    int nowPoint;
+    public int NowPoint { get; set; } = 0;
     // 現在のゲーム数
     int nowGameCount;
     // 現在のモード
     public eNormalMode mode { get; private set; } = eNormalMode.Invalid;
     // 現在の周期
     public eCycleCount cycleCount { get; private set; } = eCycleCount.Invalid;
+
+    public int _GameCountTEST_TEST_TEST_TEST_ { get; private set; }
 
     // シーンのロード中かどうか
     private bool isLoadScene;
@@ -41,8 +45,9 @@ public class Normal_GameManager : MonoBehaviour
 
     void Start()
     {
-        nowPoint = 0;
+        instance = this;
         nowGameCount = 0;
+        NowPoint = 0;
         // 初期値
         modeText.text = "NowMode : " + mode.ToString();
         cycleText.text = "NowCycle : " + cycleCount.ToString();
@@ -53,11 +58,8 @@ public class Normal_GameManager : MonoBehaviour
 
     void Update()
     {
-        // 常に現在の獲得ポイントを取得する
-        nowPoint = PointManager.instance.NowPoint;
-        nowGameCount = PointManager.instance._GameCountTEST_TEST_TEST_TEST_;
-        pointText.text = "NowPoint : " + nowPoint;
-        gameCountText.text = "NowGame : " + nowGameCount;
+
+        pointText.text = "NowPoint : " + NowPoint;
 
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -68,13 +70,13 @@ public class Normal_GameManager : MonoBehaviour
 
         }
 
-        if (((int)eTargetPoint.Point100 < nowPoint) && !isLoadScene)
+        if (((int)eTargetPoint.Point100 < NowPoint) && !isLoadScene)
         {
             // 複数回ロードされるのを防ぐ
             isLoadScene = true;
             // 仮の連即演出成功画像を表示
             Test_UICanvas.SetActive(true);
-            StartCoroutine(LoadSceneAsync());
+            StartCoroutine(LoadSceneAsync());   
         }
 
         
@@ -125,11 +127,12 @@ public class Normal_GameManager : MonoBehaviour
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            
-            if (PointManager.instance._TEST_ReelStart_TEST_)
-            {
-                operation.allowSceneActivation = true;
 
+            // リールが回り始めたら
+            if (gameManager.GameStarted)
+            {
+                // シーン移行の許可を出す
+                operation.allowSceneActivation = true;
             }
 
             yield return null;

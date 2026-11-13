@@ -95,8 +95,9 @@ public partial class SlotGameManager : MonoBehaviour
     public int Credit { get; private set; }
     public int LastPayout { get; private set; }
 
+    public bool GameStarted { get; private set; } = false;
+    
     private bool replayNextGame = false;
-    private bool gameStarted = false;
     private bool leftStopped = false;
     private bool centerStopped = false;
     private bool rightStopped = false;
@@ -188,7 +189,7 @@ public partial class SlotGameManager : MonoBehaviour
         // ゲーム中でなければ終了
         // =========================================
 
-        if (!gameStarted)
+        if (!GameStarted)
         {
             return;
         }

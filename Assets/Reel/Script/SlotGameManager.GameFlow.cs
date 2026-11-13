@@ -17,7 +17,7 @@ public partial class SlotGameManager
 
     private void StartGame()
     {
-        if (gameStarted) return;
+        if (GameStarted) return;
         int currentBet = betCount;
         if (!replayNextGame)
         {
@@ -62,6 +62,8 @@ public partial class SlotGameManager
         StartAllReels();
         // 回転開始後、ATベルなら毎ゲーム新しい第1停止ナビを通知。
         NotifyChronicleNavigationAfterSpinStarted();
+
+        
     }
 
     // =========================================
@@ -178,7 +180,7 @@ public partial class SlotGameManager
         rightReel.StartSpin();
 
 
-        gameStarted =
+        GameStarted =
             true;
 
 
@@ -343,9 +345,11 @@ public partial class SlotGameManager
             false;
 
 
-        gameStarted =
+        GameStarted =
             false;
 
+        Normal_GameManager.instance.NowPoint
+                = PointManager.instance.AddPoint(Normal_GameManager.instance.NowPoint, CurrentRole);
 
         Debug.Log(
             "3リール完全停止！ゲーム終了"
