@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 //シナリオ抽選を行うクラス
 public class lotteryJudge : MonoBehaviour
 {
+
+    
+
     //シナリオの番号とシナリオ名を入れる辞書
     Dictionary<int, string> judgeInfo;
 
@@ -15,38 +19,74 @@ public class lotteryJudge : MonoBehaviour
 
     int _judgeCherryNum = 5;
 
+    [SerializeField] private Image _scenarioImage1;
+    [SerializeField] private Image _scenarioImage2;
+    [SerializeField] private Image _scenarioImage3;
+    [SerializeField] private Image _scenarioImage4;
+    [SerializeField] private Image _scenarioImage5;
+    [SerializeField] private Image _scenarioImage6;
+    [SerializeField] private Image _scenarioImage7;
 
+    private Image _currentScenarioImage;
 
-
-
-    int hoge;
+    int SManagement;
 
 
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            
-                aaa();
-            SetJudge();
+            _currentScenarioImage = _scenarioImage1;
+            GetCollor(SManagement = 1);
         }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            _currentScenarioImage = _scenarioImage2;
+            GetCollor(SManagement = 2);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _currentScenarioImage = _scenarioImage3;
+            GetCollor(SManagement = 3);
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            _currentScenarioImage = _scenarioImage4;
+            GetCollor(SManagement = 4);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            _currentScenarioImage = _scenarioImage5;
+            GetCollor(SManagement = 5);
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            _currentScenarioImage = _scenarioImage6;
+            GetCollor(SManagement = 1);
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            _currentScenarioImage = _scenarioImage7;
+            GetCollor(SManagement = 2);
+        }
+
     }
 
     void aaa()
     {
 
-        hoge++;
+        SManagement++;
 
-        GetCollor();
+        GetCollor(SManagement);
 
 
     }
 
-    void GetCollor()
+    void GetCollor(int SManagement)
     {
 
-        switch (hoge)
+        switch (SManagement)
         {
 
             case 1:
@@ -65,7 +105,7 @@ public class lotteryJudge : MonoBehaviour
                 InitalizeDictsRainbow();
                 break;
         }
-        GetJudgeEX();
+        GetjudgeEX();
     }
 
     void GetjudgeEX() {
@@ -103,7 +143,8 @@ public class lotteryJudge : MonoBehaviour
             jugdeDict = new Dictionary<int, float>();
             jugdeDict.Add(1, 0.25f);
             jugdeDict.Add(2, 0.75f);
-        
+
+        _currentScenarioImage.color = Color.blue;
     }
 
     void InitalizeDictsYellow()
@@ -115,6 +156,7 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict.Add(1, 0.5f);
         jugdeDict.Add(2, 0.5f);
 
+        _currentScenarioImage.color = Color.yellow;
     }
 
     void InitalizeDictsGreen()
@@ -126,6 +168,7 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict.Add(1, 0.66f);
         jugdeDict.Add(2, 0.34f);
 
+        _currentScenarioImage.color = Color.green;
     }
 
 
@@ -138,6 +181,7 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict.Add(1, 0.8f);
         jugdeDict.Add(2, 0.2f);
 
+        _currentScenarioImage.color = Color.red;
     }
 
     void InitalizeDictsRainbow()
@@ -146,6 +190,7 @@ public class lotteryJudge : MonoBehaviour
         judgeInfo.Add(1, "虹成功");
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 1.0f);
+        _currentScenarioImage.color = Color.magenta;
 
     }
 
@@ -187,7 +232,7 @@ public class lotteryJudge : MonoBehaviour
 
         if (_judgeExtraboost < _judgeCherryNum)
         {
-            GetJudgeEX();
+            GetjudgeEX();
         }
         else if (_judgeExtraboost >= _judgeCherryNum)
         {
@@ -199,24 +244,24 @@ public class lotteryJudge : MonoBehaviour
 
 
     //チェリーの上乗せ何Gかの抽選
-    private void GetJudgeEX()
-    {
+    //private void GetJudgeEX()
+    //{
 
-        int _cherryWeak = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
-        if (_cherryWeak <= 14)
-        {
-            Debug.Log("10G");
-            //_numberOfGames.GetGameCount();
-        }
-        else if (_cherryWeak >= 15 && _cherryWeak <= 18)
-        {
-            Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
-        }
-        else
-        {
-            Debug.Log("SetJudgeExtraboostWeak: 30G上乗せ");
-        }
-    }
+    //    int _cherryWeak = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
+    //    if (_cherryWeak <= 14)
+    //    {
+    //        Debug.Log("10G");
+    //        //_numberOfGames.GetGameCount();
+    //    }
+    //    else if (_cherryWeak >= 15 && _cherryWeak <= 18)
+    //    {
+    //        Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("SetJudgeExtraboostWeak: 30G上乗せ");
+    //    }
+    //}
 
 
 }

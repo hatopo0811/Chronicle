@@ -29,7 +29,7 @@ public class Numberofgames : MonoBehaviour
         }
 
 
-            GameText.text = "ƒQ[ƒ€”F" + _initialGameCount.ToString();
+            GameText.text = "GameF" + _initialGameCount.ToString();
 
         //ƒQ[ƒ€”‚ª999‚ð’´‚¦‚È‚¢‚æ‚¤‚É‚·‚éˆ—
         if (_initialGameCount >= 999)
