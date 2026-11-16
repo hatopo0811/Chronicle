@@ -1281,8 +1281,9 @@ MonoBehaviour:
   _scenarioImage2: {fileID: 1143111090}
   _scenarioImage3: {fileID: 1307706351}
   _scenarioImage4: {fileID: 1159958933}
-  _scenarioImage5: {fileID: 1285818756}
-  _scenarioImage6: {fileID: 91535909}
+  _scenarioImage5: {fileID: 1086406629}
+  _scenarioImage6: {fileID: 1285818756}
+  _scenarioImage7: {fileID: 91535909}
 --- !u!114 &1364866352
 MonoBehaviour:
   m_ObjectHideFlags: 0
