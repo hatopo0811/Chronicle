@@ -22,8 +22,6 @@ public class YuusyutuMode : MonoBehaviour
 
     void Update()
     {
-        // 優出モードに入る
-
         // シャッター演出
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
@@ -34,6 +32,15 @@ public class YuusyutuMode : MonoBehaviour
 
 
     }
+
+
+    private void OpenShutter()
+    {
+
+
+    }
+
+
 
     private IEnumerator HideImage()
     {
