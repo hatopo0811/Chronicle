@@ -80,8 +80,10 @@ public class Normal_GameManager : MonoBehaviour
 
             // ポイントをリセットする
             PointManager.instance.ResetPoint(NowPoint);
+            // 前兆中に獲得したポイントは次周期に持ち越される
+            // ATに入った場合はゼロポイントからスタート　
             PointManager.instance.CarryoverOverflowPoint(eTargetPoint.Point100, NowPoint);
-            // 前兆中に獲得したポイントは
+
 
 
 
