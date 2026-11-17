@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.UI;
 using UnityEngine;
 //ゲーム数を管理するクラス
 public class Numberofgames : MonoBehaviour
 {
+    lotteryJudge lotteryJudge;
+
     //ゲーム数の初期値を設定する変数
     public int _initialGameCount;
     //private int amount;
@@ -22,11 +20,22 @@ public class Numberofgames : MonoBehaviour
 
     private void Update()
     {
-        //ゲーム数を減らす処理を行う
-        if (Input.GetKeyDown(KeyCode.A))
+        if (_initialGameCount >= 0)
         {
-            _initialGameCount--;
+            //ゲーム数を減らす処理を行う
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _initialGameCount--;
+            }
         }
+        if(_initialGameCount == 0)
+        {
+
+            lotteryJudge.NextScenario();
+            
+
+        }
+
 
 
             GameText.text = "Game：" + _initialGameCount.ToString();
@@ -46,7 +55,7 @@ public class Numberofgames : MonoBehaviour
         }
     }
 
-    private void SetGameCount()
+    public void SetGameCount()
     {
         //ゲーム数を初期値に設定する
         _initialGameCount = 30;

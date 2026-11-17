@@ -1,152 +1,70 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 //シナリオ抽選を行うクラス
 public class lotteryJudge : MonoBehaviour
 {
-
-    
-
+    Numberofgames numberofgames;
     //シナリオの番号とシナリオ名を入れる辞書
     Dictionary<int, string> judgeInfo;
-
     //シナリオの確率を入れる辞書
     Dictionary<int, float> jugdeDict;
-
-    Dictionary<int, string> lotteryjudge;
-
-    int _judgeCherryNum = 5;
-
-    [SerializeField] private Image _scenarioImage1;
-    [SerializeField] private Image _scenarioImage2;
-    [SerializeField] private Image _scenarioImage3;
-    [SerializeField] private Image _scenarioImage4;
-    [SerializeField] private Image _scenarioImage5;
-    [SerializeField] private Image _scenarioImage6;
-    [SerializeField] private Image _scenarioImage7;
-
+    private int _scenarioNum = 0;
+    [SerializeField] private Image[] _scenarioImages = new Image[7];
+    [SerializeField] private int[] DS = new int[7];
     private Image _currentScenarioImage;
-
     int SManagement;
-
-
-
+    void Start()
+    {
+        foreach (Image image in _scenarioImages)image.gameObject.SetActive(false);
+        _currentScenarioImage = _scenarioImages[0];
+        _scenarioImages[0].gameObject.SetActive(true);
+        GetCollor(SManagement = DS[_scenarioNum]);
+    }
     void Update()
     {
+        //シナリオ抽選の処理を行う 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            _currentScenarioImage = _scenarioImage1;
-            GetCollor(SManagement = 1);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            _currentScenarioImage = _scenarioImage2;
-            GetCollor(SManagement = 2);
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            _currentScenarioImage = _scenarioImage3;
-            GetCollor(SManagement = 3);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            _currentScenarioImage = _scenarioImage4;
-            GetCollor(SManagement = 4);
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            _currentScenarioImage = _scenarioImage5;
-            GetCollor(SManagement = 5);
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            _currentScenarioImage = _scenarioImage6;
-            GetCollor(SManagement = 1);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            _currentScenarioImage = _scenarioImage7;
-            GetCollor(SManagement = 2);
-        }
-
+            NextScenario();
+        }   
     }
-
-    void aaa()
-    {
-
-        SManagement++;
-
-        GetCollor(SManagement);
-
-
-    }
-
     void GetCollor(int SManagement)
     {
-
         switch (SManagement)
         {
-
-            case 1:
-                 InitalizeDictsBlue();
-                break;
-            case 2:
-                InitalizeDictsYellow();
-                break;
-            case 3:
-                InitalizeDictsGreen();
-                break;
-            case 4:
-                InitalizeDictsRed();
-                break;
-            case 5:
-                InitalizeDictsRainbow();
-                break;
+            case 1:InitalizeDictsBlue();break;
+            case 2:InitalizeDictsYellow();break;
+            case 3:InitalizeDictsGreen();break;
+            case 4:InitalizeDictsRed();break;
+            case 5:InitalizeDictsRainbow();break;
         }
         GetjudgeEX();
     }
-
     void GetjudgeEX() {
-
-
-       
-
-
-
         if (judgeInfo == null || jugdeDict == null) return;
-
         int judge = Chooze();
-
         if (judge != 0)
         {
             string Judge = judgeInfo[judge];
-
             Debug.Log("シナリオ" + Judge);
-
-
         }
         else
         {
             Debug.Log("シナリオなし");
         }
     }
-
-
     void InitalizeDictsBlue()
     {
-        
             judgeInfo = new Dictionary<int, string>();
             judgeInfo.Add(1, "青成功");
             judgeInfo.Add(2, "青残念");
             jugdeDict = new Dictionary<int, float>();
             jugdeDict.Add(1, 0.25f);
             jugdeDict.Add(2, 0.75f);
-
         _currentScenarioImage.color = Color.blue;
     }
-
     void InitalizeDictsYellow()
     {
         judgeInfo = new Dictionary<int, string>();
@@ -155,10 +73,8 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.5f);
         jugdeDict.Add(2, 0.5f);
-
         _currentScenarioImage.color = Color.yellow;
     }
-
     void InitalizeDictsGreen()
     {
         judgeInfo = new Dictionary<int, string>();
@@ -167,7 +83,6 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.66f);
         jugdeDict.Add(2, 0.34f);
-
         _currentScenarioImage.color = Color.green;
     }
 
@@ -180,10 +95,8 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 0.8f);
         jugdeDict.Add(2, 0.2f);
-
         _currentScenarioImage.color = Color.red;
     }
-
     void InitalizeDictsRainbow()
     {
         judgeInfo = new Dictionary<int, string>();
@@ -191,7 +104,6 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict = new Dictionary<int, float>();
         jugdeDict.Add(1, 1.0f);
         _currentScenarioImage.color = Color.magenta;
-
     }
 
     int Chooze()
@@ -208,60 +120,22 @@ public class lotteryJudge : MonoBehaviour
         //確率の合計をもとにシナリオを選択
         foreach (KeyValuePair<int, float> elem in jugdeDict)
         {
-            if (randomPoint < elem.Value)
-            {
-                return elem.Key;
-            }
-            else
-            {
-                randomPoint -= elem.Value;
-            }
+            if (randomPoint < elem.Value)return elem.Key;
+            else randomPoint -= elem.Value;
         }
         return 0;
     }
-
-   
-         private void SetJudge()
+    public void NextScenario()
     {
-
-        //_judgeExtraboostにRandomNumを代入して、上乗せ抽選を行う
-        int _judgeExtraboost = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
-
-
-        Debug.Log("SetJudgeExtraboostWeak: 乱数は" + _judgeExtraboost);
-
-        if (_judgeExtraboost < _judgeCherryNum)
-        {
-            GetjudgeEX();
+        _scenarioNum++;
+        _currentScenarioImage = _scenarioImages[_scenarioNum];
+        _scenarioImages[_scenarioNum].gameObject.SetActive(true);
+        GetCollor(SManagement = DS[_scenarioNum]);
+        if (_scenarioNum >= _scenarioImages.Length)
+        {   
+            _scenarioNum = _scenarioImages.Length - 1;
+            return;
         }
-        else if (_judgeExtraboost >= _judgeCherryNum)
-        {
-            Debug.Log("SetJudgeExtraboostWeak: はずれ");
-        }
-
-
+        _scenarioImages[_scenarioNum].gameObject.SetActive(true);
     }
-
-
-    //チェリーの上乗せ何Gかの抽選
-    //private void GetJudgeEX()
-    //{
-
-    //    int _cherryWeak = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
-    //    if (_cherryWeak <= 14)
-    //    {
-    //        Debug.Log("10G");
-    //        //_numberOfGames.GetGameCount();
-    //    }
-    //    else if (_cherryWeak >= 15 && _cherryWeak <= 18)
-    //    {
-    //        Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("SetJudgeExtraboostWeak: 30G上乗せ");
-    //    }
-    //}
-
-
 }

@@ -348,8 +348,8 @@ public partial class SlotGameManager
         GameStarted =
             false;
 
-        Normal_GameManager.instance.NowPoint
-                = PointManager.instance.AddPoint(Normal_GameManager.instance.NowPoint, CurrentRole);
+        //Normal_GameManager.instance.NowPoint
+        //        = PointManager.instance.AddPoint(Normal_GameManager.instance.NowPoint, CurrentRole);
 
         Debug.Log(
             "3リール完全停止！ゲーム終了"
