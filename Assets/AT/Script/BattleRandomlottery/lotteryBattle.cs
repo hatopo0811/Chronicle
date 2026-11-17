@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Android.Gradle;
-using Unity.VisualScripting;
 using UnityEngine;
 
 //レア役での上乗せ抽選.Battle抽選を行うクラス
