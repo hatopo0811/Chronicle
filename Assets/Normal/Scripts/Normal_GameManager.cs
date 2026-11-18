@@ -17,16 +17,15 @@ public class Normal_GameManager : MonoBehaviour
 
     [SerializeField] private SlotGameManager gameManager;
 
+
+    // ゲーム数はまなとが管理しているファイルにもともとあった物を使っている
+
     // 現在のポイント
     public int NowPoint { get; set; } = 0;
-    // 現在のゲーム数
-    int nowGameCount;
     // 現在のモード
-    public eNormalMode mode { get; private set; } = eNormalMode.Invalid;
+    public eNormalMode Mode { get; private set; } = eNormalMode.Invalid;
     // 現在の周期
     public eCycleCount cycleCount { get; private set; } = eCycleCount.Invalid;
-
-    public int _GameCountTEST_TEST_TEST_TEST_ { get; private set; }
 
     // シーンのロード中かどうか
     private bool isLoadScene;
@@ -36,7 +35,7 @@ public class Normal_GameManager : MonoBehaviour
     private void Awake()
     {
 
-        mode = eNormalMode.Morning;
+        Mode = eNormalMode.Morning;
         cycleCount = eCycleCount.First;
 
 
@@ -46,10 +45,10 @@ public class Normal_GameManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        nowGameCount = 0;
+
         NowPoint = 0;
         // 初期値
-        modeText.text = "NowMode : " + mode.ToString();
+        modeText.text = "NowMode : " + Mode.ToString();
         cycleText.text = "NowCycle : " + cycleCount.ToString();
 
         isLoadScene = false;
@@ -65,7 +64,7 @@ public class Normal_GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             SelectMode();
-            modeText.text = "NowMode : " + mode.ToString();
+            modeText.text = "NowMode : " + Mode.ToString();
             cycleText.text = "NowCycle : " + cycleCount.ToString();
 
         }
@@ -106,23 +105,23 @@ public class Normal_GameManager : MonoBehaviour
 
         if (random >= 0 && random <= 55)
         {
-            mode = eNormalMode.A;
-            return mode;
+            Mode = eNormalMode.A;
+            return Mode;
         }
         if (random >= 56 && random <= 85)
         {
-            mode = eNormalMode.B;
-            return mode;
+            Mode = eNormalMode.B;
+            return Mode;
         }
         if (random >= 86 && random <= 95)
         {
-            mode = eNormalMode.Heaven;
-            return mode;
+            Mode = eNormalMode.Heaven;
+            return Mode;
         }
         if (random >= 96 && random <= 100)
         {
-            mode = eNormalMode.SokuYusyutu;
-            return mode;
+            Mode = eNormalMode.SokuYusyutu;
+            return Mode;
         }
 
         return eNormalMode.Invalid;
@@ -136,7 +135,8 @@ public class Normal_GameManager : MonoBehaviour
 
         while (!operation.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+
+            
 
             // リールが回り始めたら
             if (gameManager.GameStarted)
