@@ -6,9 +6,22 @@ using UnityEngine;
 
 public class YuusyutuMode : MonoBehaviour
 {
+
+    // カンバス
     [SerializeField] private GameObject imageCanvas;
+    [SerializeField] private GameObject ShutterCanvas;
+    // シャッターオブジェクト
+    [SerializeField] private GameObject rightShutter;
+    [SerializeField] private GameObject leftShutter;
+    // TMP
     [SerializeField] private TextMeshProUGUI nowEventColor;
-    
+
+
+    // シャッターポジション
+    Vector3 rightShutterPos;
+    Vector3 leftShutterPos;
+     
+
 
 
 
@@ -29,11 +42,16 @@ public class YuusyutuMode : MonoBehaviour
     /// <summary>
     /// 前兆中の演出の種類
     /// </summary>
-    private enum eYusyutuEvent
+    private enum eEventType
     {
         Invalid = -1,
         Shutter,
+
+
+        EventMax,
     }
+
+    private eEventType CurrentEventType = eEventType.Invalid;
 
 
     private void Awake()
@@ -44,21 +62,30 @@ public class YuusyutuMode : MonoBehaviour
 
     void Start()
     {
-
+        // 突破率を突入時に決定
         eventColorMax = SelectEventColor();
         Debug.Log(eventColorMax.ToString());
         nowEventColor.text = eventColorMax.ToString();
 
-        
+
+        // シャッターの初期位置開いている状態
+        rightShutterPos = rightShutter.transform.position; 
+        rightShutterPos = new Vector3(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0.0f, 0.0f);
+        leftShutterPos = leftShutter.transform.position;
+        leftShutterPos = new Vector3(GameConst.OPEN_LEFT_SHUTTER_POS_X, 0.0f, 0.0f);
         
 
     }
 
     void Update()
     {
-        
+        SelectEvent();
         // シャッター演出
 
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            CloseShutter();
+        }
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
 
@@ -74,7 +101,7 @@ public class YuusyutuMode : MonoBehaviour
 
     private eEventColor SelectEventColor()
     {
-        int eventColor = Random.Range(0, 101);
+        int eventColor = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
 
         if (eventColor < 3)
         {
@@ -99,11 +126,25 @@ public class YuusyutuMode : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// どの演出を出すか抽選、その関数を呼び出す
+    /// </summary>
     private void SelectEvent()
     {
-        int rand = Random.Range(0, 0);
+        // 抽選
+        CurrentEventType = (eEventType)Random.Range(0, (int)eEventType.EventMax);
 
+        // 呼び出し
+        switch(CurrentEventType)
+        {
+            case eEventType.Shutter:    // シャッター演出
 
+                break;
+
+            default:
+                break;
+        }
 
     }
 
@@ -112,16 +153,31 @@ public class YuusyutuMode : MonoBehaviour
 
     }
 
-
     private void OpenShutter()
     {
+        // 開いた状態はX座標±530
+        // 閉まっているシャッターを画面外(左右)に移動
 
-
+        // 非アクティブ化
     }
 
     private void CloseShutter()
     {
+        // 閉まった状態は右X座標178左-200
 
+        // アクティブ化
+        rightShutter.SetActive(true);
+        leftShutter.SetActive(true);
+
+        // スロット画面外に表示されているものを画面内に移動させる
+        rightShutter.transform.position
+            = new Vector3(Mathf.Lerp(
+                GameConst.OPEN_RIGHT_SHUTTER_POS_X,
+                GameConst.CLOSE_RIGHT_SHUTTER_POS_X,1), 0);
+        leftShutter.transform.position
+            = new Vector3(Mathf.Lerp(
+                GameConst.OPEN_LEFT_SHUTTER_POS_X,
+                GameConst.CLOSE_LEFT_SHUTTER_POS_X, 1), 0);
 
     }
 
