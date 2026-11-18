@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class lotteryJudge : MonoBehaviour
     [SerializeField] private Image[] _scenarioImages = new Image[7];
     [SerializeField] private int[] DS = new int[7];
     [SerializeField] private int[] OZ = new int[7];
+    [SerializeField] private int[] OG = new int[7];
+    [SerializeField] AudioSource _audioSource;
     private int[] hoge = new int[7];
     private Image _currentScenarioImage;
     int SManagement;
@@ -26,11 +29,9 @@ void Start()
     {
         isScenario = true;
         Scenariotable();
-
     }
     void Update()
-    {
-        //シナリオ抽選の処理を行う 
+    { 
         if (Input.GetKeyDown(KeyCode.Z))
         {
             foreach (Image image in _scenarioImages) image.gameObject.SetActive(false);
@@ -84,30 +85,16 @@ void Start()
         }
         _scenarioImages[_scenarioNum].gameObject.SetActive(true);
     }
-
     void Scenariotable()
     {
-        int _table = Random.Range(0,2);
+        int _table = Random.Range(0,3);
 
         switch (_table)
         {
-            case 0:
-                hoge = DS;
-                Debug.Log("DS");
-
-                break;
-            case 1:
-                hoge = OZ;
-                Debug.Log("OZ");
-
-                break;
-            default:
-                Debug.Log("tableがエラー");
-                return;
+            case 0:hoge = DS;Debug.Log("DS");break;
+            case 1:hoge = OZ;Debug.Log("OZ");break;
+            case 2:hoge = OG; Debug.Log("OG"); break;
+            default:Debug.Log("tableがエラー");return;
         }
-
-
-
     }
-
 }
