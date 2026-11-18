@@ -10,20 +10,17 @@ public class YuusyutuMode : MonoBehaviour
     // カンバス
     [SerializeField] private GameObject imageCanvas;
     [SerializeField] private GameObject ShutterCanvas;
+    
     // シャッターオブジェクト
-    [SerializeField] private GameObject rightShutter;
     [SerializeField] private GameObject leftShutter;
-    // TMP
+    [SerializeField] private GameObject rightShutter;
+    [SerializeField] private RectTransform leftShutterTransform;
+    [SerializeField] private RectTransform rightShutterTransform;
+    
+
+    // テキスト
     [SerializeField] private TextMeshProUGUI nowEventColor;
-
-
-    // シャッターポジション
-    Vector3 rightShutterPos;
-    Vector3 leftShutterPos;
-     
-
-
-
+    
 
     /// <summary>
     /// 演出の色
@@ -69,11 +66,11 @@ public class YuusyutuMode : MonoBehaviour
 
 
         // シャッターの初期位置開いている状態
-        rightShutterPos = rightShutter.transform.position; 
-        rightShutterPos = new Vector3(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0.0f, 0.0f);
-        leftShutterPos = leftShutter.transform.position;
-        leftShutterPos = new Vector3(GameConst.OPEN_LEFT_SHUTTER_POS_X, 0.0f, 0.0f);
-        
+        leftShutterTransform.anchoredPosition
+            = new Vector2(GameConst.OPEN_LEFT_SHUTTER_POS_X, 0);
+        rightShutterTransform.anchoredPosition
+            = new Vector2(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0);
+
 
     }
 
@@ -85,6 +82,10 @@ public class YuusyutuMode : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
         {
             CloseShutter();
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            OpenShutter();
         }
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
@@ -157,27 +158,54 @@ public class YuusyutuMode : MonoBehaviour
     {
         // 開いた状態はX座標±530
         // 閉まっているシャッターを画面外(左右)に移動
+        float t = 0.0f;
 
-        // 非アクティブ化
+        // スロット画面外に表示されているものを画面内に移動させる
+        leftShutterTransform.anchoredPosition
+            = new Vector2(GameConst.OPEN_LEFT_SHUTTER_POS_X, 0);
+
+
+        while (true)
+        {
+            t += 0.1f * Time.deltaTime;
+
+            rightShutterTransform.anchoredPosition
+            = new Vector2(Mathf.Lerp(
+                GameConst.CLOSE_RIGHT_SHUTTER_POS_X,
+                GameConst.OPEN_RIGHT_SHUTTER_POS_X, t)
+            , 0);
+
+            if (t > 1.0f) break;
+
+        }
+        
     }
 
     private void CloseShutter()
     {
         // 閉まった状態は右X座標178左-200
 
-        // アクティブ化
-        rightShutter.SetActive(true);
-        leftShutter.SetActive(true);
+        float t = 0.0f;
 
         // スロット画面外に表示されているものを画面内に移動させる
-        rightShutter.transform.position
-            = new Vector3(Mathf.Lerp(
+        leftShutterTransform.anchoredPosition
+            = new Vector2(GameConst.CLOSE_LEFT_SHUTTER_POS_X, 0);
+        
+
+        while (true)
+        {
+            t *= 0.1f;
+            
+            rightShutterTransform.anchoredPosition
+            = new Vector2(Mathf.Lerp(
                 GameConst.OPEN_RIGHT_SHUTTER_POS_X,
-                GameConst.CLOSE_RIGHT_SHUTTER_POS_X,1), 0);
-        leftShutter.transform.position
-            = new Vector3(Mathf.Lerp(
-                GameConst.OPEN_LEFT_SHUTTER_POS_X,
-                GameConst.CLOSE_LEFT_SHUTTER_POS_X, 1), 0);
+                GameConst.CLOSE_RIGHT_SHUTTER_POS_X, t)
+            , 0);
+            
+            if (t > 1.0f) break; 
+            
+        }
+
 
     }
 
