@@ -695,8 +695,8 @@ MonoBehaviour:
   chronicleCherryPayout: 1
   chronicleStrongCherryPayout: 1
   chronicleATBellPayout: 15
-  chronicleUseTestRole: 1
-  chronicleTestRole: 5
+  chronicleUseTestRole: 0
+  chronicleTestRole: 0
   startCredit: 50
   betCount: 3
   maxCredit: 19000
