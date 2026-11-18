@@ -10,14 +10,17 @@ public class lotteryJudge : MonoBehaviour
     Dictionary<int, string> judgeInfo;
     //ƒVƒiƒŠƒI‚ÌŠm—¦‚ğ“ü‚ê‚é«‘
     Dictionary<int, float> jugdeDict;
-    private int _scenarioNum = 0;
+    Dictionary<int, bool> judgebool;
+    private int _scenarioNum;
     [SerializeField] private Image[] _scenarioImages = new Image[7];
     [SerializeField] private int[] DS = new int[7];
     private Image _currentScenarioImage;
     int SManagement;
+    public bool isScenario = true;
     void Start()
     {
-        foreach (Image image in _scenarioImages)image.gameObject.SetActive(false);
+        isScenario = true;
+        foreach (Image image in _scenarioImages) image.gameObject.SetActive(false);
         _currentScenarioImage = _scenarioImages[0];
         _scenarioImages[0].gameObject.SetActive(true);
         GetCollor(SManagement = DS[_scenarioNum]);
@@ -28,8 +31,13 @@ public class lotteryJudge : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             NextScenario();
-        }   
+        }
+
+        
+
     }
+
+
     void GetCollor(int SManagement)
     {
         switch (SManagement)
@@ -55,46 +63,75 @@ public class lotteryJudge : MonoBehaviour
             Debug.Log("ƒVƒiƒŠƒI‚È‚µ");
         }
     }
+
+    private int RomdomDicts()
+    {
+
+        int num = 0;
+
+        num = Random.Range(0,101);
+
+        return num;
+    }
+
     void InitalizeDictsBlue()
     {
-            judgeInfo = new Dictionary<int, string>();
-            judgeInfo.Add(1, "Â¬Œ÷");
-            judgeInfo.Add(2, "Âc”O");
-            jugdeDict = new Dictionary<int, float>();
-            jugdeDict.Add(1, 0.25f);
-            jugdeDict.Add(2, 0.75f);
+        int _Blue = RomdomDicts();
+
+        if (_Blue <= 20)
+        {
+            Debug.Log("Â¬Œ÷");
+        }
+        else
+        {
+            Debug.Log("Â¸”s");
+            isScenario = false;
+        }
         _currentScenarioImage.color = Color.blue;
     }
     void InitalizeDictsYellow()
     {
-        judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "‰©¬Œ÷");
-        judgeInfo.Add(2, "‰©c”O");
-        jugdeDict = new Dictionary<int, float>();
-        jugdeDict.Add(1, 0.5f);
-        jugdeDict.Add(2, 0.5f);
+        int _Yellow = RomdomDicts();
+        if (_Yellow <= 50)
+        {
+            Debug.Log("‰©¬Œ÷");
+        }
+        else
+        {
+            Debug.Log("‰©¸”s");
+            isScenario = false;
+        }
         _currentScenarioImage.color = Color.yellow;
     }
     void InitalizeDictsGreen()
     {
-        judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "—Î¬Œ÷");
-        judgeInfo.Add(2, "—Îc”O");
-        jugdeDict = new Dictionary<int, float>();
-        jugdeDict.Add(1, 0.66f);
-        jugdeDict.Add(2, 0.34f);
+
+        int _Green = RomdomDicts();
+        if (_Green <= 66)
+        {
+            Debug.Log("—Î¬Œ÷");
+        }
+        else
+        {
+            Debug.Log("—Î¸”s");
+            isScenario = false;
+        }
         _currentScenarioImage.color = Color.green;
+
     }
-
-
     void InitalizeDictsRed()
     {
-        judgeInfo = new Dictionary<int, string>();
-        judgeInfo.Add(1, "Ô¬Œ÷");
-        judgeInfo.Add(2, "Ôc”O");
-        jugdeDict = new Dictionary<int, float>();
-        jugdeDict.Add(1, 0.8f);
-        jugdeDict.Add(2, 0.2f);
+        int _Yellow = RomdomDicts();
+        if (_Yellow <= 80)
+        {
+            Debug.Log("Ô¬Œ÷");
+
+        }
+        else
+        {
+            Debug.Log("Ô¸”s");
+            isScenario = false;
+        }
         _currentScenarioImage.color = Color.red;
     }
     void InitalizeDictsRainbow()
@@ -105,7 +142,6 @@ public class lotteryJudge : MonoBehaviour
         jugdeDict.Add(1, 1.0f);
         _currentScenarioImage.color = Color.magenta;
     }
-
     int Chooze()
     {
         //Šm—¦‚Ì‡Œv‚ğŒvZ
@@ -127,15 +163,20 @@ public class lotteryJudge : MonoBehaviour
     }
     public void NextScenario()
     {
+
+        
+
         _scenarioNum++;
+
         _currentScenarioImage = _scenarioImages[_scenarioNum];
         _scenarioImages[_scenarioNum].gameObject.SetActive(true);
         GetCollor(SManagement = DS[_scenarioNum]);
         if (_scenarioNum >= _scenarioImages.Length)
-        {   
+        {
             _scenarioNum = _scenarioImages.Length - 1;
             return;
         }
         _scenarioImages[_scenarioNum].gameObject.SetActive(true);
     }
+      
 }

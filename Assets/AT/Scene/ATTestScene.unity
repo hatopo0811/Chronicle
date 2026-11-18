@@ -211,7 +211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &91535908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -780,7 +780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &804775760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -856,7 +856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1086406628
 RectTransform:
   m_ObjectHideFlags: 0
@@ -932,7 +932,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1143111089
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1008,7 +1008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1159958932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1084,7 +1084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1285818755
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1160,7 +1160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1307706350
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1277,13 +1277,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbb388b282d78440a6e9faa5046a25a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::lotteryJudge
-  _scenarioImage1: {fileID: 804775761}
-  _scenarioImage2: {fileID: 1143111090}
-  _scenarioImage3: {fileID: 1307706351}
-  _scenarioImage4: {fileID: 1159958933}
-  _scenarioImage5: {fileID: 1086406629}
-  _scenarioImage6: {fileID: 1285818756}
-  _scenarioImage7: {fileID: 91535909}
+  _scenarioImages:
+  - {fileID: 804775761}
+  - {fileID: 1143111090}
+  - {fileID: 1307706351}
+  - {fileID: 1159958933}
+  - {fileID: 1086406629}
+  - {fileID: 1285818756}
+  - {fileID: 91535909}
+  DS: 04000000040000000300000003000000020000000100000002000000
 --- !u!114 &1364866352
 MonoBehaviour:
   m_ObjectHideFlags: 0
