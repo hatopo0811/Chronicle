@@ -1228,8 +1228,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::YuusyutuMode
   imageCanvas: {fileID: 943538839}
   ShutterCanvas: {fileID: 1993371708}
-  rightShutter: {fileID: 1001743738}
   leftShutter: {fileID: 1538994247}
+  rightShutter: {fileID: 1001743738}
+  leftShutterTransform: {fileID: 1538994248}
+  rightShutterTransform: {fileID: 1001743739}
   nowEventColor: {fileID: 905943807}
 --- !u!4 &1394106736
 Transform:
@@ -1411,7 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
-  m_ShowMaskGraphic: 1
+  m_ShowMaskGraphic: 0
 --- !u!114 &1487403634
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -135,9 +135,6 @@ public class Normal_GameManager : MonoBehaviour
 
         while (!operation.isDone)
         {
-
-            
-
             // ƒŠ[ƒ‹‚ª‰ñ‚èn‚ß‚½‚ç
             if (gameManager.GameStarted)
             {
