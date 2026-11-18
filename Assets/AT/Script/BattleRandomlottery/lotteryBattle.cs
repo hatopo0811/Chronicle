@@ -4,7 +4,7 @@ using UnityEngine;
 public class lotteryBattle : MonoBehaviour
 {
 
-  Numberofgames _numberOfGames;
+  [SerializeField] Numberofgames _numberOfGames;
 
     //Random(1－20)の乱数を入れる変数
     //５パーセント刻み
@@ -102,15 +102,21 @@ public class lotteryBattle : MonoBehaviour
         if(_cherryWeak <=14)
         {
             Debug.Log("10G");
+            if (_numberOfGames == null) return;
+             _numberOfGames.GetGameCount(10);
             //_numberOfGames.GetGameCount();
         }
         else if(_cherryWeak >= 15 && _cherryWeak <= 18)
         {
             Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
+            if (_numberOfGames == null) return;
+            _numberOfGames.GetGameCount(20);
         }
         else
         {
             Debug.Log("SetJudgeExtraboostWeak: 30G上乗せ");
+            if (_numberOfGames == null) return;
+            _numberOfGames.GetGameCount(30);
         }
         _cherryWeak = _resetNum;
     }
@@ -173,14 +179,20 @@ public class lotteryBattle : MonoBehaviour
         if (_cherryStrong <= 12)
         {
             Debug.Log("SetJudgeExtraboostStrong: 20G上乗せ");
+            if (_numberOfGames == null) return;
+            _numberOfGames.GetGameCount(20);
         }
         else if (_cherryStrong >= 13 && _cherryStrong <= 18)
         {
             Debug.Log("SetJudgeExtraboostStrong: 50G上乗せ");
+            if (_numberOfGames == null) return;
+            _numberOfGames.GetGameCount(50);
         }
         else
         {
             Debug.Log("SetJudgeExtraboostStrong: 100G上乗せ");
+            if (_numberOfGames == null) return;
+            _numberOfGames.GetGameCount(100);
         }
         _cherryStrong = _resetNum;
     }
