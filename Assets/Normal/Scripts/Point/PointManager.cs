@@ -1,20 +1,90 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static SlotGameManager;
+using UnityEngine.UIElements;
+using System.Collections;
 
 public class PointManager : MonoBehaviour 
 {
 
     public static PointManager instance = null;
 
+    [SerializeField] private TextMeshProUGUI pointText;
+    [SerializeField] private SlotGameManager gameManager;
+
+
+    [SerializeField] private GameObject Story;
+
     public RoleType RoleType { get; private set; } = RoleType.Lose;
 
     public eTargetPoint TargetPoint { get; private set; } = eTargetPoint.Invalid;
 
-    
+    // 現在のポイント
+    public int NowPoint { get; set; } = 0;
+
+    // シーンのロード中かどうか
+    private bool isLoadScene;
+
+
     void Start()
     {
         instance = this;
+
+        NowPoint = 0;
+
+        isLoadScene = false;
+
+    }
+
+    private void Update()
+    {
+        pointText.text = "NowPoint : " + NowPoint;
+
+
         
+        if (((int)eTargetPoint.Point100 < NowPoint) && !isLoadScene)
+        {
+            // 複数回ロードされるのを防ぐ
+            isLoadScene = true;
+            // 仮の連即演出成功画像を表示
+            Story.SetActive(true);
+            StartCoroutine(LoadSceneAsync());
+
+            // ポイントをリセットする
+            PointManager.instance.ResetPoint(NowPoint);
+            // 前兆中に獲得したポイントは次周期に持ち越される
+            // ATに入った場合はゼロポイントからスタート　
+            PointManager.instance.CarryoverOverflowPoint(eTargetPoint.Point100, NowPoint);
+
+
+
+
+        }
+
+    }
+
+    /// <summary>
+    /// シーン切り替えのかくつきをなくす
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LoadSceneAsync()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync("ZentyouScene");
+        operation.allowSceneActivation = false;
+
+        while (!operation.isDone)
+        {
+            // リールが回り始めたら
+            if (gameManager.GameStarted)
+            {
+                // シーン移行の許可を出す
+                operation.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
+
     }
 
 

@@ -379,50 +379,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &403852338
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 403852340}
-  - component: {fileID: 403852339}
-  m_Layer: 0
-  m_Name: PointManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &403852339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 403852338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eaf8d14b739d20428da1a5ff7485b64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PointManager
---- !u!4 &403852340
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 403852338}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 835.1808, y: 342.3264, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &560535516
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotGameManager
   dataCounter: {fileID: 660444972}
+  yusyutu: {fileID: 0}
   leftReel: {fileID: 4154999903494320291}
   centerReel: {fileID: 2372218420012247307}
   rightReel: {fileID: 7831345204556975757}
@@ -695,8 +652,8 @@ MonoBehaviour:
   chronicleCherryPayout: 1
   chronicleStrongCherryPayout: 1
   chronicleATBellPayout: 15
-  chronicleUseTestRole: 0
-  chronicleTestRole: 0
+  chronicleUseTestRole: 1
+  chronicleTestRole: 5
   startCredit: 50
   betCount: 3
   maxCredit: 19000
@@ -1380,6 +1337,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eaf8d14b739d20428da1a5ff7485b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PointManager
+  pointText: {fileID: 1747728270}
+  gameManager: {fileID: 656888244}
+  Story: {fileID: 560535516}
 --- !u!4 &1470307562
 Transform:
   m_ObjectHideFlags: 0
@@ -1425,11 +1385,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Normal_GameManager
   gameCountText: {fileID: 88803446}
-  pointText: {fileID: 1747728270}
   modeText: {fileID: 1873367214}
   cycleText: {fileID: 1412945584}
-  Test_UICanvas: {fileID: 560535516}
-  gameManager: {fileID: 656888244}
 --- !u!4 &1649503195
 Transform:
   m_ObjectHideFlags: 0
@@ -3494,7 +3451,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &5926156576082555357
 MonoBehaviour:
@@ -4535,14 +4492,13 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 867130189}
+  - {fileID: 2270551280723860665}
+  - {fileID: 306634443}
+  - {fileID: 560535520}
   - {fileID: 1470307562}
   - {fileID: 1649503195}
   - {fileID: 1065816240}
-  - {fileID: 560535520}
-  - {fileID: 403852340}
   - {fileID: 579852155}
   - {fileID: 1013253286}
   - {fileID: 656888245}
-  - {fileID: 2270551280723860665}
   - {fileID: 660444973}
-  - {fileID: 306634443}

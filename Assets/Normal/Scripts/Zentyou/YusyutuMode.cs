@@ -4,8 +4,9 @@ using UnityEngine;
 
 
 
-public class YuusyutuMode : MonoBehaviour
+public class YusyutuMode : MonoBehaviour
 {
+    
 
     // カンバス
     [SerializeField] private GameObject imageCanvas;
@@ -20,12 +21,20 @@ public class YuusyutuMode : MonoBehaviour
 
     // テキスト
     [SerializeField] private TextMeshProUGUI nowEventColor;
+    [SerializeField] private TextMeshProUGUI nowEvent;
+
+
+    bool isClose = false;
+
+    // 色が上がるシャッターと上がらないシャッターを切り変える
+    public bool isFakeShutter = false;
     
+
 
     /// <summary>
     /// 演出の色
     /// </summary>
-    public enum eEventColor
+    private enum eEventColor
     {
         Invalid = -1,
         White,
@@ -34,21 +43,17 @@ public class YuusyutuMode : MonoBehaviour
         Red,
         Reinbow,
     }
-
     private eEventColor eventColorMax = eEventColor.Invalid;
-    /// <summary>
-    /// 前兆中の演出の種類
-    /// </summary>
-    private enum eEventType
-    {
-        Invalid = -1,
-        Shutter,
 
 
-        EventMax,
-    }
+    
+    public eEventType CurrentEventType {  get; private set; } = eEventType.Invalid;
 
-    private eEventType CurrentEventType = eEventType.Invalid;
+
+
+    // フェイクシャッターだったらtrue
+    public bool IsFakeShutter { get { return CurrentEventType == eEventType.FakeShutter; } }
+    public bool IsShutter { get { return CurrentEventType == eEventType.Shutter; } }
 
 
     private void Awake()
@@ -59,10 +64,11 @@ public class YuusyutuMode : MonoBehaviour
 
     void Start()
     {
+
         // 突破率を突入時に決定
         eventColorMax = SelectEventColor();
         Debug.Log(eventColorMax.ToString());
-        nowEventColor.text = eventColorMax.ToString();
+        nowEventColor.text = "NowEventColor : " + eventColorMax.ToString();
 
 
         // シャッターの初期位置開いている状態
@@ -71,21 +77,24 @@ public class YuusyutuMode : MonoBehaviour
         rightShutterTransform.anchoredPosition
             = new Vector2(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0);
 
+        Normal_GameManager.instance.IsYusyutuMode = true;
+        
+        
 
     }
 
     void Update()
     {
-        SelectEvent();
+        
         // シャッター演出
 
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            CloseShutter();
+            StartCoroutine(CloseShutter());
         }
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            OpenShutter();
+            StartCoroutine(OpenShutter());
         }
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
@@ -129,9 +138,9 @@ public class YuusyutuMode : MonoBehaviour
 
 
     /// <summary>
-    /// どの演出を出すか抽選、その関数を呼び出す
+    /// どの演出を出すかレバーONで抽選、その関数を呼び出す
     /// </summary>
-    private void SelectEvent()
+    public void SelectEvent()
     {
         // 抽選
         CurrentEventType = (eEventType)Random.Range(0, (int)eEventType.EventMax);
@@ -139,8 +148,19 @@ public class YuusyutuMode : MonoBehaviour
         // 呼び出し
         switch(CurrentEventType)
         {
-            case eEventType.Shutter:    // シャッター演出
-
+            case eEventType.None:           // 演出無し
+                CurrentEventType = eEventType.None;
+                nowEvent.text = "NowEvent : " + eEventType.None.ToString();
+                break;
+            case eEventType.Shutter:        // シャッター演出
+                CurrentEventType = eEventType.Shutter;
+                nowEvent.text = "NowEvent : " + eEventType.Shutter.ToString();
+                CloseShutter();
+                break;
+            case eEventType.FakeShutter:    // フェイクシャッター演出
+                CurrentEventType = eEventType.FakeShutter;
+                nowEvent.text = "NowEvent : " + eEventType.FakeShutter.ToString();
+                CloseShutter();
                 break;
 
             default:
@@ -149,61 +169,71 @@ public class YuusyutuMode : MonoBehaviour
 
     }
 
-    private void ShatterEvent()
-    {
+    
 
-    }
-
-    private void OpenShutter()
+    public IEnumerator OpenShutter()
     {
         // 開いた状態はX座標±530
         // 閉まっているシャッターを画面外(左右)に移動
         float t = 0.0f;
+        float duration = 0.1f;
 
-        // スロット画面外に表示されているものを画面内に移動させる
-        leftShutterTransform.anchoredPosition
-            = new Vector2(GameConst.OPEN_LEFT_SHUTTER_POS_X, 0);
+        
 
 
-        while (true)
+        while (t < 1.0f)
         {
-            t += 0.1f * Time.deltaTime;
+            isClose = false;
+            t += Time.deltaTime / duration;
 
-            rightShutterTransform.anchoredPosition
-            = new Vector2(Mathf.Lerp(
+            t = Mathf.Clamp01(t);
+
+            // スロット画面外に表示されているものを画面内に移動させる
+            leftShutterTransform.anchoredPosition =
+                new Vector2(Mathf.Lerp(
+                    GameConst.CLOSE_LEFT_SHUTTER_POS_X,
+                    GameConst.OPEN_LEFT_SHUTTER_POS_X, t), 0);
+
+            rightShutterTransform.anchoredPosition =
+                new Vector2(Mathf.Lerp(
                 GameConst.CLOSE_RIGHT_SHUTTER_POS_X,
-                GameConst.OPEN_RIGHT_SHUTTER_POS_X, t)
-            , 0);
+                GameConst.OPEN_RIGHT_SHUTTER_POS_X, t), 0);
 
-            if (t > 1.0f) break;
 
+            yield return null;
         }
         
     }
 
-    private void CloseShutter()
+    public IEnumerator CloseShutter()
     {
+
         // 閉まった状態は右X座標178左-200
 
         float t = 0.0f;
+        float duration = 0.1f;
 
-        // スロット画面外に表示されているものを画面内に移動させる
-        leftShutterTransform.anchoredPosition
-            = new Vector2(GameConst.CLOSE_LEFT_SHUTTER_POS_X, 0);
-        
-
-        while (true)
+        while (t < 1.0f)
         {
-            t *= 0.1f;
-            
-            rightShutterTransform.anchoredPosition
-            = new Vector2(Mathf.Lerp(
+            isClose = true;
+
+            t += Time.deltaTime / duration;
+
+            t = Mathf.Clamp01(t);
+
+            // スロット画面外に表示されているものを画面内に移動させる
+            leftShutterTransform.anchoredPosition =
+                new Vector2(Mathf.Lerp(
+                GameConst.OPEN_LEFT_SHUTTER_POS_X,
+                GameConst.CLOSE_LEFT_SHUTTER_POS_X, t), 0);
+
+            rightShutterTransform.anchoredPosition = 
+                new Vector2(Mathf.Lerp(
                 GameConst.OPEN_RIGHT_SHUTTER_POS_X,
-                GameConst.CLOSE_RIGHT_SHUTTER_POS_X, t)
-            , 0);
+                GameConst.CLOSE_RIGHT_SHUTTER_POS_X, t), 0);
             
-            if (t > 1.0f) break; 
             
+            yield return null;
         }
 
 
@@ -220,7 +250,7 @@ public class YuusyutuMode : MonoBehaviour
         imageCanvas.SetActive(false);
     }
 
-
+    
 
 
 

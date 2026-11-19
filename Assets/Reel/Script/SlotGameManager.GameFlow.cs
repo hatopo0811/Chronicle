@@ -9,6 +9,12 @@ public partial class SlotGameManager
     [Header("データカウンター")]
     [SerializeField]
     private SlotDataCounter dataCounter;
+    
+    [Header("前兆演出")]
+    [SerializeField]
+    private YusyutuMode yusyutu;
+
+
 
 
     // =========================================
@@ -156,6 +162,18 @@ public partial class SlotGameManager
 
     private void StartAllReels()
     {
+
+
+        if (Normal_GameManager.instance.IsYusyutuMode　)
+        {
+            yusyutu.SelectEvent();
+            
+            if(yusyutu.IsFakeShutter || yusyutu.IsShutter)
+            {
+                StartCoroutine(yusyutu.CloseShutter());
+            }
+        }
+
         canStopReels =
             false;
 
@@ -274,6 +292,10 @@ public partial class SlotGameManager
             return;
         }
 
+        if (Normal_GameManager.instance.IsYusyutuMode && !yusyutu.IsFakeShutter)
+        {
+            StartCoroutine(yusyutu.OpenShutter());
+        }
 
         ShowStoppedSymbols();
 
@@ -348,8 +370,9 @@ public partial class SlotGameManager
         GameStarted =
             false;
 
-        //Normal_GameManager.instance.NowPoint
-        //        = PointManager.instance.AddPoint(Normal_GameManager.instance.NowPoint, CurrentRole);
+        //PointManager.instance.NowPoint
+        //        = PointManager.instance.AddPoint(PointManager.instance.NowPoint, CurrentRole);
+
 
         Debug.Log(
             "3リール完全停止！ゲーム終了"

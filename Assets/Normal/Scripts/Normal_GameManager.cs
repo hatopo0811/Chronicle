@@ -2,33 +2,29 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+
 
 public class Normal_GameManager : MonoBehaviour
 {
     public static Normal_GameManager instance = null;
 
     [SerializeField] private TextMeshProUGUI gameCountText;
-    [SerializeField] private TextMeshProUGUI pointText;
+    
     [SerializeField] private TextMeshProUGUI modeText;
     [SerializeField] private TextMeshProUGUI cycleText;
 
-    [SerializeField] private GameObject Test_UICanvas;
-
-    [SerializeField] private SlotGameManager gameManager;
-
-
+    
+    
     // ゲーム数はまなとが管理しているファイルにもともとあった物を使っている
-
-    // 現在のポイント
-    public int NowPoint { get; set; } = 0;
     // 現在のモード
     public eNormalMode Mode { get; private set; } = eNormalMode.Invalid;
     // 現在の周期
     public eCycleCount cycleCount { get; private set; } = eCycleCount.Invalid;
 
-    // シーンのロード中かどうか
-    private bool isLoadScene;
+    // 優出モードに滞在しているかどうか
+    public bool IsYusyutuMode { get; set; } = false;
+
+    
 
 
 
@@ -46,21 +42,17 @@ public class Normal_GameManager : MonoBehaviour
     {
         instance = this;
 
-        NowPoint = 0;
+        
         // 初期値
         modeText.text = "NowMode : " + Mode.ToString();
         cycleText.text = "NowCycle : " + cycleCount.ToString();
 
-        isLoadScene = false;
-
+        IsYusyutuMode = false;
     }
 
     void Update()
     {
-
-        pointText.text = "NowPoint : " + NowPoint;
-
-
+        // 仮実装　モード抽選
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             SelectMode();
@@ -68,29 +60,6 @@ public class Normal_GameManager : MonoBehaviour
             cycleText.text = "NowCycle : " + cycleCount.ToString();
 
         }
-
-        if (((int)eTargetPoint.Point100 < NowPoint) && !isLoadScene)
-        {
-            // 複数回ロードされるのを防ぐ
-            isLoadScene = true;
-            // 仮の連即演出成功画像を表示
-            Test_UICanvas.SetActive(true);
-            StartCoroutine(LoadSceneAsync());
-
-            // ポイントをリセットする
-            PointManager.instance.ResetPoint(NowPoint);
-            // 前兆中に獲得したポイントは次周期に持ち越される
-            // ATに入った場合はゼロポイントからスタート　
-            PointManager.instance.CarryoverOverflowPoint(eTargetPoint.Point100, NowPoint);
-
-
-
-
-        }
-
-        
-
-
 
 
     }
@@ -128,23 +97,6 @@ public class Normal_GameManager : MonoBehaviour
     }
 
 
-    private IEnumerator LoadSceneAsync()
-    {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("ZentyouScene");
-        operation.allowSceneActivation = false;
-
-        while (!operation.isDone)
-        {
-            // リールが回り始めたら
-            if (gameManager.GameStarted)
-            {
-                // シーン移行の許可を出す
-                operation.allowSceneActivation = true;
-            }
-
-            yield return null;
-        }
-
-    }
+    
     
 }

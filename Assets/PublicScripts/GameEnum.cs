@@ -62,7 +62,20 @@ public enum eRivalMode
 
 }
 
+/// <summary>
+/// ‘O’›’†‚Ì‰‰o‚Ìí—Ş
+/// </summary>
+public enum eEventType
+{
+    Invalid = -1,
+    None,
+    Shutter,
+    FakeShutter,
 
+
+
+    EventMax,
+}
 
 
 
