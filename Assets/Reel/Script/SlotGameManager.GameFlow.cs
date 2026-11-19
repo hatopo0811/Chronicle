@@ -12,7 +12,7 @@ public partial class SlotGameManager
     
     [Header("前兆演出")]
     [SerializeField]
-    private YusyutuMode yusyutu;
+    private NightBattle nightBattle;
 
 
 
@@ -166,11 +166,11 @@ public partial class SlotGameManager
 
         if (Normal_GameManager.instance.IsYusyutuMode　)
         {
-            yusyutu.SelectEvent();
+            nightBattle.SelectEvent();
             
-            if(yusyutu.IsFakeShutter || yusyutu.IsShutter)
+            if(nightBattle.IsFakeShutter || nightBattle.IsShutter)
             {
-                StartCoroutine(yusyutu.CloseShutter());
+                StartCoroutine(nightBattle.CloseShutter());
             }
         }
 
@@ -238,6 +238,11 @@ public partial class SlotGameManager
                 centerStopped =
                     true;
 
+                if (Normal_GameManager.instance.IsYusyutuMode && nightBattle.IsFakeShutter)
+                {
+                    StartCoroutine(nightBattle.OpenShutter());
+                }
+
                 break;
 
 
@@ -292,9 +297,10 @@ public partial class SlotGameManager
             return;
         }
 
-        if (Normal_GameManager.instance.IsYusyutuMode && !yusyutu.IsFakeShutter)
+        if (Normal_GameManager.instance.IsYusyutuMode && nightBattle.IsShutter)
         {
-            StartCoroutine(yusyutu.OpenShutter());
+            nightBattle.UpdateShutterColor();
+            StartCoroutine(nightBattle.OpenShutter());
         }
 
         ShowStoppedSymbols();

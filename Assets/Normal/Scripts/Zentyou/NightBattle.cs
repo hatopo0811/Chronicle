@@ -1,10 +1,11 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
-public class YusyutuMode : MonoBehaviour
+public class NightBattle : MonoBehaviour
 {
     
 
@@ -20,9 +21,12 @@ public class YusyutuMode : MonoBehaviour
     
 
     // テキスト
-    [SerializeField] private TextMeshProUGUI nowEventColor;
+    [SerializeField] private TextMeshProUGUI MaxEventColor;
+    [SerializeField] private TextMeshProUGUI NowEventColor;
     [SerializeField] private TextMeshProUGUI nowEvent;
 
+    [SerializeField] private Image testBG;
+    
 
     bool isClose = false;
 
@@ -38,13 +42,13 @@ public class YusyutuMode : MonoBehaviour
     {
         Invalid = -1,
         White,
-        Brue,
+        Blue,
         Yellow,
         Red,
-        Reinbow,
+        Rainbow,
     }
     private eEventColor eventColorMax = eEventColor.Invalid;
-
+    private eEventColor CurrentEventColor = eEventColor.Invalid;
 
     
     public eEventType CurrentEventType {  get; private set; } = eEventType.Invalid;
@@ -67,8 +71,11 @@ public class YusyutuMode : MonoBehaviour
 
         // 突破率を突入時に決定
         eventColorMax = SelectEventColor();
+        CurrentEventColor = eEventColor.White;
+        testBG.color = Color.white;
         Debug.Log(eventColorMax.ToString());
-        nowEventColor.text = "NowEventColor : " + eventColorMax.ToString();
+        MaxEventColor.text = "EventColorMax : " + eventColorMax.ToString();
+        NowEventColor.text = "NowEventColor : " + CurrentEventColor.ToString();
 
 
         // シャッターの初期位置開いている状態
@@ -119,7 +126,7 @@ public class YusyutuMode : MonoBehaviour
         }
         else if (eventColor < 41)
         {
-            return eventColorMax = eEventColor.Brue;
+            return eventColorMax = eEventColor.Blue;
         }
         else if (eventColor < 91)
         {
@@ -131,7 +138,7 @@ public class YusyutuMode : MonoBehaviour
         }
         else
         {
-            return eventColorMax = eEventColor.Reinbow;
+            return eventColorMax = eEventColor.Rainbow;
         }
 
     }
@@ -156,6 +163,12 @@ public class YusyutuMode : MonoBehaviour
                 CurrentEventType = eEventType.Shutter;
                 nowEvent.text = "NowEvent : " + eEventType.Shutter.ToString();
                 CloseShutter();
+                if (eventColorMax != CurrentEventColor)
+                {
+                    CurrentEventColor++;
+                    NowEventColor.text = "NowEventColor : " + CurrentEventColor.ToString();
+                }
+                
                 break;
             case eEventType.FakeShutter:    // フェイクシャッター演出
                 CurrentEventType = eEventType.FakeShutter;
@@ -168,8 +181,33 @@ public class YusyutuMode : MonoBehaviour
         }
 
     }
+    public void UpdateShutterColor()
+    {
+        
 
-    
+        switch (CurrentEventColor)
+        {
+            case eEventColor.White:
+                testBG.color = Color.white;
+                break;
+
+            case eEventColor.Blue:
+                testBG.color = Color.blue;
+                break;
+
+            case eEventColor.Yellow:
+                testBG.color = Color.yellow;
+                break;
+
+            case eEventColor.Red:
+                testBG.color = Color.red;
+                break;
+
+            case eEventColor.Rainbow:
+                // 虹色用の演出を再生
+                break;
+        }
+    }
 
     public IEnumerator OpenShutter()
     {
