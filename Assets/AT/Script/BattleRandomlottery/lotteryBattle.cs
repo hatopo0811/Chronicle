@@ -6,6 +6,7 @@ public class lotteryBattle : MonoBehaviour
 
   [SerializeField] Numberofgames _numberOfGames;
 
+    [SerializeField] SlotGameManager _slotGameManager;
     //Random(1－20)の乱数を入れる変数
     //５パーセント刻み
     private int RandomNumMin = 1;
@@ -44,12 +45,11 @@ public class lotteryBattle : MonoBehaviour
     private void Update()
     {
         //弱チェリーの上乗せ抽選、Battle抽選を行う
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             SetJudgeExtraboostWeak();
            
         }
-
         //強チェリーの上乗せ抽選、Battle抽選を行う
         if(Input.GetKeyDown(KeyCode.B))
         {
@@ -157,7 +157,6 @@ public class lotteryBattle : MonoBehaviour
             _judgeEXtra = _judgeExtraStrongHighstage;
             Debug.Log("SetJudgeExtraboostStrong: 高確率状態なので、上乗せ抽選の確率が上がる");
         }
-
         if (_judgeExtraboost < _judgeExtraboostStrongNum)
         {
             GetCherryExtraboostStrong();
@@ -167,7 +166,6 @@ public class lotteryBattle : MonoBehaviour
             Debug.Log("SetJudgeExtraboostStrong: はずれ");
         }
         SetJudgeBattleStrong();
-
         _judgeExtraboost = _resetNum;
     }
 
@@ -212,11 +210,9 @@ public class lotteryBattle : MonoBehaviour
         {
             _judgeBattleSto = _judgeBattleStrongHighstage;
         }
-
         if (_judgeBattle < _judgeBattleSto)
         {
             Debug.Log("SetJudgeBattleStrong: 当たり");
-
         }
         else if (_judgeBattle >= _judgeBattleStrongNum)
         {
@@ -225,7 +221,6 @@ public class lotteryBattle : MonoBehaviour
         }
         _judgeBattle = _resetNum;
     }
-
     //スイカの高確率抽選
     private void SetJudgeHighstage()
     {
@@ -244,8 +239,4 @@ public class lotteryBattle : MonoBehaviour
         }
         _judgeHighstage = _resetNum;
     }
-
-
-    
-
 }

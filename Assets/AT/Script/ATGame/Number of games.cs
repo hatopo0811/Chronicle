@@ -5,14 +5,18 @@ using UnityEngine.UI;
 public class Numberofgames : MonoBehaviour
 {
     [SerializeField]lotteryJudge lotteryJudge;
+    [SerializeField] Judge _judge;
     //ゲーム数の初期値を設定する変数
     public int _initialGameCount;
     //private int amount;
     int _gameCount=10;
-    [SerializeField] TextMeshProUGUI GameText;
+    [SerializeField] public TextMeshProUGUI GameText;
     [SerializeField] TextMeshProUGUI GetGameText;
     public int GameNum;
-    [SerializeField] private RawImage _endScene;
+    [SerializeField] public RawImage _endScene;
+    private int _scenarioNum;
+    public bool _continuing = true;
+
     private void Start()
     {
         //ゲーム数を初期値に設定する
@@ -25,16 +29,28 @@ public class Numberofgames : MonoBehaviour
         {
             if (_initialGameCount >= 0)
             {
-                //ゲーム数を減らす処理を行う
-                if (Input.GetKeyDown(KeyCode.A))
+                if (_continuing)
                 {
-                    _initialGameCount--;
+                    //ゲーム数を減らす処理を行う
+                    if (Input.GetKeyDown(KeyCode.A))
+                    {
+                        _initialGameCount--;
+                    }
                 }
             }
             if (_initialGameCount == 0)
             {
-                lotteryJudge.NextScenario();
-                SetGameCount();
+                _continuing = false;
+                _judge.ATCount();
+                
+            }
+            if(_initialGameCount == -1)
+            {
+                lotteryJudge.isScenario = false;
+                GameText.gameObject.SetActive(false);
+                _endScene.gameObject.SetActive(true);
+                Debug.Log("通常時に戻る");
+
             }
             GameText.text = "Game" + _initialGameCount.ToString();
             //ゲーム数が999を超えないようにする処理
@@ -51,17 +67,11 @@ public class Numberofgames : MonoBehaviour
                 }
             }
         }
-        if (!lotteryJudge.isScenario)
-        {
-            GameText.gameObject.SetActive(false);
-            _endScene.gameObject.SetActive(true);
-            Debug.Log("通常時に戻る");
-        }
     }
     public void SetGameCount()
     {
         //ゲーム数を初期値に設定する
-        _initialGameCount = 30;
+        _initialGameCount = 5;      
     }
     /// <summary>
     /// 上乗せ抽選でゲーム数を増加させる処理を行う
@@ -73,5 +83,3 @@ public class Numberofgames : MonoBehaviour
         _initialGameCount += amount;
     }
 }
-   
-
