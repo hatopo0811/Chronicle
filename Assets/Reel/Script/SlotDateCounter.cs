@@ -28,67 +28,20 @@ public class SlotDataCounter : MonoBehaviour
 
 
     // =========================================
-    // カウント
+    // カウント(外部参照可能)
     // =========================================
 
-    private int currentGameCount = 0;
-
-    private int totalGameCount = 0;
-
-    private int bigBonusCount = 0;
-
-    private int regBonusCount = 0;
-
-
-    // =========================================
-    // 外部参照用
-    // =========================================
-
-    public int CurrentGameCount
-    {
-        get
-        {
-            return currentGameCount;
-        }
-    }
-
-
-    public int TotalGameCount
-    {
-        get
-        {
-            return totalGameCount;
-        }
-    }
-
-
-    public int BigBonusCount
-    {
-        get
-        {
-            return bigBonusCount;
-        }
-    }
-
-
-    public int RegBonusCount
-    {
-        get
-        {
-            return regBonusCount;
-        }
-    }
-
-
+    // 現在のゲーム数
+    public int currentGameCount { get; private set; }
+    // 総ゲーム数
+    public int totalGameCount { get; private set; }
+    // BB回数
+    public int bigBonusCount { get; private set; }
+    // REG回数
+    public int regBonusCount { get; private set; }
+    // ボーナス（REG＋BB）の合計回数
     public int TotalBonusCount
-    {
-        get
-        {
-            return
-                bigBonusCount +
-                regBonusCount;
-        }
-    }
+    { get { return bigBonusCount + regBonusCount; } }
 
 
     // =========================================
@@ -117,18 +70,6 @@ public class SlotDataCounter : MonoBehaviour
         UpdateDisplay();
 
 
-        Debug.Log(
-            "現在回転数：" +
-            currentGameCount +
-            "G"
-        );
-
-
-        Debug.Log(
-            "総回転数：" +
-            totalGameCount +
-            "G"
-        );
     }
 
 
@@ -269,8 +210,7 @@ public class SlotDataCounter : MonoBehaviour
 
         if (currentGameCountText != null)
         {
-            currentGameCountText.text =
-                "NowGame : " + currentGameCount;
+            currentGameCountText.text = currentGameCount.ToString() + "G";
         }
 
 

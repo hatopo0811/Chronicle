@@ -97,6 +97,9 @@ public partial class SlotGameManager : MonoBehaviour
 
     public bool GameStarted { get; private set; } = false;
     
+    // 全てのリールが止まっているか確認
+    public bool StopAllReel { get { return !leftStopped || !centerStopped || !rightStopped; } }
+
     private bool replayNextGame = false;
     private bool leftStopped = false;
     private bool centerStopped = false;

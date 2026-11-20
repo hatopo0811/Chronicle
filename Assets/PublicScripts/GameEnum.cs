@@ -71,10 +71,21 @@ public enum eEventType
     None,
     Shutter,
     FakeShutter,
-
+    // ‰‰o’Ç‰Á—\’è
 
 
     EventMax,
+}
+
+
+public enum eGameState
+{
+    Invalid = -1,
+    Normal,
+    NightBattle,
+    CZ,
+    AT,
+
 }
 
 

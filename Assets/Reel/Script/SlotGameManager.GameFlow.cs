@@ -170,7 +170,7 @@ public partial class SlotGameManager
     {
       
 
-        if (Normal_GameManager.instance.IsYusyutuMode)
+        if (Normal_GameManager.instance.GameState == eGameState.NightBattle)
         {
             nightBattle.SelectEvent();
 
@@ -296,7 +296,7 @@ public partial class SlotGameManager
 
 
                 if (
-                    Normal_GameManager.instance.IsYusyutuMode &&
+                    Normal_GameManager.instance.GameState == eGameState.NightBattle &&
                     nightBattle.IsFakeShutter
                 )
                 {
@@ -351,11 +351,13 @@ public partial class SlotGameManager
         {
             return;
         }
-
+        if (Normal_GameManager.instance.GameState == eGameState.NightBattle || PointManager.instance.NowPoint <= 600)
+        {
+            PointManager.instance.NowPoint
+                += PointManager.instance.AddPoint( CurrentRole);
+        }
         if (
-            Normal_GameManager.instance.IsYusyutuMode &&
-            nightBattle.IsShutter
-        )
+            Normal_GameManager.instance.GameState == eGameState.NightBattle && nightBattle.IsShutter)
         {
             nightBattle.UpdateShutterColor();
 
@@ -427,11 +429,7 @@ public partial class SlotGameManager
 
         GameStarted = false;
 
-        // PointManager.instance.NowPoint
-        //     = PointManager.instance.AddPoint(
-        //         PointManager.instance.NowPoint,
-        //         CurrentRole
-        //       );
+        
 
         Debug.Log(
             "3リール完全停止！ゲーム終了"

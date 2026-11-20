@@ -11,7 +11,7 @@ public class NightBattle : MonoBehaviour
 
     // カンバス
     [SerializeField] private GameObject imageCanvas;
-    [SerializeField] private GameObject ShutterCanvas;
+    
     
     // シャッターオブジェクト
     [SerializeField] private GameObject leftShutter;
@@ -60,11 +60,13 @@ public class NightBattle : MonoBehaviour
     public bool IsShutter { get { return CurrentEventType == eEventType.Shutter; } }
 
 
-    private void Awake()
+
+
+    private void OnEnable()
     {
-        imageCanvas.SetActive(true);
-        StartCoroutine(HideImage());
+        Normal_GameManager.instance.GameState = eGameState.NightBattle;
     }
+
 
     void Start()
     {
@@ -84,17 +86,17 @@ public class NightBattle : MonoBehaviour
         rightShutterTransform.anchoredPosition
             = new Vector2(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0);
 
-        Normal_GameManager.instance.IsYusyutuMode = true;
+        
         
         
 
     }
+    
 
     void Update()
     {
         
         // シャッター演出
-
         if (Input.GetKeyDown(KeyCode.F1))
         {
             StartCoroutine(CloseShutter());
@@ -181,6 +183,11 @@ public class NightBattle : MonoBehaviour
         }
 
     }
+
+    /// <summary>
+    /// シャッター演出の時色を1段階上げる
+    /// 最終的には画像を切り替えることができるようにする。
+    /// </summary>
     public void UpdateShutterColor()
     {
         
@@ -209,6 +216,10 @@ public class NightBattle : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// シャッター開く演出
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator OpenShutter()
     {
         // 開いた状態はX座標±530
@@ -243,6 +254,10 @@ public class NightBattle : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// シャッター閉まる演出
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator CloseShutter()
     {
 
