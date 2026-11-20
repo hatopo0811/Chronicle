@@ -28,17 +28,11 @@ void Start()
     {
         isScenario = true;
         Scenariotable();
+        StartScenario();
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            foreach (Image image in _scenarioImages) image.gameObject.SetActive(false);
-            _currentScenarioImage = _scenarioImages[0];
-            _scenarioImages[0].gameObject.SetActive(true);
-            GetCollor(SManagement = hoge[_scenarioNum]);
-        }
-
+       
         if (!isScenario)
         {
             if (Input.GetKeyDown(KeyCode.Z))
@@ -68,6 +62,15 @@ void Start()
             case 5:InitalizeDictsJudge((int)Judge._magentaJudge);break;
         }  
     }
+
+    private void StartScenario()
+    {
+        foreach (Image image in _scenarioImages) image.gameObject.SetActive(false);
+        _currentScenarioImage = _scenarioImages[0];
+        _scenarioImages[0].gameObject.SetActive(true);
+        GetCollor(SManagement = hoge[_scenarioNum]);
+    } 
+
     public void GetCollor(int SManagement)
     {
         switch (SManagement)
