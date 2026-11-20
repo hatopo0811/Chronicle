@@ -56,7 +56,7 @@ public class lotteryBattle : MonoBehaviour
             SetJudgeExtraboostStrong();
         }
         //スイカの高確率抽選を行う
-        if(Input.GetKeyDown(KeyCode.S))
+        if(Input.GetKeyDown(KeyCode.W))
         {
             SetJudgeHighstage();
         }

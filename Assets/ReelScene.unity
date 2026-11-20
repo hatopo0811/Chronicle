@@ -1018,7 +1018,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7203834242304340099, guid: fa9a052dab37d6f4987b029ff741a71d, type: 3}
+  m_Sprite: {fileID: 991384100045572938, guid: ed92e28c4f2ae024b8d726e6a4deb707, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1066,6 +1066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotGameManager
   dataCounter: {fileID: 215005699}
+  nightBattle: {fileID: 0}
   leftReel: {fileID: 932441998}
   centerReel: {fileID: 1614872464}
   rightReel: {fileID: 1885274068}
@@ -1198,6 +1199,118 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &975283866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 975283867}
+  - component: {fileID: 975283870}
+  - component: {fileID: 975283869}
+  - component: {fileID: 975283868}
+  m_Layer: 5
+  m_Name: Character (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &975283867
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975283866}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1007361884}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -914.13873, y: 68.792046}
+  m_SizeDelta: {x: 205.504, y: 202.574}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &975283868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975283866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71af90fe687c43c4990e38979a6d2f25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NinjaRunAnimation
+  runSprites:
+  - {fileID: -8537254164727995722, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 3203187417235047257, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -1905622427791331460, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 8707976155678331171, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -3319555302055359926, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -8231503437565489727, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -3629745282139796356, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 8612133636538340171, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -8959259548321459757, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -7820698909320879900, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -1408702465213733254, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -113752425503144583, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 5703919987159250308, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 8334608363575258490, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: -2689239874623951543, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  - {fileID: 8987292306215078802, guid: 933d3be37d0aef14681f01276c61ca79, type: 3}
+  characterImage: {fileID: 0}
+  animationFPS: 8
+  playOnStart: 1
+  loop: 1
+  moveCharacter: 0
+  moveSpeed: 100
+  faceLeft: 0
+--- !u!114 &975283869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975283866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &975283870
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975283866}
+  m_CullTransparentMesh: 1
 --- !u!1 &978278777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,6 +1458,7 @@ RectTransform:
   - {fileID: 907991240}
   - {fileID: 2101852717}
   - {fileID: 1742401482}
+  - {fileID: 975283867}
   - {fileID: 978278778}
   - {fileID: 1226907751}
   m_Father: {fileID: 1147959083}
@@ -1368,7 +1482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoopScrollBackground
   background1: {fileID: 1743794813}
   background2: {fileID: 907991240}
-  scrollSpeed: 300
+  scrollSpeed: 100
   isScrolling: 1
 --- !u!114 &1007361886
 MonoBehaviour:
@@ -2415,7 +2529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1742401482
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2566,7 +2680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7203834242304340099, guid: fa9a052dab37d6f4987b029ff741a71d, type: 3}
+  m_Sprite: {fileID: 991384100045572938, guid: ed92e28c4f2ae024b8d726e6a4deb707, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

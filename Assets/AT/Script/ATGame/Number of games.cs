@@ -32,7 +32,7 @@ public class Numberofgames : MonoBehaviour
                 if (_continuing)
                 {
                     //ƒQ[ƒ€”‚ğŒ¸‚ç‚·ˆ—‚ğs‚¤
-                    if (Input.GetKeyDown(KeyCode.A))
+                    if (Input.GetKeyDown(KeyCode.Q))
                     {
                         _initialGameCount--;
                     }
