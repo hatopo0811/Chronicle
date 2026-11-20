@@ -39,7 +39,7 @@ public class PointManager : MonoBehaviour
 
     private void Update()
     {
-        pointText.text = "NowPoint : " + NowPoint;
+        pointText.text = NowPoint.ToString();
 
 
         
