@@ -19,6 +19,7 @@ public class lotteryBattle : MonoBehaviour
     //高確率かどうかの判定を行うフラグ
     private bool _Highstage = false;
 
+    bool _GetChery = false;
     //弱チェ
     private int _cherryWeak;
     //強チェ
@@ -47,10 +48,10 @@ public class lotteryBattle : MonoBehaviour
     private void SetJudgeExtraboostWeak()
     {
 
-        
+
 
         //_judgeExtraboostにRandomNumを代入して、上乗せ抽選を行う
-        int _judgeExtraboost = Random.Range(RandomNumMin,RandomNumMax);
+        int _judgeExtraboost = Random.Range(RandomNumMin, RandomNumMax);
         int _judgeEXtra;
 
         Debug.Log("SetJudgeExtraboostWeak: 乱数は" + _judgeExtraboost);
@@ -68,7 +69,7 @@ public class lotteryBattle : MonoBehaviour
         {
             GetCherryExtraboostWeak();
         }
-        else if(_judgeExtraboost >= _judgeExtraboostWeakNum)
+        else if (_judgeExtraboost >= _judgeExtraboostWeakNum)
         {
             Debug.Log("SetJudgeExtraboostWeak: はずれ");
         }
@@ -83,14 +84,14 @@ public class lotteryBattle : MonoBehaviour
     {
 
         int _cherryWeak = Random.Range(RandomNumMin, RandomNumMax);
-        if(_cherryWeak <=14)
+        if (_cherryWeak <= 14)
         {
             Debug.Log("10G");
             if (_numberOfGames == null) return;
-             _numberOfGames.GetGameCount(10);
+            _numberOfGames.GetGameCount(10);
             //_numberOfGames.GetGameCount();
         }
-        else if(_cherryWeak >= 15 && _cherryWeak <= 18)
+        else if (_cherryWeak >= 15 && _cherryWeak <= 18)
         {
             Debug.Log("SetJudgeExtraboostWeak: 20G上乗せ");
             if (_numberOfGames == null) return;
@@ -109,7 +110,7 @@ public class lotteryBattle : MonoBehaviour
     //弱チェのBattle抽選
     private void SetJudgeBattleWeak()
     {
-        
+
 
         //_judgeBattleにRandomNumを代入して、上乗せ抽選を行う
         int _judgeBattle = Random.Range(RandomNumMin, RandomNumMax);
@@ -117,7 +118,7 @@ public class lotteryBattle : MonoBehaviour
         if (_judgeBattle < _judgeBattleWeakNum)
         {
             Debug.Log("SetJudgeBattleWeak: 当たり");
-    
+
         }
         else if (_judgeBattle >= _judgeBattleWeakNum)
         {
@@ -216,7 +217,7 @@ public class lotteryBattle : MonoBehaviour
         Debug.Log("SetJudgeHighstage: 乱数は" + _judgeHighstage);
         if (_judgeHighstage < _judgeHighstageNum)
         {
-           _Highstage = true;
+            _Highstage = true;
             Debug.Log("SetJudgeHighstage: 高確率状態に突入");
         }
         else if (_judgeHighstage >= _judgeHighstageNum)
@@ -227,15 +228,14 @@ public class lotteryBattle : MonoBehaviour
         _judgeHighstage = _resetNum;
     }
 
-   //リール終わりに入れる
+    //リール終わりに入れる
     public void GetRole()
     {
 
         //弱チェリーの上乗せ抽選、Battle抽選を行う
         if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.Cherry)
         {
-            SetJudgeExtraboostWeak();
-
+                SetJudgeExtraboostWeak();
         }
         //強チェリーの上乗せ抽選、Battle抽選を行う
         if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.StrongCherry)
@@ -249,13 +249,5 @@ public class lotteryBattle : MonoBehaviour
         }
     }
 
-    public void GetManager()
-    {
-        GetRole();
-        _numberOfGames.GetSetNum();
-        _lotteryJudge.Getflag();
-        _judge.GetJudgeRole();
-
-    }
 
 }
