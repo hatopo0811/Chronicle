@@ -3279,7 +3279,7 @@ GameObject:
   - component: {fileID: 1364866352}
   - component: {fileID: 1364866353}
   m_Layer: 0
-  m_Name: bokuhageidesu
+  m_Name: _AT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3298,7 +3298,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::lotteryBattle
   _numberOfGames: {fileID: 1364866352}
-  _slotGameManager: {fileID: 0}
+  _lotteryJudge: {fileID: 1364866351}
+  _judge: {fileID: 1364866353}
+  _slotGameManager: {fileID: 1861469451}
 --- !u!4 &1364866350
 Transform:
   m_ObjectHideFlags: 0
@@ -3379,15 +3381,6 @@ MonoBehaviour:
   _lotteryJudge: {fileID: 1364866351}
   JudgeCount: 0
   JudgeText: {fileID: 2101720689}
-  _scenarioImages:
-  - {fileID: 1733526543}
-  - {fileID: 1432220825}
-  - {fileID: 1833478316}
-  - {fileID: 978080560}
-  - {fileID: 1305476729}
-  - {fileID: 1774861546}
-  - {fileID: 850178036}
-  - {fileID: 1576357938}
   _setCount: 1
 --- !u!224 &1365456624 stripped
 RectTransform:
