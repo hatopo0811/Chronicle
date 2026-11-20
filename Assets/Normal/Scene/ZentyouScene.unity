@@ -194,6 +194,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105860300}
   m_CullTransparentMesh: 1
+--- !u!1 &112303686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 112303687}
+  - component: {fileID: 112303689}
+  - component: {fileID: 112303688}
+  m_Layer: 5
+  m_Name: Lamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &112303687
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112303686}
+  m_LocalRotation: {x: -0, y: -0.40673557, z: 0, w: -0.91354597}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1357324774763474863}
+  m_LocalEulerAnglesHint: {x: 0, y: 1128, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -792, y: -362}
+  m_SizeDelta: {x: 150, y: 136}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &112303688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112303686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -8253080142828122236, guid: 27ff2f03068ec2e4fa4f0c8c57a86a0c, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &112303689
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112303686}
+  m_CullTransparentMesh: 1
 --- !u!1 &401566516
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eaf8d14b739d20428da1a5ff7485b64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PointManager
-  pointText: {fileID: 1139772754}
+  pointText: {fileID: 1583043364}
   gameManager: {fileID: 2080121842}
   Story: {fileID: 0}
 --- !u!4 &588549324
@@ -914,6 +989,7 @@ MonoBehaviour:
   gameCountText: {fileID: 1781023344}
   modeText: {fileID: 1065117854}
   cycleText: {fileID: 401566518}
+  isNoemalMode: 0
 --- !u!4 &998491515
 Transform:
   m_ObjectHideFlags: 0
@@ -1154,7 +1230,7 @@ GameObject:
   - component: {fileID: 1069191376}
   - component: {fileID: 1069191375}
   m_Layer: 5
-  m_Name: DebugColumn
+  m_Name: DebugText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1267,7 +1343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1139772753
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1282,9 +1358,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1069191374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -150, y: -75}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: -0.5, y: 1.5}
 --- !u!114 &1139772754
@@ -1473,7 +1549,7 @@ GameObject:
   - component: {fileID: 1394106736}
   - component: {fileID: 1394106735}
   m_Layer: 0
-  m_Name: ZentyouManager
+  m_Name: NightBattleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2212,8 +2288,8 @@ Camera:
   m_GameObject: {fileID: 1987912798}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2389,7 +2465,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2627,7 +2703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotGameManager
   dataCounter: {fileID: 1843686579}
-  nightBattle: {fileID: 0}
+  nightBattle: {fileID: 1394106735}
   leftReel: {fileID: 4819565895116648015}
   centerReel: {fileID: 8380421785595107387}
   rightReel: {fileID: 5946116589169016932}
@@ -2976,6 +3052,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 112303687}
   - {fileID: 6675548373350600258}
   - {fileID: 213674048709265133}
   - {fileID: 1331303898875475552}
@@ -3220,7 +3297,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
