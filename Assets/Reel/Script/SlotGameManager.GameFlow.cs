@@ -1,3 +1,5 @@
+
+using System.Collections;
 using UnityEngine;
 
 public partial class SlotGameManager
@@ -9,12 +11,10 @@ public partial class SlotGameManager
     [Header("データカウンター")]
     [SerializeField]
     private SlotDataCounter dataCounter;
-    
+
     [Header("前兆演出")]
     [SerializeField]
     private NightBattle nightBattle;
-
-
 
 
     // =========================================
@@ -24,18 +24,25 @@ public partial class SlotGameManager
     private void StartGame()
     {
         if (GameStarted) return;
+
         int currentBet = betCount;
+
         if (!replayNextGame)
         {
             if (Credit < currentBet)
             {
-                if (slotAudio != null) slotAudio.PlayCreditShortageSound();
+                if (slotAudio != null)
+                    slotAudio.PlayCreditShortageSound();
+
                 AddMedals();
                 return;
             }
+
             Credit -= currentBet;
             UpdateCreditDisplay();
-            if (slotAudio != null) slotAudio.PlayBetSound(currentBet);
+
+            if (slotAudio != null)
+                slotAudio.PlayBetSound(currentBet);
         }
         else
         {
@@ -45,32 +52,57 @@ public partial class SlotGameManager
 
         LastPayout = 0;
         UpdatePayDisplay();
+
         leftStopped = centerStopped = rightStopped = false;
+
         CurrentHitRole = HitRoleType.None;
         CurrentHitLine = PayLine.None;
-        SetPseudoPlayModeForAllReels(false);
-        if (dataCounter != null) dataCounter.AddGame();
 
-        // Tキー/チームAPIでATに切り替えた場合も、
-        // 新しいゲームの開始時点でBellとATBellを確実に同期させる。
+        SetPseudoPlayModeForAllReels(false);
+
+        if (dataCounter != null)
+            dataCounter.AddGame();
+
+        // =========================================
+        // 小役抽選・ATベル補正
+        // 既存処理を維持
+        // =========================================
+
         RoleType drawnRole = DrawNormalRole();
+
         CurrentRole = NormalizeChronicleBellRole(drawnRole);
+
         if (drawnRole != CurrentRole)
         {
-            Debug.Log("[クロニクル] ベル役補正: " + drawnRole + " -> " + CurrentRole);
+            Debug.Log(
+                "[クロニクル] ベル役補正: " +
+                drawnRole + " -> " + CurrentRole
+            );
         }
-        PrepareChronicleATBellGame();
-        Debug.Log("[クロニクル] モード=" + CurrentChronicleMode
-            + " / 今回の成立役=" + GetRoleName(CurrentRole)
-            + " / 内部ID=" + CurrentRole);
-        if (DebugText != null) DebugText.text = GetRoleName(CurrentRole);
-        SetReelTargets();
-        StartAllReels();
-        // 回転開始後、ATベルなら毎ゲーム新しい第1停止ナビを通知。
-        NotifyChronicleNavigationAfterSpinStarted();
 
-        
+        PrepareChronicleATBellGame();
+
+        Debug.Log(
+            "[クロニクル] モード=" +
+            CurrentChronicleMode +
+            " / 今回の成立役=" +
+            GetRoleName(CurrentRole) +
+            " / 内部ID=" +
+            CurrentRole
+        );
+
+        if (DebugText != null)
+            DebugText.text = GetRoleName(CurrentRole);
+
+        SetReelTargets();
+
+      
+
+        StartAllReels();
+
+       
     }
+
 
     // =========================================
     // メダル追加
@@ -78,31 +110,18 @@ public partial class SlotGameManager
 
     private void AddMedals()
     {
-        int oldCredit =
-            Credit;
+        int oldCredit = Credit;
 
+        Credit += PlusMedal;
 
-        Credit +=
-            PlusMedal;
-
-
-        if (
-            Credit >
-            maxCredit
-        )
+        if (Credit > maxCredit)
         {
-            Credit =
-                maxCredit;
+            Credit = maxCredit;
         }
-
 
         UpdateCreditDisplay();
 
-
-        Debug.Log(
-            "★ メダル追加"
-        );
-
+        Debug.Log("★ メダル追加");
 
         Debug.Log(
             oldCredit +
@@ -111,13 +130,10 @@ public partial class SlotGameManager
             "枚"
         );
 
-
         if (slotAudio != null)
         {
-            slotAudio
-                .PlayMedalAddSound();
+            slotAudio.PlayMedalAddSound();
         }
-
 
         PanelON();
     }
@@ -127,31 +143,21 @@ public partial class SlotGameManager
     // 3リール 疑似遊戯モード切替
     // =========================================
 
-    private void SetPseudoPlayModeForAllReels(
-        bool enabled
-    )
+    private void SetPseudoPlayModeForAllReels(bool enabled)
     {
         if (leftReel != null)
         {
-            leftReel.SetPseudoPlayMode(
-                enabled
-            );
+            leftReel.SetPseudoPlayMode(enabled);
         }
-
 
         if (centerReel != null)
         {
-            centerReel.SetPseudoPlayMode(
-                enabled
-            );
+            centerReel.SetPseudoPlayMode(enabled);
         }
-
 
         if (rightReel != null)
         {
-            rightReel.SetPseudoPlayMode(
-                enabled
-            );
+            rightReel.SetPseudoPlayMode(enabled);
         }
     }
 
@@ -162,56 +168,108 @@ public partial class SlotGameManager
 
     private void StartAllReels()
     {
+      
 
-
-        if (Normal_GameManager.instance.IsYusyutuMode　)
+        if (Normal_GameManager.instance.IsYusyutuMode)
         {
             nightBattle.SelectEvent();
-            
-            if(nightBattle.IsFakeShutter || nightBattle.IsShutter)
+
+            if (
+                nightBattle.IsFakeShutter ||
+                nightBattle.IsShutter
+            )
             {
-                StartCoroutine(nightBattle.CloseShutter());
+                StartCoroutine(
+                    nightBattle.CloseShutter()
+                );
             }
         }
 
-        canStopReels =
-            false;
+        // =========================================
+        // ★変更：ウェイト開始
+        // =========================================
 
+        // 停止入力を禁止する
+        canStopReels = false;
 
-        spinStartTime =
-            Time.time;
+        // Update()側でウェイト中に
+        // canStopReelsがtrueになるのを防ぐ
+        spinStartTime = float.PositiveInfinity;
 
-
-        if (slotAudio != null)
-        {
-            slotAudio
-                .PlayLeverOnSound();
-        }
-
-
-        leftReel.StartSpin();
-
-
-        centerReel.StartSpin();
-
-
-        rightReel.StartSpin();
-
-
-        GameStarted =
-            true;
-
+        // 待機中のSpace連打・モード切替を防ぐ
+        GameStarted = true;
 
         Debug.Log(
-            "リール回転開始"
-        );
-
-
-        Debug.Log(
-            "停止受付まで：" +
+            "[クロニクル] 回転前ウェイト開始：" +
             stopEnableDelay +
             "秒"
         );
+
+        // ウェイト終了後に回転
+        StartCoroutine(StartReelsAfterWait());
+    }
+
+
+    // =========================================
+    // ★新規追加
+    // ウェイト終了後のリール回転処理
+    // =========================================
+
+    private IEnumerator StartReelsAfterWait()
+    {
+        // =========================================
+        // 指定時間待機
+        // この間はリールを回転させない
+        // =========================================
+
+        yield return new WaitForSeconds(
+            Mathf.Max(0f, stopEnableDelay)
+        );
+
+        // =========================================
+        // 遊戯説明が表示されている場合は
+        // 閉じるまで回転を開始しない
+        // =========================================
+
+        while (PlayGuidePanelManager.IsGuideOpen)
+        {
+            yield return null;
+        }
+
+        // =========================================
+        // 既存の回転開始処理
+        // =========================================
+
+        if (slotAudio != null)
+        {
+            slotAudio.PlayLeverOnSound();
+        }
+
+        leftReel.StartSpin();
+        centerReel.StartSpin();
+        rightReel.StartSpin();
+
+        // =========================================
+        // ★変更：回転開始後に停止受付
+        // =========================================
+
+        spinStartTime = Time.time;
+
+        canStopReels = true;
+
+        Debug.Log(
+            "[クロニクル] ウェイト終了・リール回転開始"
+        );
+
+        Debug.Log(
+            "[クロニクル] 停止受付開始"
+        );
+
+        // =========================================
+        // ★変更：回転後にナビ通知
+        // =========================================
+
+        NotifyChronicleNavigationAfterSpinStarted();
     }
 
 
@@ -227,20 +285,24 @@ public partial class SlotGameManager
         {
             case ReelController.ReelType.Left:
 
-                leftStopped =
-                    true;
+                leftStopped = true;
 
                 break;
 
 
             case ReelController.ReelType.Center:
 
-                centerStopped =
-                    true;
+                centerStopped = true;
 
-                if (Normal_GameManager.instance.IsYusyutuMode && nightBattle.IsFakeShutter)
+
+                if (
+                    Normal_GameManager.instance.IsYusyutuMode &&
+                    nightBattle.IsFakeShutter
+                )
                 {
-                    StartCoroutine(nightBattle.OpenShutter());
+                    StartCoroutine(
+                        nightBattle.OpenShutter()
+                    );
                 }
 
                 break;
@@ -248,35 +310,28 @@ public partial class SlotGameManager
 
             case ReelController.ReelType.Right:
 
-                rightStopped =
-                    true;
+                rightStopped = true;
 
                 break;
         }
-
 
         bool allStopped =
             leftStopped &&
             centerStopped &&
             rightStopped;
 
-
         if (slotAudio != null)
         {
-            slotAudio
-                .PlayReelStopSound();
+            slotAudio.PlayReelStopSound();
         }
-
 
         if (
             allStopped &&
             slotAudio != null
         )
         {
-            slotAudio
-                .PlayThirdStopSound();
+            slotAudio.PlayThirdStopSound();
         }
-
 
         CheckAllReelsStopped();
     }
@@ -297,20 +352,23 @@ public partial class SlotGameManager
             return;
         }
 
-        if (Normal_GameManager.instance.IsYusyutuMode && nightBattle.IsShutter)
+        if (
+            Normal_GameManager.instance.IsYusyutuMode &&
+            nightBattle.IsShutter
+        )
         {
             nightBattle.UpdateShutterColor();
-            StartCoroutine(nightBattle.OpenShutter());
+
+            StartCoroutine(
+                nightBattle.OpenShutter()
+            );
         }
 
         ShowStoppedSymbols();
 
-
         CheckHitRole();
 
-
         ProcessPayout();
-
 
         EndGame();
     }
@@ -326,7 +384,6 @@ public partial class SlotGameManager
             "========== 停止図柄 =========="
         );
 
-
         Debug.Log(
             "上段：" +
             leftReel.GetUpperSymbol() +
@@ -335,7 +392,6 @@ public partial class SlotGameManager
             " | " +
             rightReel.GetUpperSymbol()
         );
-
 
         Debug.Log(
             "中段：" +
@@ -346,7 +402,6 @@ public partial class SlotGameManager
             rightReel.GetCenterSymbol()
         );
 
-
         Debug.Log(
             "下段：" +
             leftReel.GetLowerSymbol() +
@@ -355,7 +410,6 @@ public partial class SlotGameManager
             " | " +
             rightReel.GetLowerSymbol()
         );
-
 
         Debug.Log(
             "=============================="
@@ -369,16 +423,15 @@ public partial class SlotGameManager
 
     private void EndGame()
     {
-        canStopReels =
-            false;
+        canStopReels = false;
 
+        GameStarted = false;
 
-        GameStarted =
-            false;
-
-        //PointManager.instance.NowPoint
-        //        = PointManager.instance.AddPoint(PointManager.instance.NowPoint, CurrentRole);
-
+        // PointManager.instance.NowPoint
+        //     = PointManager.instance.AddPoint(
+        //         PointManager.instance.NowPoint,
+        //         CurrentRole
+        //       );
 
         Debug.Log(
             "3リール完全停止！ゲーム終了"
