@@ -72,7 +72,7 @@ public class Judge : MonoBehaviour
         return num;
     }
 
-    void GetJudgeRole()
+    public void GetJudgeRole()
     {
         if (!_numberofgames._continuing)
         {

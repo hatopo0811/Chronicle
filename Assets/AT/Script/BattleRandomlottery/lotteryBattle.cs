@@ -4,7 +4,9 @@ using UnityEngine;
 public class lotteryBattle : MonoBehaviour
 {
 
-  [SerializeField] Numberofgames _numberOfGames;
+    [SerializeField] Numberofgames _numberOfGames;
+    [SerializeField] lotteryJudge _lotteryJudge;
+    [SerializeField] Judge _judge;
 
     [SerializeField] SlotGameManager _slotGameManager;
     //Random(1－20)の乱数を入れる変数
@@ -226,7 +228,7 @@ public class lotteryBattle : MonoBehaviour
     }
 
    //リール終わりに入れる
-    void GetRole()
+    public void GetRole()
     {
 
         //弱チェリーの上乗せ抽選、Battle抽選を行う
@@ -245,6 +247,15 @@ public class lotteryBattle : MonoBehaviour
         {
             SetJudgeHighstage();
         }
+    }
+
+    public void GetManager()
+    {
+        GetRole();
+        _numberOfGames.GetSetNum();
+        _lotteryJudge.Getflag();
+        _judge.GetJudgeRole();
+
     }
 
 }

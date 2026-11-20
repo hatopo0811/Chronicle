@@ -113,7 +113,7 @@ void Start()
         }
     }
 
-    void Getflag()
+    public void Getflag()
     {
         if (!isScenario)
         {

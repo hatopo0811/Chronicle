@@ -56,7 +56,7 @@ public class Numberofgames : MonoBehaviour
         _initialGameCount += amount;
     }
 
-    void GetSetNum()
+    public void GetSetNum()
     {
 
         if (lotteryJudge == null) return;
