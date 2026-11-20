@@ -24,7 +24,7 @@ public class Normal_GameManager : MonoBehaviour
     // 優出モードに滞在しているかどうか
     public bool IsYusyutuMode { get; set; } = false;
 
-    
+    public bool isNoemalMode;
 
 
 
@@ -44,8 +44,8 @@ public class Normal_GameManager : MonoBehaviour
 
         
         // 初期値
-        modeText.text = "NowMode : " + Mode.ToString();
-        cycleText.text = "NowCycle : " + cycleCount.ToString();
+        //modeText.text = "NowMode : " + Mode.ToString();
+        //cycleText.text = "NowCycle : " + cycleCount.ToString();
 
         IsYusyutuMode = false;
     }
