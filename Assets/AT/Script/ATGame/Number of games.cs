@@ -17,6 +17,8 @@ public class Numberofgames : MonoBehaviour
     private int _scenarioNum;
     public bool _continuing = true;
 
+
+
     private void Start()
     {
         //ゲーム数を初期値に設定する
@@ -24,6 +26,39 @@ public class Numberofgames : MonoBehaviour
     }
     private void Update()
     {
+        GameText.text = "Game" + _initialGameCount.ToString();
+        //ゲーム数が999を超えないようにする処理
+        if (_initialGameCount >= 999)
+        {
+            _initialGameCount = 999;
+        }
+        //ゲーム数を増加させる処理を行う
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                GetGameCount(_gameCount);
+            }
+        }
+    }
+    public void SetGameCount()
+    {
+        //ゲーム数を初期値に設定する
+        _initialGameCount = 5;      
+    }
+    /// <summary>
+    /// 上乗せ抽選でゲーム数を増加させる処理を行う
+    /// </summary>
+    /// <param name="amount">ゲーム数の増加する数を指定する</param>
+    public void GetGameCount(int amount)
+    {
+        //ゲーム数を足す処理を行う
+        _initialGameCount += amount;
+    }
+
+    void GetSetNum()
+    {
+
         if (lotteryJudge == null) return;
         if (lotteryJudge.isScenario)
         {
@@ -42,9 +77,9 @@ public class Numberofgames : MonoBehaviour
             {
                 _continuing = false;
                 _judge.ATCount();
-                
+
             }
-            if(_initialGameCount == -1)
+            if (_initialGameCount == -1)
             {
                 lotteryJudge.isScenario = false;
                 GameText.gameObject.SetActive(false);
@@ -52,34 +87,9 @@ public class Numberofgames : MonoBehaviour
                 Debug.Log("通常時に戻る");
 
             }
-            GameText.text = "Game" + _initialGameCount.ToString();
-            //ゲーム数が999を超えないようにする処理
-            if (_initialGameCount >= 999)
-            {
-                _initialGameCount = 999;
-            }
-            //ゲーム数を増加させる処理を行う
-            else
-            {
-                if (Input.GetKeyDown(KeyCode.G))
-                {
-                    GetGameCount(_gameCount);
-                }
-            }
+            
         }
+
     }
-    public void SetGameCount()
-    {
-        //ゲーム数を初期値に設定する
-        _initialGameCount = 5;      
-    }
-    /// <summary>
-    /// 上乗せ抽選でゲーム数を増加させる処理を行う
-    /// </summary>
-    /// <param name="amount">ゲーム数の増加する数を指定する</param>
-    public void GetGameCount(int amount)
-    {
-        //ゲーム数を足す処理を行う
-        _initialGameCount += amount;
-    }
+
 }

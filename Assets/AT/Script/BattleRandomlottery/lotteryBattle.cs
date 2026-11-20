@@ -41,30 +41,12 @@ public class lotteryBattle : MonoBehaviour
 
     //スイカの高確率抽選
     private int _judgeHighstageNum = 7;
-
-    private void Update()
-    {
-        //弱チェリーの上乗せ抽選、Battle抽選を行う
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            SetJudgeExtraboostWeak();
-           
-        }
-        //強チェリーの上乗せ抽選、Battle抽選を行う
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            SetJudgeExtraboostStrong();
-        }
-        //スイカの高確率抽選を行う
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            SetJudgeHighstage();
-        }
-    }
-
     //弱チェ上乗せするかの抽選
     private void SetJudgeExtraboostWeak()
     {
+
+        
+
         //_judgeExtraboostにRandomNumを代入して、上乗せ抽選を行う
         int _judgeExtraboost = Random.Range(RandomNumMin,RandomNumMax);
         int _judgeEXtra;
@@ -121,9 +103,12 @@ public class lotteryBattle : MonoBehaviour
         _cherryWeak = _resetNum;
     }
 
+
     //弱チェのBattle抽選
     private void SetJudgeBattleWeak()
     {
+        
+
         //_judgeBattleにRandomNumを代入して、上乗せ抽選を行う
         int _judgeBattle = Random.Range(RandomNumMin, RandomNumMax);
         Debug.Log("SetJudgeBattleWeak: 乱数は" + _judgeBattle);
@@ -239,4 +224,27 @@ public class lotteryBattle : MonoBehaviour
         }
         _judgeHighstage = _resetNum;
     }
+
+   //リール終わりに入れる
+    void GetRole()
+    {
+
+        //弱チェリーの上乗せ抽選、Battle抽選を行う
+        if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.Cherry)
+        {
+            SetJudgeExtraboostWeak();
+
+        }
+        //強チェリーの上乗せ抽選、Battle抽選を行う
+        if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.StrongCherry)
+        {
+            SetJudgeExtraboostStrong();
+        }
+        //スイカの高確率抽選を行う
+        if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.Suika)
+        {
+            SetJudgeHighstage();
+        }
+    }
+
 }

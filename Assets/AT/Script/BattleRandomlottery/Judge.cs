@@ -7,8 +7,8 @@ public class Judge : MonoBehaviour
     [SerializeField] lotteryJudge _lotteryJudge;
     [SerializeField] private int JudgeCount;
     [SerializeField] private TextMeshProUGUI JudgeText;
-    [SerializeField] private Image[] _scenarioImages = new Image[8];
-    private Image _currentScenarioImage;
+    //[SerializeField] private Image[] _scenarioImages = new Image[8];
+    //private Image _currentScenarioImage;
     private readonly int _scenarioNum;
     private int _judgeCountImageNum;
     public bool _setCount = true;
@@ -18,29 +18,11 @@ public class Judge : MonoBehaviour
     }
     public void ATCount()
     {
-        if (!_numberofgames._continuing)
-        {
-            if (_setCount)
-            {
-                _setCount = false;
-                SetCount();
-            }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                JudgeCount--;
-                //NextJudge();
-            }
-            if (JudgeCount <= 0)
-            {
-                _lotteryJudge.GetCollorScenario(_lotteryJudge.SManagement = _lotteryJudge.hoge[_scenarioNum]);
-                _setCount = true;
-                JudgeCount = 0;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ContinuingJudge();
-        }
+        
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    ContinuingJudge();
+        //}
     }
     void SetCount()
     {
@@ -88,5 +70,28 @@ public class Judge : MonoBehaviour
         int num = 0;
         num = Random.Range(0, 101);
         return num;
+    }
+
+    void GetJudgeRole()
+    {
+        if (!_numberofgames._continuing)
+        {
+            if (_setCount)
+            {
+                _setCount = false;
+                SetCount();
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                JudgeCount--;
+                //NextJudge();
+            }
+            if (JudgeCount <= 0)
+            {
+                _lotteryJudge.GetCollorScenario(_lotteryJudge.SManagement = _lotteryJudge.hoge[_scenarioNum]);
+                _setCount = true;
+                JudgeCount = 0;
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 //シナリオ抽選を行うクラス
@@ -29,27 +30,6 @@ void Start()
         isScenario = true;
         Scenariotable();
         StartScenario();
-    }
-    void Update()
-    {
-       
-        if (!isScenario)
-        {
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                normalCount--;
-
-            }
-            if (normalCount == 0){
-                _image.gameObject.SetActive(true);
-
-
-            }
-
-
-
-        }
-
     }
     public void GetCollorScenario(int SManagement)
     {
@@ -132,4 +112,27 @@ void Start()
             default:Debug.Log("tableがエラー");return;
         }
     }
+
+    void Getflag()
+    {
+        if (!isScenario)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                normalCount--;
+
+            }
+            if (normalCount == 0)
+            {
+                _image.gameObject.SetActive(true);
+
+
+            }
+
+
+
+        }
+
+    }
+
 }
