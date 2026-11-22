@@ -3,71 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Vを狙え演出の「見た目と抽選」を独立管理するコンポーネント。
-// 既存のSlotGameManager / ReelControllerを変更せず追加できます。
-// 注意：抽選したV結果を実際の停止出目に反映する処理は別途必要です。
+// 既存のInspector参照と公開APIを維持し、PinkVとキャラ別抽選を拡張。
 public class ChronicleVAimPresentation : MonoBehaviour
 {
-    public enum VAimOutcome
-    {
-        Fake,
-        SingleV,
-        DoubleV
-    }
+    public enum VAimOutcome { Fake, SingleV, DoubleV, PinkV }
 
     [Serializable]
     public class CharacterSetting
     {
-        [Tooltip("チーム内で識別するための名前")]
         public string characterId = "Character";
-
-        [Tooltip("キャラクターUIに表示する画像")]
         public Sprite characterSprite;
-
-        [Min(0f)]
-        [Tooltip("出現しやすさの重み。確率ではなく、ほかのキャラクターとの比率です")]
-        public float appearanceWeight = 1f;
-
+        [Min(0f)] public float appearanceWeight = 1f;
+        [Range(0f, 100f)] public float successChancePercent = 30f;
+        [Range(0f, 100f)] public float doubleVChanceOnSuccessPercent = 10f;
         [Range(0f, 100f)]
-        [Tooltip("このキャラ登場時にシングルまたはダブルVに成功する確率")]
-        public float successChancePercent = 30f;
-
-        [Range(0f, 100f)]
-        [Tooltip("成功した場合、そのうちダブルVになる確率")]
-        public float doubleVChanceOnSuccessPercent = 10f;
+        [Tooltip("成功時、ダブルV抽選より先に判定するピンクV確率")]
+        public float pinkVChanceOnSuccessPercent = 1f;
     }
 
     [Header("背景：RawImageを1枚使う")]
     [SerializeField] private RawImage backgroundRawImage;
     [SerializeField] private Vector2 backgroundScrollSpeed = new Vector2(0.06f, 0f);
     [SerializeField] private Vector2 backgroundTiling = Vector2.one;
-
     [Header("文字とキャラクターは別UI")]
     [SerializeField] private GameObject aimTextObject;
     [SerializeField] private Image characterImage;
-
     [Header("キャラクター別・出現率／期待度")]
     [SerializeField] private List<CharacterSetting> characters = new List<CharacterSetting>();
-
     [Header("演出の終了方法")]
-    [Tooltip("ONなら第3停止ボタンが入力された時点で演出UIを非表示にする。リールの停止完了を待つ処理ではありません")]
     [SerializeField] private bool autoHideOnThirdStopInput = false;
     [SerializeField] private SlotGameManager slotGameManager;
-
     [Header("デバッグ")]
     [SerializeField] private bool logResult = true;
 
     public bool IsPlaying { get; private set; }
     public VAimOutcome CurrentOutcome { get; private set; } = VAimOutcome.Fake;
     public string CurrentCharacterId { get; private set; } = "";
-
-    // チームのV停止制御と連携する場合はこのイベントを購読してください。
-    // 引数: 抽選結果、キャラクターID
     public event Action<VAimOutcome, string> VAimPrepared;
 
+    private Vector2 uvScrollOffset;
     private RectTransform characterRect;
     private Vector2 initialCharacterPosition;
-    private Vector2 uvScrollOffset;
 
     private void Awake()
     {
@@ -76,7 +52,6 @@ public class ChronicleVAimPresentation : MonoBehaviour
             characterRect = characterImage.rectTransform;
             initialCharacterPosition = characterRect.anchoredPosition;
         }
-
         HideVisuals();
     }
 
@@ -94,38 +69,29 @@ public class ChronicleVAimPresentation : MonoBehaviour
 
     private void Update()
     {
-        if (!IsPlaying || backgroundRawImage == null)
-            return;
-
-        // UVの位置をずらして1枚のテクスチャをループさせる。
-        // Texture Import Settings の Wrap Mode = Repeat が必要。
+        if (!IsPlaying || backgroundRawImage == null) return;
         uvScrollOffset += backgroundScrollSpeed * Time.deltaTime;
         uvScrollOffset.x = Mathf.Repeat(uvScrollOffset.x, 1f);
         uvScrollOffset.y = Mathf.Repeat(uvScrollOffset.y, 1f);
         backgroundRawImage.uvRect = new Rect(
-            uvScrollOffset.x,
-            uvScrollOffset.y,
+            uvScrollOffset.x, uvScrollOffset.y,
             Mathf.Max(0.01f, backgroundTiling.x),
-            Mathf.Max(0.01f, backgroundTiling.y)
-        );
+            Mathf.Max(0.01f, backgroundTiling.y));
     }
 
-    // AT管理側から「Vを狙え演出を開始する」ときに呼ぶ。
-    // この関数はリールを回転・停止させません。
     public void BeginVAim()
     {
+        if (IsPlaying) return;
         CharacterSetting selected = SelectCharacter();
         if (selected == null)
         {
-            Debug.LogWarning("[Vを狙え] キャラクターが未登録、または出現重みがすべて0です。", this);
+            Debug.LogWarning("[Vを狙え] キャラクター未登録または出現重みが全て0です", this);
             return;
         }
-
         CurrentCharacterId = selected.characterId;
         CurrentOutcome = DrawOutcome(selected);
         IsPlaying = true;
         uvScrollOffset = Vector2.zero;
-
         if (backgroundRawImage != null)
         {
             backgroundRawImage.gameObject.SetActive(true);
@@ -133,10 +99,7 @@ public class ChronicleVAimPresentation : MonoBehaviour
                 Mathf.Max(0.01f, backgroundTiling.x),
                 Mathf.Max(0.01f, backgroundTiling.y));
         }
-
-        if (aimTextObject != null)
-            aimTextObject.SetActive(true);
-
+        if (aimTextObject != null) aimTextObject.SetActive(true);
         if (characterImage != null)
         {
             characterImage.sprite = selected.characterSprite;
@@ -144,16 +107,12 @@ public class ChronicleVAimPresentation : MonoBehaviour
             if (characterRect != null)
                 characterRect.anchoredPosition = initialCharacterPosition;
         }
-
         if (logResult)
-            Debug.Log("[Vを狙え] 開始 / キャラ=" + CurrentCharacterId +
-                      " / 抽選結果=" + CurrentOutcome +
-                      " / 成功期待度=" + selected.successChancePercent + "%");
-
+            Debug.Log("[Vを狙え] 開始 / キャラ=" + CurrentCharacterId
+                + " / 結果=" + CurrentOutcome);
         VAimPrepared?.Invoke(CurrentOutcome, CurrentCharacterId);
     }
 
-    // 第3停止後や、チームのAT演出終了処理から呼ぶ。
     public void EndVAim()
     {
         IsPlaying = false;
@@ -163,19 +122,11 @@ public class ChronicleVAimPresentation : MonoBehaviour
     [ContextMenu("テスト：Vを狙えを開始")]
     private void TestBeginVAim()
     {
-        if (!Application.isPlaying)
-        {
-            Debug.LogWarning("[Vを狙え] Playモードでテストしてください。", this);
-            return;
-        }
-        BeginVAim();
+        if (Application.isPlaying) BeginVAim();
     }
 
     [ContextMenu("テスト：Vを狙えを終了")]
-    private void TestEndVAim()
-    {
-        EndVAim();
-    }
+    private void TestEndVAim() { EndVAim(); }
 
     private void OnReelStopPressed(int stopNumber, ReelController.ReelType reel)
     {
@@ -185,45 +136,37 @@ public class ChronicleVAimPresentation : MonoBehaviour
 
     private void HideVisuals()
     {
-        if (backgroundRawImage != null)
-            backgroundRawImage.gameObject.SetActive(false);
-        if (aimTextObject != null)
-            aimTextObject.SetActive(false);
-        if (characterImage != null)
-            characterImage.gameObject.SetActive(false);
+        if (backgroundRawImage != null) backgroundRawImage.gameObject.SetActive(false);
+        if (aimTextObject != null) aimTextObject.SetActive(false);
+        if (characterImage != null) characterImage.gameObject.SetActive(false);
     }
 
     private CharacterSetting SelectCharacter()
     {
-        float totalWeight = 0f;
-        foreach (CharacterSetting character in characters)
+        float total = 0f;
+        foreach (var ch in characters)
+            if (ch != null) total += Mathf.Max(0f, ch.appearanceWeight);
+        if (total <= 0f) return null;
+        float roll = UnityEngine.Random.value * total;
+        foreach (var ch in characters)
         {
-            if (character != null)
-                totalWeight += Mathf.Max(0f, character.appearanceWeight);
+            if (ch == null) continue;
+            roll -= Mathf.Max(0f, ch.appearanceWeight);
+            if (roll < 0f) return ch;
         }
-
-        if (totalWeight <= 0f)
-            return null;
-
-        float roll = UnityEngine.Random.value * totalWeight;
-        foreach (CharacterSetting character in characters)
-        {
-            if (character == null) continue;
-            roll -= Mathf.Max(0f, character.appearanceWeight);
-            if (roll < 0f) return character;
-        }
-        return characters[characters.Count - 1];
+        for (int i = characters.Count - 1; i >= 0; i--)
+            if (characters[i] != null && characters[i].appearanceWeight > 0f)
+                return characters[i];
+        return null;
     }
 
-    private VAimOutcome DrawOutcome(CharacterSetting selected)
+    private VAimOutcome DrawOutcome(CharacterSetting ch)
     {
-        float success = Mathf.Clamp01(selected.successChancePercent / 100f);
-        if (UnityEngine.Random.value >= success)
+        if (UnityEngine.Random.value >= Mathf.Clamp01(ch.successChancePercent / 100f))
             return VAimOutcome.Fake;
-
-        float doubleChance = Mathf.Clamp01(selected.doubleVChanceOnSuccessPercent / 100f);
-        return UnityEngine.Random.value < doubleChance
-            ? VAimOutcome.DoubleV
-            : VAimOutcome.SingleV;
+        if (UnityEngine.Random.value < Mathf.Clamp01(ch.pinkVChanceOnSuccessPercent / 100f))
+            return VAimOutcome.PinkV;
+        return UnityEngine.Random.value < Mathf.Clamp01(ch.doubleVChanceOnSuccessPercent / 100f)
+            ? VAimOutcome.DoubleV : VAimOutcome.SingleV;
     }
 }
