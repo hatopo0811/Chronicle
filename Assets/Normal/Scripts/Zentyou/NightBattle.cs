@@ -28,12 +28,6 @@ public class NightBattle : MonoBehaviour
     [SerializeField] private Image testBG;
     
 
-    bool isClose = false;
-
-    // 色が上がるシャッターと上がらないシャッターを切り変える
-    public bool isFakeShutter = false;
-    
-
 
     /// <summary>
     /// 演出の色
@@ -57,14 +51,26 @@ public class NightBattle : MonoBehaviour
 
     // フェイクシャッターだったらtrue
     public bool IsFakeShutter { get { return CurrentEventType == eEventType.FakeShutter; } }
+    // 通常シャッターだったらtrue
     public bool IsShutter { get { return CurrentEventType == eEventType.Shutter; } }
-
-
+    // 前兆の経過ゲーム数
+    public int CurrentNightBattleGameCount {  get; private set; }
+    // 前兆最大ゲーム数
+    private const int MaxBattleGame = 15;
+    // シャッターがしまっているかどうか
+    private bool isClose = false;
+    // 色が上がるシャッターと上がらないシャッターを切り変える
+    public bool isFakeShutter = false;
+    // ジャッジのゲーム数
+    private const int NightBattleGameNum = 3;
+    // 
+    public int nowJudgeGameCount = 0;
 
 
     private void OnEnable()
     {
         Normal_GameManager.instance.GameState = eGameState.NightBattle;
+        StartCoroutine(HideImage());
     }
 
 
@@ -86,17 +92,13 @@ public class NightBattle : MonoBehaviour
         rightShutterTransform.anchoredPosition
             = new Vector2(GameConst.OPEN_RIGHT_SHUTTER_POS_X, 0);
 
-        
-        
-        
-
     }
     
 
     void Update()
     {
         
-        // シャッター演出
+        // デバック用 : シャッター演出
         if (Input.GetKeyDown(KeyCode.F1))
         {
             StartCoroutine(CloseShutter());
@@ -105,6 +107,15 @@ public class NightBattle : MonoBehaviour
         {
             StartCoroutine(OpenShutter());
         }
+
+        //前兆が始まって１５ゲーム経ったら
+        if (CurrentNightBattleGameCount == MaxBattleGame)
+        {
+            // ジャッジ突入演出
+
+
+        }
+
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
 
@@ -118,8 +129,25 @@ public class NightBattle : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 決戦前夜中のゲーム数を加算する
+    /// </summary>
+    public void PlusOne_NightBattleGameCount()
+    {
+        if (!Normal_GameManager.instance.IsNightBattle) return;
+        CurrentNightBattleGameCount++;
+    }
+
+    /// <summary>
+    /// 決戦前夜突入時に突破率を決める
+    /// </summary>
+    /// <returns></returns>
     private eEventColor SelectEventColor()
     {
+
+        //　★
+        if (CurrentNightBattleGameCount == MaxBattleGame) ;
+
         int eventColor = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
 
         if (eventColor < 3)
@@ -145,6 +173,11 @@ public class NightBattle : MonoBehaviour
 
     }
 
+    // judgeゲーム数の減算　
+    public void SubtractJudgeGame()
+    {
+
+    }
 
     /// <summary>
     /// どの演出を出すかレバーONで抽選、その関数を呼び出す
@@ -222,13 +255,12 @@ public class NightBattle : MonoBehaviour
     /// <returns></returns>
     public IEnumerator OpenShutter()
     {
-        // 開いた状態はX座標±530
-        // 閉まっているシャッターを画面外(左右)に移動
-        float t = 0.0f;
+        if (!Normal_GameManager.instance.IsNightBattle) yield break;
+
+            // 開いた状態はX座標±530
+            // 閉まっているシャッターを画面外(左右)に移動
+            float t = 0.0f;
         float duration = 0.1f;
-
-        
-
 
         while (t < 1.0f)
         {
@@ -251,7 +283,8 @@ public class NightBattle : MonoBehaviour
 
             yield return null;
         }
-        
+        UpdateShutterColor();
+
     }
 
     /// <summary>
@@ -260,10 +293,11 @@ public class NightBattle : MonoBehaviour
     /// <returns></returns>
     public IEnumerator CloseShutter()
     {
+        if (!Normal_GameManager.instance.IsNightBattle) yield break;
 
-        // 閉まった状態は右X座標178左-200
+            // 閉まった状態は右X座標178左-200
 
-        float t = 0.0f;
+            float t = 0.0f;
         float duration = 0.1f;
 
         while (t < 1.0f)
@@ -292,10 +326,10 @@ public class NightBattle : MonoBehaviour
 
     }
 
-
-
-
-
+    /// <summary>
+    /// 突入時の画像を消す
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator HideImage()
     {
         yield return new WaitForSeconds(3f);

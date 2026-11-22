@@ -14,8 +14,6 @@ public class PointManager : MonoBehaviour
     [SerializeField] private SlotGameManager gameManager;
 
 
-    [SerializeField] private GameObject Story;
-
     public RoleType RoleType { get; private set; } = RoleType.Lose;
 
     public eTargetPoint TargetPoint { get; private set; } = eTargetPoint.Invalid;
@@ -49,7 +47,9 @@ public class PointManager : MonoBehaviour
     /// </summary>
     private void StartSigns()
     {
+      
         
+
     }
 
 
@@ -58,37 +58,46 @@ public class PointManager : MonoBehaviour
     /// </summary>
     /// <param name="point">現在の獲得済みポイント</param>
     /// <returns>NowPoint + 加算ポイントを返す</returns>
-    public int AddPoint(RoleType type)
+    public void AddPoint( RoleType type)
     {
+        Debug.Log("ポイント加算！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
         // 通常時じゃなかったら終了 
-        if (Normal_GameManager.instance.GameState != eGameState.Normal) return 0;
+        if (!Normal_GameManager.instance.IsNormal) return;
+
 
         // 子役ごとに加算するポイントを切り替える
         switch (type)
         {
+            // １ポイント加算
             case RoleType.Lose:
-                return 1;
-                
+                NowPoint += 1;
+                break;
+                break;
+            // ポイント加算なし
             case RoleType.Bell:
-                return 0;
-
+                 NowPoint += 0;
+                break;
+            // ５ポイント加算
             case RoleType.Replay:
-                return 5;
-
+                NowPoint += 5;
+                break;
+            // １０ポイント加算
             case RoleType.Suika:
-                return 10;
-
+                NowPoint += 10;
+                break;
+            // ２０ポイント加算
             case RoleType.Cherry:
-                return 10;
-
+                NowPoint += 10;
+                break;
+            // ２０ポイント加算
             case RoleType.StrongCherry:
-                // ★優出モードに行くのがめんどくさいため20→200に変更デバックのみ
-                return 200;
-
+                NowPoint += 100;
+                break;
+            // ポイント加算なし
             case RoleType.ATBell:
                 break;
         }
-        return 0;
+        
     }
 
     

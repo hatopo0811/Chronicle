@@ -11,6 +11,11 @@ public class Normal_GameManager : MonoBehaviour
      
     // ゲームステート
     public eGameState GameState {  get; set; }
+    public bool IsNormal { get { return GameState == eGameState.Normal; } }
+    public bool IsNightBattle { get { return GameState == eGameState.NightBattle; } }
+    public bool IsCZ { get { return GameState == eGameState.CZ; } }
+    public bool IsAT { get { return GameState == eGameState.AT; } }
+
 
 
 

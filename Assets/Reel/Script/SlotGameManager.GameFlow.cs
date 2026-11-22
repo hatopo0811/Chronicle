@@ -170,10 +170,10 @@ public partial class SlotGameManager
     {
       
 
-        if (Normal_GameManager.instance.GameState == eGameState.NightBattle)
+        if (Normal_GameManager.instance.IsNightBattle)
         {
             nightBattle.SelectEvent();
-
+            
             if (
                 nightBattle.IsFakeShutter ||
                 nightBattle.IsShutter
@@ -184,6 +184,9 @@ public partial class SlotGameManager
                 );
             }
         }
+
+        // 決戦前夜中のゲームカウント加算
+        nightBattle.PlusOne_NightBattleGameCount();
 
         // =========================================
         // ★変更：ウェイト開始
@@ -294,16 +297,8 @@ public partial class SlotGameManager
 
                 centerStopped = true;
 
-
-                if (
-                    Normal_GameManager.instance.GameState == eGameState.NightBattle &&
-                    nightBattle.IsFakeShutter
-                )
-                {
-                    StartCoroutine(
-                        nightBattle.OpenShutter()
-                    );
-                }
+                // 前兆中の演出、シャッターを開ける（色は上がらない）
+                if(nightBattle.IsFakeShutter) StartCoroutine(nightBattle.OpenShutter());
 
                 break;
 
@@ -343,28 +338,18 @@ public partial class SlotGameManager
 
     private void CheckAllReelsStopped()
     {
-        if (
-            !leftStopped ||
-            !centerStopped ||
-            !rightStopped
-        )
-        {
-            return;
-        }
-        if (Normal_GameManager.instance.GameState == eGameState.NightBattle || PointManager.instance.NowPoint <= 600)
-        {
-            PointManager.instance.NowPoint
-                += PointManager.instance.AddPoint( CurrentRole);
-        }
-        if (
-            Normal_GameManager.instance.GameState == eGameState.NightBattle && nightBattle.IsShutter)
-        {
-            nightBattle.UpdateShutterColor();
+        // リールのどれかが止まっていなければリターン
+        if (!leftStopped || !centerStopped || !rightStopped) return;
+        
+        // ポイント加算
+        PointManager.instance.AddPoint(CurrentRole);
 
-            StartCoroutine(
-                nightBattle.OpenShutter()
-            );
-        }
+        // シャッターを開く
+        if (nightBattle.IsShutter) StartCoroutine(nightBattle.OpenShutter());
+
+        
+        
+
 
         ShowStoppedSymbols();
 
