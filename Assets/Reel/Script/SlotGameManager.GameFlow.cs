@@ -169,22 +169,17 @@ public partial class SlotGameManager
     private void StartAllReels()
     {
       
-
-        if (Normal_GameManager.instance.IsNightBattle)
+        // 演出選択
+        nightBattle.SelectEvent();
+        // シャッター閉じ演出
+        if (nightBattle.IsFakeShutter || nightBattle.IsShutter)
         {
-            nightBattle.SelectEvent();
-            
-            if (
-                nightBattle.IsFakeShutter ||
-                nightBattle.IsShutter
-            )
-            {
-                StartCoroutine(
-                    nightBattle.CloseShutter()
-                );
-            }
+            StartCoroutine(nightBattle.CloseShutter());
         }
 
+        // 前兆ジャッジゲーム数減算
+        nightBattle.SubtractJudgeGame();
+        
         // 決戦前夜中のゲームカウント加算
         nightBattle.PlusOne_NightBattleGameCount();
 
@@ -347,9 +342,10 @@ public partial class SlotGameManager
         // シャッターを開く
         if (nightBattle.IsShutter) StartCoroutine(nightBattle.OpenShutter());
 
-        
-        
 
+
+
+        nightBattle.ResetEventType();
 
         ShowStoppedSymbols();
 

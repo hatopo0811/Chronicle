@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
 
 
 
-    // 
+    // あそび
     [SerializeField] private GameObject Enoki;
 
 
@@ -46,6 +46,8 @@ public class UIManager : MonoBehaviour
         modeText.text = "NowMode : " + normalInstance.Mode.ToString();
         cycleText.text = "NowCycle : " + normalInstance.cycleCount.ToString();
         gameStateText.text = "NowState : " + Normal_GameManager.instance.GameState.ToString();
+
+
     }
 
 
@@ -53,7 +55,6 @@ public class UIManager : MonoBehaviour
     void Update()
     {
 
-        
         // 100ポイントを超えたら榎木を出す
         if ((int)eTargetPoint.Point100 < pointinstance.NowPoint)
         {
@@ -65,19 +66,31 @@ public class UIManager : MonoBehaviour
             ChangeUICanvas(normal_UICanvas, nightBattle_UICanvas);
             Enoki.SetActive(false);
         }
-
-        modeText.text = "NowMode : " + normalInstance.Mode.ToString();
-        cycleText.text = "NowCycle : " + normalInstance.cycleCount.ToString();
-        gameStateText.text = "NowState : " + normalInstance.GameState.ToString();
-        if (normalInstance.GameState == eGameState.NightBattle)
+        // 前兆中は前兆のゲーム数表示
+        if (normalInstance.IsNightBattle)
         {
             nightBattleGameCount.text = nightBattle.CurrentNightBattleGameCount + "G";
         }
+        // ジャッジ演出に入ったら
+        if (Normal_GameManager.instance.IsNightBattleJudge)
+        {
+            // ジャッジの残りゲーム数を表示
+            nightBattleGameCount.text = nightBattle.nowJudgeGameCount.ToString();
+        }
 
+
+        // 常に表示
+        modeText.text = "NowMode : " + normalInstance.Mode.ToString();
+        cycleText.text = "NowCycle : " + normalInstance.cycleCount.ToString();
+        gameStateText.text = "NowState : " + normalInstance.GameState.ToString();
 
     }
 
-
+    /// <summary>
+    /// 通常、前兆、CZ、ATのUICanvasを切り替える
+    /// </summary>
+    /// <param name="beforeUICanvas"></param>
+    /// <param name="afterUICanvas"></param>
     public void ChangeUICanvas(GameObject beforeUICanvas, GameObject afterUICanvas)
     {
         beforeUICanvas.SetActive(false);

@@ -62,8 +62,8 @@ public class NightBattle : MonoBehaviour
     // 色が上がるシャッターと上がらないシャッターを切り変える
     public bool isFakeShutter = false;
     // ジャッジのゲーム数
-    private const int NightBattleGameNum = 3;
-    // 
+    private const int JudgeGameNum = 3;
+    // ジャッジのカウントダウン
     public int nowJudgeGameCount = 0;
 
 
@@ -109,12 +109,25 @@ public class NightBattle : MonoBehaviour
         }
 
         //前兆が始まって１５ゲーム経ったら
-        if (CurrentNightBattleGameCount == MaxBattleGame)
+        if (MaxBattleGame < CurrentNightBattleGameCount)
         {
             // ジャッジ突入演出
+            Normal_GameManager.instance.GameState = eGameState.NightBattleJudge;
+            nowJudgeGameCount = JudgeGameNum;
+            StartCoroutine(OpenShutter());
+
+        }
+
+        // ジャッジ成功したら　仮：３ゲーム経ったら
+        if (nowJudgeGameCount < 0)
+        {
+            // ATに移行
+            Normal_GameManager.instance.GameState = eGameState.AT;
+            // UI切り替え
 
 
         }
+
 
 
         // 背景色アップ演出 順番：白→青→黄色→赤→虹 期待度：青＜黄色＜白＝赤＜虹
@@ -124,11 +137,16 @@ public class NightBattle : MonoBehaviour
         // ペラアタック演出(α版) → 可(本前兆濃厚)→良(子役・レア役示唆)→優(強レア役)→超(本前兆期待度UP)
 
 
-        // AT突入ジャッジ
 
 
     }
 
+    // judgeゲーム数の減算　
+    public void SubtractJudgeGame()
+    {
+        if (!Normal_GameManager.instance.IsNightBattleJudge) return;
+        nowJudgeGameCount--;
+    }
     /// <summary>
     /// 決戦前夜中のゲーム数を加算する
     /// </summary>
@@ -173,17 +191,14 @@ public class NightBattle : MonoBehaviour
 
     }
 
-    // judgeゲーム数の減算　
-    public void SubtractJudgeGame()
-    {
-
-    }
 
     /// <summary>
     /// どの演出を出すかレバーONで抽選、その関数を呼び出す
     /// </summary>
     public void SelectEvent()
     {
+        if (!Normal_GameManager.instance.IsNightBattle || MaxBattleGame == CurrentNightBattleGameCount) return;
+
         // 抽選
         CurrentEventType = (eEventType)Random.Range(0, (int)eEventType.EventMax);
 
@@ -215,6 +230,12 @@ public class NightBattle : MonoBehaviour
                 break;
         }
 
+    }
+
+    public void ResetEventType()
+    {
+        CurrentEventType = eEventType.None;
+        StartCoroutine(OpenShutter());
     }
 
     /// <summary>
@@ -295,9 +316,9 @@ public class NightBattle : MonoBehaviour
     {
         if (!Normal_GameManager.instance.IsNightBattle) yield break;
 
-            // 閉まった状態は右X座標178左-200
+        // 閉まった状態は右X座標178左-200
 
-            float t = 0.0f;
+        float t = 0.0f;
         float duration = 0.1f;
 
         while (t < 1.0f)

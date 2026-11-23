@@ -13,6 +13,8 @@ public class Normal_GameManager : MonoBehaviour
     public eGameState GameState {  get; set; }
     public bool IsNormal { get { return GameState == eGameState.Normal; } }
     public bool IsNightBattle { get { return GameState == eGameState.NightBattle; } }
+    public bool IsNightBattleJudge { get { return GameState == eGameState.NightBattleJudge; } }
+
     public bool IsCZ { get { return GameState == eGameState.CZ; } }
     public bool IsAT { get { return GameState == eGameState.AT; } }
 

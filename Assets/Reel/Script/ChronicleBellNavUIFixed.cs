@@ -46,9 +46,9 @@ public sealed class ChronicleBellNavUIFixed : MonoBehaviour
         }
         // ATBellNavigationReady is fired AFTER the first-stop-only event.
         // It provides the real correct three-character order.
-        slotGameManager.ATBellNavigationReady += OnBellNavigation;
-        slotGameManager.ChronicleReelStopPressed += OnReelStopPressed;
-        slotGameManager.ChronicleModeChanged += OnModeChanged;
+        //slotGameManager.ATBellNavigationReady += OnBellNavigation;
+        //slotGameManager.ChronicleReelStopPressed += OnReelStopPressed;
+        //slotGameManager.ChronicleModeChanged += OnModeChanged;
     }
 
     private void OnDisable()

@@ -83,7 +83,9 @@ public enum eGameState
     Invalid = -1,
     Normal,
     NightBattle,
+    NightBattleJudge,
     CZ,
+    ATPreparation,
     AT,
 
 }
