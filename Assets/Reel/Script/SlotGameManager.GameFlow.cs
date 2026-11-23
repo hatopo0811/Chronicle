@@ -293,7 +293,10 @@ public partial class SlotGameManager
                 centerStopped = true;
 
                 // 前兆中の演出、シャッターを開ける（色は上がらない）
-                if(nightBattle.IsFakeShutter) StartCoroutine(nightBattle.OpenShutter());
+                if(nightBattle.IsFakeShutter)
+                {
+                    StartCoroutine(nightBattle.OpenShutter());
+                }
 
                 break;
 
@@ -340,12 +343,13 @@ public partial class SlotGameManager
         PointManager.instance.AddPoint(CurrentRole);
 
         // シャッターを開く
-        if (nightBattle.IsShutter) StartCoroutine(nightBattle.OpenShutter());
+        if (nightBattle.IsShutter)
+        {
+            StartCoroutine(nightBattle.OpenShutter());
+        }
 
 
-
-
-        nightBattle.ResetEventType();
+        nightBattle.ResetShutterPos();
 
         ShowStoppedSymbols();
 

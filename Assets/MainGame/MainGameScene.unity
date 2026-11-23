@@ -7458,10 +7458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 241c4d754ebfb484bbc4ee6a59c46bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChronicleBellNavUIFixed
-  slotGameManager: {fileID: 0}
-  leftImage: {fileID: 0}
-  centerImage: {fileID: 0}
-  rightImage: {fileID: 0}
+  slotGameManager: {fileID: 1411954678}
+  leftImage: {fileID: 592520009}
+  centerImage: {fileID: 287797560}
+  rightImage: {fileID: 1763651216}
   oneSprite: {fileID: -744750857755342827, guid: eb45e3ccbbe21e349ab8b80fb2fb794e, type: 3}
   twoSprite: {fileID: -7946530209558413697, guid: 4bf4ddd016bc4d6488a247a83db2afd2, type: 3}
   threeSprite: {fileID: 2993907743499449922, guid: b42ac5bf0428b8046a71bb25668ff650, type: 3}

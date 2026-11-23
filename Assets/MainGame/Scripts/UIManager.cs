@@ -77,6 +77,14 @@ public class UIManager : MonoBehaviour
             // ジャッジの残りゲーム数を表示
             nightBattleGameCount.text = nightBattle.nowJudgeGameCount.ToString();
         }
+        // ジャッジ成功したら　仮：３ゲーム経ったら
+        if (nightBattle.nowJudgeGameCount < 0)
+        {
+            // ATに移行
+            Normal_GameManager.instance.GameState = eGameState.AT;
+            // UI切り替え
+            ChangeUICanvas(nightBattle_UICanvas,AT_UICanvas);
+        }
 
 
         // 常に表示
@@ -91,7 +99,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     /// <param name="beforeUICanvas"></param>
     /// <param name="afterUICanvas"></param>
-    public void ChangeUICanvas(GameObject beforeUICanvas, GameObject afterUICanvas)
+    private void ChangeUICanvas(GameObject beforeUICanvas, GameObject afterUICanvas)
     {
         beforeUICanvas.SetActive(false);
         afterUICanvas.SetActive(true);

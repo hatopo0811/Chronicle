@@ -36,9 +36,6 @@ public class PointManager : MonoBehaviour
     {
         pointText.text = NowPoint.ToString();
 
-        
-
-        
 
     }
 
