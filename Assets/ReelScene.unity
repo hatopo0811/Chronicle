@@ -3520,6 +3520,7 @@ MonoBehaviour:
   nowEvent: {fileID: 1958928193}
   testBG: {fileID: 961199607}
   isFakeShutter: 0
+  nowJudgeGameCount: 0
 --- !u!4 &1433209367
 Transform:
   m_ObjectHideFlags: 0
@@ -3954,7 +3955,7 @@ MonoBehaviour:
   presentation: {fileID: 1715691257}
   backgroundRawImage: {fileID: 0}
   blueBackground: {fileID: 2800000, guid: 9d04d2e0dab7e2647b0d9a483da17fc3, type: 3}
-  redBackground: {fileID: 0}
+  redBackground: {fileID: 2800000, guid: 7a5e26876189aba4e9ccd28f2ce5c979, type: 3}
   rainbowBackground: {fileID: 0}
   premiumBackground: {fileID: 0}
   cutInImage: {fileID: 0}
@@ -4205,7 +4206,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PointManager
   pointText: {fileID: 1499345458}
   gameManager: {fileID: 909880804}
-  Story: {fileID: 0}
 --- !u!4 &1700017074
 Transform:
   m_ObjectHideFlags: 0
