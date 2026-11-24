@@ -231,7 +231,7 @@ public class lotteryBattle : MonoBehaviour
     //リール終わりに入れる
     public void GetRole()
     {
-
+        if (!Normal_GameManager.instance.IsAT) return;
         //弱チェリーの上乗せ抽選、Battle抽選を行う
         if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.Cherry)
         {

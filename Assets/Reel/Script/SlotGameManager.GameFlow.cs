@@ -4,6 +4,14 @@ using UnityEngine;
 
 public partial class SlotGameManager
 {
+
+    [SerializeField]
+    private Numberofgames _numberofgames;
+    [SerializeField]
+    private lotteryBattle _lotteryBattle;
+    [SerializeField]
+    private Judge _judge;
+
     // =========================================
     // データカウンター
     // =========================================
@@ -177,6 +185,8 @@ public partial class SlotGameManager
             StartCoroutine(nightBattle.CloseShutter());
         }
 
+        _lotteryBattle.GetRole();
+
         // 前兆ジャッジゲーム数減算
         nightBattle.SubtractJudgeGame();
         
@@ -348,6 +358,11 @@ public partial class SlotGameManager
             StartCoroutine(nightBattle.OpenShutter());
         }
 
+        
+
+        _judge.GetJudgeRole();
+
+        _numberofgames.GetSetNum();
 
         nightBattle.ResetShutterPos();
 

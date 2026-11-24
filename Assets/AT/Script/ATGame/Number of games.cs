@@ -14,18 +14,23 @@ public class Numberofgames : MonoBehaviour
     [SerializeField] TextMeshProUGUI GetGameText;
     public int GameNum;
     [SerializeField] public RawImage _endScene;
-    private int _scenarioNum;
+    private int _scenarioNum;   
     public bool _continuing = true;
 
 
 
-    private void Start()
-    {
-        //ƒQ[ƒ€”‚ğ‰Šú’l‚Éİ’è‚·‚é
-        SetGameCount();
-    }
+    
+
+    
+
     private void Update()
     {
+        if (Normal_GameManager.instance.IsAT)
+        {
+            SetGameCount();
+        }
+
+
         GameText.text = "Game" + _initialGameCount.ToString();
         //ƒQ[ƒ€”‚ª999‚ğ’´‚¦‚È‚¢‚æ‚¤‚É‚·‚éˆ—
         if (_initialGameCount >= 999)
@@ -58,6 +63,7 @@ public class Numberofgames : MonoBehaviour
 
     public void GetSetNum()
     {
+        if (!Normal_GameManager.instance.IsAT) return;
 
         if (lotteryJudge == null) return;
         if (lotteryJudge.isScenario)
@@ -66,11 +72,7 @@ public class Numberofgames : MonoBehaviour
             {
                 if (_continuing)
                 {
-                    //ƒQ[ƒ€”‚ğŒ¸‚ç‚·ˆ—‚ğs‚¤
-                    if (Input.GetKeyDown(KeyCode.Q))
-                    {
-                        _initialGameCount--;
-                    }
+                    _initialGameCount--;
                 }
             }
             if (_initialGameCount == 0)
@@ -92,4 +94,5 @@ public class Numberofgames : MonoBehaviour
 
     }
 
+   
 }

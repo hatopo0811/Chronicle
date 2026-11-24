@@ -43,7 +43,7 @@ public class Normal_GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameState = eGameState.Normal;
+        GameState = eGameState.AT;
     }
     
 

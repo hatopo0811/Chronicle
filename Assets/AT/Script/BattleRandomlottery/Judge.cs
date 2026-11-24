@@ -74,6 +74,7 @@ public class Judge : MonoBehaviour
 
     public void GetJudgeRole()
     {
+        if (!Normal_GameManager.instance.IsAT) return;
         if (!_numberofgames._continuing)
         {
             if (_setCount)
@@ -81,11 +82,10 @@ public class Judge : MonoBehaviour
                 _setCount = false;
                 SetCount();
             }
-            if (Input.GetKeyDown(KeyCode.A))
-            {
+           
                 JudgeCount--;
                 //NextJudge();
-            }
+            
             if (JudgeCount <= 0)
             {
                 _lotteryJudge.GetCollorScenario(_lotteryJudge.SManagement = _lotteryJudge.hoge[_scenarioNum]);

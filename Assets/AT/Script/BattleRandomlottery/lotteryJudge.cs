@@ -15,7 +15,7 @@ public class lotteryJudge : MonoBehaviour
     public int[] hoge = new int[7];
     private Image _currentScenarioImage;
     public int SManagement;
-    public bool isScenario = true;
+    public bool isScenario = false;
     private int normalCount = 2;
     private enum  Judge
     {
@@ -25,12 +25,21 @@ public class lotteryJudge : MonoBehaviour
     _redJudge = 80,
      _magentaJudge = 100,
     }
-void Start()
+
+
+    private void Update()
     {
-        isScenario = true;
-        Scenariotable();
-        StartScenario();
+
+        if (Normal_GameManager.instance.IsAT&&!isScenario)
+        {
+            isScenario = true;
+            Scenariotable();
+            StartScenario();
+
+        }
+
     }
+
     public void GetCollorScenario(int SManagement)
     {
         switch (SManagement)
@@ -115,9 +124,11 @@ void Start()
 
     public void Getflag()
     {
+        if (!Normal_GameManager.instance.IsAT) return;
         if (!isScenario)
         {
             if (Input.GetKeyDown(KeyCode.Z))
+                
             {
                 normalCount--;
 
