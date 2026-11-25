@@ -17,6 +17,8 @@ public class lotteryJudge : MonoBehaviour
     public int SManagement;
     public bool isScenario = false;
     private int normalCount = 2;
+
+    public bool IsLose { get; private set; } = false;
     private enum  Judge
     {
      _blueJudge = 20,
@@ -27,12 +29,12 @@ public class lotteryJudge : MonoBehaviour
     }
 
 
-    private void Update()
+    private void OnEnable()
     {
 
-        if (Normal_GameManager.instance.IsAT&&!isScenario)
+        if (Normal_GameManager.instance.IsAT&&isScenario)
         {
-            isScenario = true;
+            isScenario = false;
             Scenariotable();
             StartScenario();
 
@@ -52,7 +54,7 @@ public class lotteryJudge : MonoBehaviour
         }  
     }
 
-    private void StartScenario()
+    public void StartScenario()
     {
         foreach (Image image in _scenarioImages) image.gameObject.SetActive(false);
         _currentScenarioImage = _scenarioImages[0];
@@ -89,7 +91,8 @@ public class lotteryJudge : MonoBehaviour
         else
         {
             Debug.Log("é∏îs");
-            isScenario = false;
+            IsLose = true;
+            isScenario = true;
             numberofgames.GameText.gameObject.SetActive(false);
             numberofgames._endScene.gameObject.SetActive(true);
             Debug.Log("í èÌéûÇ…ñﬂÇÈ");
@@ -112,6 +115,7 @@ public class lotteryJudge : MonoBehaviour
     }
     void Scenariotable()
     {
+        Debug.Log("aaaa");
         int _table = Random.Range(0,3);
         switch (_table)
         {
@@ -125,7 +129,7 @@ public class lotteryJudge : MonoBehaviour
     public void Getflag()
     {
         if (!Normal_GameManager.instance.IsAT) return;
-        if (!isScenario)
+        if (isScenario)
         {
             if (Input.GetKeyDown(KeyCode.Z))
                 

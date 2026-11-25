@@ -66,10 +66,10 @@ public partial class ReelController
             )
         )
         {
-            Debug.Log(
-                GetReelName() +
-                "Fˆø‚«‚İ‚È‚µ"
-            );
+            //Debug.Log(
+            //    GetReelName() +
+            //    "Fˆø‚«‚İ‚È‚µ"
+            //);
         }
     }
 

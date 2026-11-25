@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
 
 
 
+    [SerializeField] private lotteryJudge lotteryJudge;
     [SerializeField] private NightBattle nightBattle;
     private Normal_GameManager normalInstance = null;
     private PointManager pointinstance = null;
@@ -58,7 +59,7 @@ public class UIManager : MonoBehaviour
         // 100ポイントを超えたら榎木を出す
         if ((int)eTargetPoint.Point100 < pointinstance.NowPoint)
         {
-            Enoki.SetActive(true);
+            Enoki.SetActive(true);  
         }
         // エンターキーで決戦前夜に移行
         if (Enoki.activeSelf && Input.GetKeyDown(KeyCode.Return))
@@ -85,6 +86,12 @@ public class UIManager : MonoBehaviour
             // UI切り替え
             ChangeUICanvas(nightBattle_UICanvas,AT_UICanvas);
         }
+        if (lotteryJudge.IsLose)
+        {
+            ChangeUICanvas(AT_UICanvas, normal_UICanvas);
+        }
+        
+
 
 
         // 常に表示

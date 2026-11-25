@@ -11,6 +11,8 @@ public partial class SlotGameManager
     private lotteryBattle _lotteryBattle;
     [SerializeField]
     private Judge _judge;
+    [SerializeField]
+    private lotteryJudge _lotteryJudge;
 
     // =========================================
     // データカウンター
@@ -362,11 +364,13 @@ public partial class SlotGameManager
 
         _judge.GetJudgeRole();
 
-        _numberofgames.GetSetNum();
+       
 
+        _numberofgames.GetSetNum();
+        
         nightBattle.ResetShutterPos();
 
-        ShowStoppedSymbols();
+        //ShowStoppedSymbols();
 
         CheckHitRole();
 
@@ -380,43 +384,43 @@ public partial class SlotGameManager
     // 停止図柄
     // =========================================
 
-    private void ShowStoppedSymbols()
-    {
-        Debug.Log(
-            "========== 停止図柄 =========="
-        );
+    //private void ShowStoppedSymbols()
+    //{
+    //    Debug.Log(
+    //        "========== 停止図柄 =========="
+    //    );
 
-        Debug.Log(
-            "上段：" +
-            leftReel.GetUpperSymbol() +
-            " | " +
-            centerReel.GetUpperSymbol() +
-            " | " +
-            rightReel.GetUpperSymbol()
-        );
+    //    Debug.Log(
+    //        "上段：" +
+    //        leftReel.GetUpperSymbol() +
+    //        " | " +
+    //        centerReel.GetUpperSymbol() +
+    //        " | " +
+    //        rightReel.GetUpperSymbol()
+    //    );
 
-        Debug.Log(
-            "中段：" +
-            leftReel.GetCenterSymbol() +
-            " | " +
-            centerReel.GetCenterSymbol() +
-            " | " +
-            rightReel.GetCenterSymbol()
-        );
+    //    Debug.Log(
+    //        "中段：" +
+    //        leftReel.GetCenterSymbol() +
+    //        " | " +
+    //        centerReel.GetCenterSymbol() +
+    //        " | " +
+    //        rightReel.GetCenterSymbol()
+    //    );
 
-        Debug.Log(
-            "下段：" +
-            leftReel.GetLowerSymbol() +
-            " | " +
-            centerReel.GetLowerSymbol() +
-            " | " +
-            rightReel.GetLowerSymbol()
-        );
+    //    Debug.Log(
+    //        "下段：" +
+    //        leftReel.GetLowerSymbol() +
+    //        " | " +
+    //        centerReel.GetLowerSymbol() +
+    //        " | " +
+    //        rightReel.GetLowerSymbol()
+    //    );
 
-        Debug.Log(
-            "=============================="
-        );
-    }
+    //    Debug.Log(
+    //        "=============================="
+    //    );
+    //}
 
 
     // =========================================
@@ -431,8 +435,8 @@ public partial class SlotGameManager
 
         
 
-        Debug.Log(
-            "3リール完全停止！ゲーム終了"
-        );
+        //Debug.Log(
+        //    "3リール完全停止！ゲーム終了"
+        //);
     }
 }

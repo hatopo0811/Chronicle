@@ -16,22 +16,25 @@ public class Numberofgames : MonoBehaviour
     [SerializeField] public RawImage _endScene;
     private int _scenarioNum;   
     public bool _continuing = true;
+    bool Setflag = false;
 
 
 
-    
+    private void OnEnable()
+    {
+        SetGameCount();
+    }
 
-    
 
     private void Update()
     {
-        if (Normal_GameManager.instance.IsAT)
-        {
-            SetGameCount();
-        }
+
+         
+    
 
 
-        GameText.text = "Game" + _initialGameCount.ToString();
+
+            GameText.text = "Game" + _initialGameCount.ToString();
         //ゲーム数が999を超えないようにする処理
         if (_initialGameCount >= 999)
         {
@@ -49,7 +52,9 @@ public class Numberofgames : MonoBehaviour
     public void SetGameCount()
     {
         //ゲーム数を初期値に設定する
-        _initialGameCount = 5;      
+        
+            _initialGameCount = 5;
+        
     }
     /// <summary>
     /// 上乗せ抽選でゲーム数を増加させる処理を行う
@@ -66,12 +71,13 @@ public class Numberofgames : MonoBehaviour
         if (!Normal_GameManager.instance.IsAT) return;
 
         if (lotteryJudge == null) return;
-        if (lotteryJudge.isScenario)
+        if (!lotteryJudge.isScenario)
         {
             if (_initialGameCount >= 0)
             {
                 if (_continuing)
                 {
+                    
                     _initialGameCount--;
                 }
             }

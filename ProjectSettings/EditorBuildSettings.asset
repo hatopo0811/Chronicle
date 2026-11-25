@@ -5,16 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/MainGame/MainGameScene.unity
+    guid: 1ddc8ce7b2d04ef46b5710e180a4030b
+  - enabled: 0
     path: Assets/ReelScene.unity
     guid: 7236226dc1538df40b1402c262611e5c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Normal/Scene/NomalScene.unity
     guid: 485f71bb6c66c3e47b325250ab1a9fec
-  - enabled: 1
+  - enabled: 0
     path: Assets/Normal/Scene/ZentyouScene.unity
     guid: 64386ccd1a6c28647a14669693f544cd
   m_configObjects:

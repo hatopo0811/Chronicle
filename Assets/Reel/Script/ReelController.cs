@@ -238,10 +238,10 @@ public partial class ReelController : MonoBehaviour
 
         if (PlayGuidePanelManager.IsGuideOpen)
         {
-            Debug.Log(
-                GetReelName() +
-                "F—V‹Yà–¾’†‚È‚Ì‚Å‰ñ“]‹Ö~"
-            );
+            //Debug.Log(
+            //    GetReelName() +
+            //    "F—V‹Yà–¾’†‚È‚Ì‚Å‰ñ“]‹Ö~"
+            //);
 
             return;
         }
@@ -273,10 +273,10 @@ public partial class ReelController : MonoBehaviour
             0f;
 
 
-        Debug.Log(
-            GetReelName() +
-            " ‰ñ“]ŠJn"
-        );
+        //Debug.Log(
+        //    GetReelName() +
+        //    " ‰ñ“]ŠJn"
+        //);
     }
 
 
