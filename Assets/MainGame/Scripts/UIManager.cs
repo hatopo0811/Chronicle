@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cycleText;
     [SerializeField] private TextMeshProUGUI gameStateText;
     [SerializeField] private TextMeshProUGUI nightBattleGameCount;
+    [SerializeField] private TextMeshProUGUI nowPoint;
 
 
 
@@ -47,6 +48,7 @@ public class UIManager : MonoBehaviour
         modeText.text = "NowMode : " + normalInstance.Mode.ToString();
         cycleText.text = "NowCycle : " + normalInstance.cycleCount.ToString();
         gameStateText.text = "NowState : " + Normal_GameManager.instance.GameState.ToString();
+        
 
 
     }
@@ -59,7 +61,11 @@ public class UIManager : MonoBehaviour
         // 100ポイントを超えたら榎木を出す
         if ((int)eTargetPoint.Point100 < pointinstance.NowPoint)
         {
-            Enoki.SetActive(true);  
+            Enoki.SetActive(true);
+        }
+        if (Normal_GameManager.instance.IsNightBattle)
+        {
+            Enoki.SetActive(false);
         }
         // エンターキーで決戦前夜に移行
         if (Enoki.activeSelf && Input.GetKeyDown(KeyCode.Return))
@@ -98,6 +104,8 @@ public class UIManager : MonoBehaviour
         modeText.text = "NowMode : " + normalInstance.Mode.ToString();
         cycleText.text = "NowCycle : " + normalInstance.cycleCount.ToString();
         gameStateText.text = "NowState : " + normalInstance.GameState.ToString();
+        nowPoint.text = "NowPoint : " + pointinstance.NowPoint.ToString();
+
 
     }
 
