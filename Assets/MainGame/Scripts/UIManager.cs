@@ -120,6 +120,15 @@ public class UIManager : MonoBehaviour
         afterUICanvas.SetActive(true);
     }
 
+    /// <summary>
+    /// デバックテキストやUIのテキストを状況に応じて変更する関数
+    /// </summary>
+    /// <param name="text">変更したいテキストオブジェクト</param>
+    /// <param name="newText">変更内容</param>
+    public void UpdateText(TextMeshProUGUI text, string newText)
+    {
+        text.text = newText;
+    }
 
 
 }
