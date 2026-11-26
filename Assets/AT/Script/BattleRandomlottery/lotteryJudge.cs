@@ -21,7 +21,8 @@ public class lotteryJudge : MonoBehaviour
     public bool IsLose { get; private set; } = false;
     private enum  Judge
     {
-     _blueJudge = 20,
+    _whiteJudge = 10,
+    _blueJudge = 20,
     _yellowJudge = 50,
     _greenJudge = 66,
     _redJudge = 80,
@@ -46,11 +47,12 @@ public class lotteryJudge : MonoBehaviour
     {
         switch (SManagement)
         {
-            case 1:InitalizeDictsJudge((int)Judge._blueJudge);break;
-            case 2:InitalizeDictsJudge((int)Judge._yellowJudge);break;
-            case 3:InitalizeDictsJudge((int)Judge._greenJudge);break;
-            case 4:InitalizeDictsJudge((int)Judge._redJudge);break;
-            case 5:InitalizeDictsJudge((int)Judge._magentaJudge);break;
+            case 1:InitalizeDictsJudge((int)Judge._whiteJudge);break;
+            case 2:InitalizeDictsJudge((int)Judge._blueJudge);break;
+            case 3:InitalizeDictsJudge((int)Judge._yellowJudge);break;
+            case 4:InitalizeDictsJudge((int)Judge._greenJudge);break;
+            case 5:InitalizeDictsJudge((int)Judge._redJudge);break;
+            case 6:InitalizeDictsJudge((int)Judge._magentaJudge);break;
         }  
     }
 
@@ -66,11 +68,12 @@ public class lotteryJudge : MonoBehaviour
     {
         switch (SManagement)
         {
-            case 1:_currentScenarioImage.color = Color.blue; break;
-            case 2:_currentScenarioImage.color = Color.yellow; break;
-            case 3:_currentScenarioImage.color = Color.green; break;
-            case 4:_currentScenarioImage.color = Color.red; break;
-            case 5:_currentScenarioImage.color = Color.magenta; break;
+            case 1:_currentScenarioImage.color = Color.white;break;
+            case 2:_currentScenarioImage.color = Color.blue; break;
+            case 3:_currentScenarioImage.color = Color.yellow; break;
+            case 4:_currentScenarioImage.color = Color.green; break;
+            case 5:_currentScenarioImage.color = Color.red; break;
+            case 6:_currentScenarioImage.color = Color.magenta; break;
         }
     }
     private int RomdomDicts()
