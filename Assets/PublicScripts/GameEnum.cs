@@ -77,7 +77,7 @@ public enum eEventType
     EventMax,
 }
 
-
+// インゲーム中の状態管理用
 public enum eGameState
 {
     Invalid = -1,
@@ -87,6 +87,15 @@ public enum eGameState
     CZ,
     ATPreparation,
     AT,
+
+}
+
+
+
+public enum eInternalState
+{
+    Normal, // 通常
+    High    // 高確
 
 }
 

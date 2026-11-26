@@ -95,7 +95,7 @@ public class PointManager : MonoBehaviour
                 break;
             // ‚Q‚Oƒ|ƒCƒ“ƒg‰ÁŽZ
             case RoleType.StrongCherry:
-                NowPoint += 100;
+                NowPoint += 20;
                 break;
             // ƒ|ƒCƒ“ƒg‰ÁŽZ‚È‚µ
             case RoleType.ATBell:

@@ -152,7 +152,10 @@ public class NightBattle : MonoBehaviour
     {
 
         //Å@Åö
-        if (CurrentNightBattleGameCount == MaxNightBattleGame) ;
+        if (CurrentNightBattleGameCount == MaxNightBattleGame)
+        {
+
+        }
 
         int eventColor = Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX);
 
