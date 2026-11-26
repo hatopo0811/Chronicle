@@ -21,6 +21,7 @@ public class PointManager : MonoBehaviour
     // 現在のポイント
     public int NowPoint { get; set; } = 0;
 
+    public int CarryoverPoint { get; private set; }
 
 
     void Start()
@@ -35,6 +36,13 @@ public class PointManager : MonoBehaviour
     private void Update()
     {
         pointText.text = NowPoint.ToString();
+        
+        // デバックキー：強制的に100P増加させる
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            NowPoint += 100;
+        }
+        
 
 
     }
@@ -57,7 +65,6 @@ public class PointManager : MonoBehaviour
     /// <returns>NowPoint + 加算ポイントを返す</returns>
     public void AddPoint( RoleType type)
     {
-        Debug.Log("ポイント加算！！！！！！！！！！！！！！！！！！！！！！！！！！！！！");
         // 通常時じゃなかったら終了 
         if (!Normal_GameManager.instance.IsNormal) return;
 
@@ -103,9 +110,9 @@ public class PointManager : MonoBehaviour
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    public int ResetPoint(int nowPoint)
+    public void ResetPoint()
     {
-        return nowPoint = 0;
+        NowPoint = 0;
     }
 
     /// <summary>
@@ -114,10 +121,11 @@ public class PointManager : MonoBehaviour
     /// <param name="targetPoint">規定ポイント</param>
     /// <param name="nowPoint">現在の獲得ポイント</param>
     /// <returns>規定ポイントからの超過ポイント分</returns>
-    public int CarryoverOverflowPoint(eTargetPoint targetPoint, int nowPoint)
+    public void CarryoverOverflowPoint(eTargetPoint targetPoint, int nowPoint)
     {
         int overflowPoint;
-        return overflowPoint = nowPoint - (int)targetPoint;
+        CarryoverPoint = overflowPoint = nowPoint - (int)targetPoint;
+        
     }
 
 

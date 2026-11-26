@@ -71,6 +71,10 @@ public class NightBattle : MonoBehaviour
     {
         Normal_GameManager.instance.GameState = eGameState.NightBattle;
         StartCoroutine(HideImage());
+        // 前兆に入った段階で獲得していたポイントを保存
+        PointManager.instance.CarryoverOverflowPoint(PointManager.instance.TargetPoint, PointManager.instance.NowPoint);
+        // ポイントリセット
+        PointManager.instance.ResetPoint();
     }
 
 
