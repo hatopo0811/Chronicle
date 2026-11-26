@@ -36,6 +36,13 @@ public class PointManager : MonoBehaviour
     private void Update()
     {
         pointText.text = NowPoint.ToString();
+        
+        // デバックキー：強制的に100P増加させる
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            NowPoint += 100;
+        }
+        
 
 
     }
