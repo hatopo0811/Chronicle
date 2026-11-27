@@ -76,7 +76,6 @@ public class PointManager : MonoBehaviour
             case RoleType.Lose:
                 NowPoint += 1;
                 break;
-                break;
             // ƒ|ƒCƒ“ƒg‰ÁŽZ‚È‚µ
             case RoleType.Bell:
                  NowPoint += 0;

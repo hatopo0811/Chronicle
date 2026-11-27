@@ -94,7 +94,7 @@ public enum eGameState
 
 public enum eInternalState
 {
-    Normal, // ’Êí
+    Low, // ’Êí
     High    // ‚Šm
 
 }

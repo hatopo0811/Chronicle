@@ -58,7 +58,7 @@ public class NightBattle : MonoBehaviour
     // 前兆最大ゲーム数
     private const int MaxNightBattleGame = 15;
     // シャッターがしまっているかどうか
-    private bool isClose = false;
+    //private bool isClose = false;
     // 色が上がるシャッターと上がらないシャッターを切り変える
     public bool isFakeShutter = false;
     // ジャッジのゲーム数
@@ -283,7 +283,7 @@ public class NightBattle : MonoBehaviour
 
         while (t < 1.0f)
         {
-            isClose = false;
+            
             t += Time.deltaTime / duration;
 
             t = Mathf.Clamp01(t);
@@ -322,7 +322,6 @@ public class NightBattle : MonoBehaviour
 
         while (t < 1.0f)
         {
-            isClose = true;
 
             t += Time.deltaTime / duration;
 
