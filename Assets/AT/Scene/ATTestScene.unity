@@ -8844,6 +8844,7 @@ GameObject:
   - component: {fileID: 1979918998}
   - component: {fileID: 1979918997}
   - component: {fileID: 1979918996}
+  - component: {fileID: 1979919001}
   m_Layer: 0
   m_Name: _ATManager
   m_TagString: Untagged
@@ -8863,7 +8864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbb388b282d78440a6e9faa5046a25a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::lotteryJudge
-  numberofgames: {fileID: 1979918997}
   _scenarioNum: 0
   _scenarioImages:
   - {fileID: 713007728}
@@ -8895,10 +8895,7 @@ MonoBehaviour:
   lotteryJudge: {fileID: 1979918996}
   _judge: {fileID: 1979918998}
   _initialGameCount: 0
-  GameText: {fileID: 1063619740}
-  GetGameText: {fileID: 0}
   GameNum: 0
-  _endScene: {fileID: 103404850}
   _continuing: 1
 --- !u!114 &1979918998
 MonoBehaviour:
@@ -8948,6 +8945,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1767380350}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1979919001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979918995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c220820c0c94e33409b63733b359e5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ATManager
+  <ATMode>k__BackingField: 0
 --- !u!1 &1999948516
 GameObject:
   m_ObjectHideFlags: 0

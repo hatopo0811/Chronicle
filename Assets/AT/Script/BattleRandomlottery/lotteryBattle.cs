@@ -117,7 +117,8 @@ public class lotteryBattle : MonoBehaviour
         Debug.Log("SetJudgeBattleWeak: 乱数は" + _judgeBattle);
         if (_judgeBattle < _judgeBattleWeakNum)
         {
-            Debug.Log("SetJudgeBattleWeak: 当たり");
+            ATManager.instance.ATMode = eATMode.Battle;
+            Debug.Log("SetJudgeBattleWeak: ステータスがBattle");
 
         }
         else if (_judgeBattle >= _judgeBattleWeakNum)
@@ -231,6 +232,8 @@ public class lotteryBattle : MonoBehaviour
     //リール終わりに入れる
     public void GetRole()
     {
+
+
         if (!Normal_GameManager.instance.IsAT) return;
         //弱チェリーの上乗せ抽選、Battle抽選を行う
         if (_slotGameManager.CurrentHitRole == SlotGameManager.HitRoleType.Cherry)

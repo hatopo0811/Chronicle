@@ -4,21 +4,26 @@ using UnityEngine.UI;
 //ゲーム数を管理するクラス
 public class Numberofgames : MonoBehaviour
 {
+
+    public static Numberofgames instance = null;
+
     [SerializeField]lotteryJudge lotteryJudge;
     [SerializeField] Judge _judge;
     //ゲーム数の初期値を設定する変数
     public int _initialGameCount;
     //private int amount;
     int _gameCount=10;
-    [SerializeField] public TextMeshProUGUI GameText;
-    [SerializeField] TextMeshProUGUI GetGameText;
+   
     public int GameNum;
-    [SerializeField] public RawImage _endScene;
+    
     private int _scenarioNum;   
     public bool _continuing = true;
     bool Setflag = false;
 
-
+    private void Start()
+    {
+        instance = this;
+    }
 
     private void OnEnable()
     {
@@ -34,7 +39,7 @@ public class Numberofgames : MonoBehaviour
 
 
 
-            GameText.text = "Game" + _initialGameCount.ToString();
+            //GameText.text = "Game" + _initialGameCount.ToString();
         //ゲーム数が999を超えないようにする処理
         if (_initialGameCount >= 999)
         {
@@ -90,8 +95,8 @@ public class Numberofgames : MonoBehaviour
             if (_initialGameCount == -1)
             {
                 lotteryJudge.isScenario = false;
-                GameText.gameObject.SetActive(false);
-                _endScene.gameObject.SetActive(true);
+                ATManager.instance.GameText.gameObject.SetActive(false);
+                ATManager.instance._endScene.gameObject.SetActive(true);
                 Debug.Log("通常時に戻る");
 
             }

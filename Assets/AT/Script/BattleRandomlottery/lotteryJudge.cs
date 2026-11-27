@@ -5,7 +5,10 @@ using UnityEngine.UI;
 //Œp‘±‚µ‚½‚©‚Ç‚¤‚©‚ÌƒNƒ‰ƒX
 public class lotteryJudge : MonoBehaviour
 {
-    [SerializeField] Numberofgames numberofgames;
+    public static lotteryJudge instance { get; private set; }
+
+
+    
     public int _scenarioNum;
     [SerializeField] private Image[] _scenarioImages = new Image[7];
     [SerializeField] private int[] DS = new int[7];
@@ -19,15 +22,7 @@ public class lotteryJudge : MonoBehaviour
     private int normalCount = 2;
 
     public bool IsLose { get; private set; } = false;
-    private enum  Judge
-    {
-    _whiteJudge = 10,
-    _blueJudge = 20,
-    _yellowJudge = 50,
-    _greenJudge = 66,
-    _redJudge = 80,
-     _magentaJudge = 100,
-    }
+    
 
 
     private void OnEnable()
@@ -47,12 +42,12 @@ public class lotteryJudge : MonoBehaviour
     {
         switch (SManagement)
         {
-            case 1:InitalizeDictsJudge((int)Judge._whiteJudge);break;
-            case 2:InitalizeDictsJudge((int)Judge._blueJudge);break;
-            case 3:InitalizeDictsJudge((int)Judge._yellowJudge);break;
-            case 4:InitalizeDictsJudge((int)Judge._greenJudge);break;
-            case 5:InitalizeDictsJudge((int)Judge._redJudge);break;
-            case 6:InitalizeDictsJudge((int)Judge._magentaJudge);break;
+            case 1:InitalizeDictsJudge((int)eJudge._whiteJudge);break;
+            case 2:InitalizeDictsJudge((int)eJudge._blueJudge);break;
+            case 3:InitalizeDictsJudge((int)eJudge._yellowJudge);break;
+            case 4:InitalizeDictsJudge((int)eJudge._greenJudge);break;
+            case 5:InitalizeDictsJudge((int)eJudge._redJudge);break;
+            case 6:InitalizeDictsJudge((int)eJudge._magentaJudge);break;
         }  
     }
 
@@ -88,7 +83,7 @@ public class lotteryJudge : MonoBehaviour
         if (_Judge <= _DictsJudge)
         {
             Debug.Log("¬Œ÷");
-            numberofgames._continuing = true;
+            Numberofgames.instance._continuing = true;
             NextScenario();
         }
         else
@@ -96,9 +91,10 @@ public class lotteryJudge : MonoBehaviour
             Debug.Log("Ž¸”s");
             IsLose = true;
             isScenario = true;
-            numberofgames.GameText.gameObject.SetActive(false);
-            numberofgames._endScene.gameObject.SetActive(true);
+            ATManager.instance.GameText.gameObject.SetActive(false);
+            ATManager.instance._endScene.gameObject.SetActive(true);
             Debug.Log("’ÊíŽž‚É–ß‚é");
+            
         }
     }
     public void NextScenario()
@@ -107,7 +103,7 @@ public class lotteryJudge : MonoBehaviour
         if (_currentScenarioImage == null) return;
         _currentScenarioImage = _scenarioImages[_scenarioNum];
         _scenarioImages[_scenarioNum].gameObject.SetActive(true);
-        numberofgames.SetGameCount();
+        Numberofgames.instance.SetGameCount();
         GetCollor(SManagement = hoge[_scenarioNum]);
         if (_scenarioNum >= _scenarioImages.Length)
         {

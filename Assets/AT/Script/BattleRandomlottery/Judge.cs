@@ -75,6 +75,7 @@ public class Judge : MonoBehaviour
     public void GetJudgeRole()
     {
         if (!Normal_GameManager.instance.IsAT) return;
+        if(!ATManager.instance.IsDigestion)return;
         if (!_numberofgames._continuing)
         {
             if (_setCount)
