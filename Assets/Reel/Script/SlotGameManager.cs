@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 public partial class SlotGameManager : MonoBehaviour
 {
+
+    public static SlotGameManager instance = null;
+
     // Chronicle: 通常6役のみ。旧BB/RB・7揃い・持越しボーナスは廃止。
     public enum RoleType
     {
@@ -91,6 +94,15 @@ public partial class SlotGameManager : MonoBehaviour
 
     public RoleType CurrentRole { get; private set; }
     public HitRoleType CurrentHitRole { get; private set; }
+    
+    public bool IsNone { get {  return CurrentHitRole == HitRoleType.None; } }
+    public bool IsReplay { get {  return CurrentHitRole == HitRoleType.Replay; } }
+    public bool IsBell { get {  return CurrentHitRole == HitRoleType.Bell; } }
+    public bool IsSuika { get {  return CurrentHitRole == HitRoleType.Suika; } }
+    public bool IsCherry { get {  return CurrentHitRole == HitRoleType.Cherry; } }
+    public bool IsStrongCherry { get {  return CurrentHitRole == HitRoleType.StrongCherry; } }
+
+
     public PayLine CurrentHitLine { get; private set; } = PayLine.None;
     public int Credit { get; private set; }
     public int LastPayout { get; private set; }
@@ -123,6 +135,7 @@ public partial class SlotGameManager : MonoBehaviour
 
     private void Start()
     {
+        instance = this;
         Credit = startCredit;
         LastPayout = 0;
         PanelOFF();

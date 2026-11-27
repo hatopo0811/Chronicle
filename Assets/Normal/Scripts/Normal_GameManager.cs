@@ -1,12 +1,14 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 
 public class Normal_GameManager : MonoBehaviour
 {
     public static Normal_GameManager instance = null;
+
 
      
     // ゲームステート
@@ -18,7 +20,10 @@ public class Normal_GameManager : MonoBehaviour
     public bool IsCZ { get { return GameState == eGameState.CZ; } }
     public bool IsAT { get { return GameState == eGameState.AT; } }
 
-
+    // 状態管理
+    public eInternalState InternalState { get; private set; }
+    public bool IsLow { get { return InternalState == eInternalState.Low; } }
+    public bool IsHigh { get { return InternalState == eInternalState.High; } }
 
 
     // ゲーム数はまなとのHOHANAしているファイルにもともとあった物を使っている
@@ -36,10 +41,6 @@ public class Normal_GameManager : MonoBehaviour
         cycleCount = eCycleCount.First;
     }
 
-    void Start()
-    {
-           
-    }
 
     private void OnEnable()
     {
@@ -54,6 +55,17 @@ public class Normal_GameManager : MonoBehaviour
         {
             SelectMode();
         }
+
+        // 状態管理デバックキー
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            InternalState = eInternalState.High;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            InternalState = eInternalState.Low;
+        }
+
     }
 
     /// <summary>
@@ -89,6 +101,20 @@ public class Normal_GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 通常時の状態(低確・高確)抽選
+    /// スイカ成立時または各状態(優出モード、激走チャージ、超抜チャレンジ)終了時に抽選
+    /// </summary>
+    private void LotteryHighModeBysuika()
+    {
+        if (!IsNormal) return;
+
+        // 50%で高確に移行
+        if (Random.Range(GameConst.RANDOM_MIN, GameConst.RANDOM_MAX) > 50)
+        {
+            InternalState = eInternalState.High;
+        }
+    }
 
 
 }
